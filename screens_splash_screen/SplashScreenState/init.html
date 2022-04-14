@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the init method from the SplashScreenState class, for the Dart programming language.">
+  <title>init method - SplashScreenState class - splash_screen library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">farmershands</a></li>
+    <li><a href="../../screens_splash_screen/screens_splash_screen-library.html">splash_screen</a></li>
+    <li><a href="../../screens_splash_screen/SplashScreenState-class.html">SplashScreenState</a></li>
+    <li class="self-crumb">init method</li>
+  </ol>
+  <div class="self-name">init</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-method">init</span> method 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter">void</span>&gt;</span></span>
+<span class="name ">init</span>(<wbr>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>로그인 후, 농장변경시에 이 메소드를 호출하여
+splashScreen을 처음부터 다시 런칭하는 효과를 얻습니다.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; init() async {
+  try {
+    LogManager().addLog(&quot;SplashScreen init()&quot;, screen: runtimeType.toString());
+
+    setState(() {
+      initialized = false;
+      launched = false;
+      hasError = false;
+      disableLaunch = false;
+    });
+
+    try {
+      try {
+        await _configureAmplify();
+      } on AmplifyException catch (e) {
+        LogManager().addLog(e.toString(), screen: runtimeType.toString());
+        &#47;&#47; 아래 예외는 중복실행 등으로 발생할 수 있고 로직 진행에 문제가 없기때문에
+        &#47;&#47; 사용자 인증오류 등 다른 오류일때만 rethrow
+        if (!(e is AmplifyAlreadyConfiguredException)) rethrow;
+      } catch (e) {
+        LogManager().addLog(e.toString(), screen: runtimeType.toString());
+      }
+
+      ApiService().userState = Provider.of&lt;UserState&gt;(context, listen: false);
+      await ApiService().fetchAuthSession();
+      User? user = await ApiService().getCurrentUser();
+      LogManager().initCloudWatch(
+        awsAccessKey: user.awsAccessKey,
+        awsSecretKey: user.awsSecretKey,
+        awsSessionToken: user.awsSessionToken,
+      );
+      LogManager().addLog(&quot;_configureAmplify() 성공&quot;, screen: runtimeType.toString());
+    } on AmplifyException catch (e) {
+      LogManager().addLog(&quot;AmplifyException 발생&quot;, screen: runtimeType.toString());
+      LogManager().addLog(e.message, screen: runtimeType.toString());
+
+      &#47;&#47; SessionExpiredException은 처음 한번만 예외를 발생시키고
+      &#47;&#47; 그 뒤로는 flutter 상에서는 오류를 던지지 않는것으로 추정.
+      &#47;&#47; Android 네이티브에서만 Warn 메시지가 출력됨
+      &#47;&#47; farm_loading에서 처리하던 로그아웃을 여기서 바로 처리
+      if (e is SessionExpiredException) {
+        disableLaunch = true;
+        await ApiService().signOut();
+        EventService().eventBus.fire(
+              PopupEvent(
+                type: PopupType.alert,
+                action: PopupAction.show,
+                data: {&quot;title&quot;: &quot;알림&quot;, &quot;content&quot;: &quot;세션이 만료되었습니다. 다시 로그인해주세요.&quot;},
+                onClose: () {
+                  Navigator.of(context, rootNavigator: true).pushNamed(EmptyScreen.routeName);
+                  Navigator.of(context, rootNavigator: true).pushReplacementNamed(SignInScreen.routeName);
+                  &#47;&#47; throw e;
+                },
+              ),
+            );
+      }
+      &#47;&#47; rethrow;
+    } catch (e) {
+      LogManager().addLog(&quot;_configureAmplify() 실패 $e&quot;, screen: runtimeType.toString());
+      rethrow;
+    }
+
+    try {
+      await _checkAppVersion();
+      LogManager().addLog(&quot;_checkAppVersion() 성공&quot;, screen: runtimeType.toString());
+    } catch (e) {
+      LogManager().addLog(&quot;_checkAppVersion() 실패 $e&quot;, screen: runtimeType.toString());
+      rethrow;
+    }
+
+    try {
+      await _configurePermission();
+      LogManager().addLog(&quot;_configurePermission() 성공&quot;, screen: runtimeType.toString());
+    } catch (e) {
+      LogManager().addLog(&quot;_configurePermission() 실패 $e&quot;, screen: runtimeType.toString());
+      rethrow;
+    }
+
+    setState(() {
+      initialized = true;
+    });
+  } catch (e) {
+    LogManager().addLog(&quot;SplashScreen: init() error $e&quot;, screen: runtimeType.toString());
+    handleError();
+  }
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">farmershands</a></li>
+  <li><a href="../../screens_splash_screen/screens_splash_screen-library.html">splash_screen</a></li>
+  <li><a href="../../screens_splash_screen/SplashScreenState-class.html">SplashScreenState</a></li>
+  <li class="self-crumb">init method</li>
+</ol>
+
+
+    <h5>SplashScreenState class</h5>
+    <ol>
+
+    <li class="section-title"><a href="../../screens_splash_screen/SplashScreenState-class.html#constructors">Constructors</a></li>
+    <li><a href="../../screens_splash_screen/SplashScreenState/SplashScreenState.html">SplashScreenState</a></li>
+
+
+    <li class="section-title">
+      <a href="../../screens_splash_screen/SplashScreenState-class.html#instance-properties">Properties</a>
+    </li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/context.html">context</a></li>
+    <li><a href="../../screens_splash_screen/SplashScreenState/disableLaunch.html">disableLaunch</a></li>
+    <li><a href="../../screens_splash_screen/SplashScreenState/hasError.html">hasError</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li><a href="../../screens_splash_screen/SplashScreenState/initialized.html">initialized</a></li>
+    <li><a href="../../screens_splash_screen/SplashScreenState/launched.html">launched</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/mounted.html">mounted</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/widget.html">widget</a></li>
+
+    <li class="section-title"><a href="../../screens_splash_screen/SplashScreenState-class.html#instance-methods">Methods</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/activate.html">activate</a></li>
+    <li><a href="../../screens_splash_screen/SplashScreenState/build.html">build</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/deactivate.html">deactivate</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/debugFillProperties.html">debugFillProperties</a></li>
+    <li><a href="../../screens_splash_screen/SplashScreenState/didChangeDependencies.html">didChangeDependencies</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/didUpdateWidget.html">didUpdateWidget</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/dispose.html">dispose</a></li>
+    <li><a href="../../screens_splash_screen/SplashScreenState/handleError.html">handleError</a></li>
+    <li><a href="../../screens_splash_screen/SplashScreenState/init.html">init</a></li>
+    <li><a href="../../screens_splash_screen/SplashScreenState/initState.html">initState</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/reassemble.html">reassemble</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/setState.html">setState</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/Diagnosticable/toDiagnosticsNode.html">toDiagnosticsNode</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/Diagnosticable/toString.html">toString</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/Diagnosticable/toStringShort.html">toStringShort</a></li>
+
+    <li class="section-title inherited"><a href="../../screens_splash_screen/SplashScreenState-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    farmershands
+      1.4.0-dev6+78
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

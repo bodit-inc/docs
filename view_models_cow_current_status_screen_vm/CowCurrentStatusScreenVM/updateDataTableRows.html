@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the updateDataTableRows method from the CowCurrentStatusScreenVM class, for the Dart programming language.">
+  <title>updateDataTableRows method - CowCurrentStatusScreenVM class - cow_current_status_screen_vm library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">farmershands</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/view_models_cow_current_status_screen_vm-library.html">cow_current_status_screen_vm</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM-class.html">CowCurrentStatusScreenVM</a></li>
+    <li class="self-crumb">updateDataTableRows method</li>
+  </ol>
+  <div class="self-name">updateDataTableRows</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-method">updateDataTableRows</span> method 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype">dynamic</span>
+<span class="name ">updateDataTableRows</span>(<wbr>)
+
+      
+
+    </section>
+    
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">updateDataTableRows() {
+  if (sortColumnIdx == null) sortIsAscending = true;
+
+  cows = cows!.where((cow) =&gt; cowDatas?.firstWhereOrNull((element) =&gt; element.cow == cow) != null).toList();
+  if (sortIsAscending) {
+    &#47;&#47; 오름차순 정렬
+    cows!.sort((a, b) {
+      int result = 0;
+      CowData? cowDataA = cowDatas?.firstWhereOrNull((element) =&gt; element.cow == a);
+      CowData? cowDataB = cowDatas?.firstWhereOrNull((element) =&gt; element.cow == b);
+
+      if (cowDataA == null || cowDataB == null) return 0;
+
+      switch (sortColumnIdx) {
+        case 0:
+          result = a.getDayAfterBirthFromDateTime(selectedDateTime).compareTo(b.getDayAfterBirthFromDateTime(selectedDateTime));
+          break;
+        case 1:
+          result = cowDataA.data.first.cowDataHour.first.lactation.value.compareTo(cowDataB.data.first.cowDataHour.first.lactation.value);
+          break;
+        case 2:
+          result = cowDataA.data.first.cowDataHour.first.eating.value.compareTo(cowDataB.data.first.cowDataHour.first.eating.value);
+          break;
+        case 3:
+          result = cowDataA.data.first.cowDataHour.first.ruminant.value.compareTo(cowDataB.data.first.cowDataHour.first.ruminant.value);
+          break;
+        &#47;&#47; case 4:
+        &#47;&#47;   result = cowDataA.data.first.cowDataHour.first.drinking.value.compareTo(cowDataB.data.first.cowDataHour.first.drinking.value);
+        &#47;&#47;   break;
+        case 4:
+          result = cowDataA.data.first.cowDataHour.first.heading.value.compareTo(cowDataB.data.first.cowDataHour.first.heading.value);
+          break;
+        case 5:
+          result = cowDataA.data.first.cowDataHour.first.sitting.value.compareTo(cowDataB.data.first.cowDataHour.first.sitting.value);
+          break;
+        case 6:
+          result = cowDataA.data.first.cowDataHour.first.standing.value.compareTo(cowDataB.data.first.cowDataHour.first.standing.value);
+          break;
+        case 7:
+          result = cowDataA.data.first.cowDataHour.first.cough.value.compareTo(cowDataB.data.first.cowDataHour.first.cough.value);
+          break;
+        case 8:
+          result = cowDataA.data.first.cowDataHour.first.activity.value.compareTo(cowDataB.data.first.cowDataHour.first.activity.value);
+          break;
+        case 9:
+          result = cowDataA.data.first.cowDataHour.first.digestive.value.compareTo(cowDataB.data.first.cowDataHour.first.digestive.value);
+          break;
+        case 10:
+          result = cowDataA.data.first.cowDataHour.first.respiratory.value.compareTo(cowDataB.data.first.cowDataHour.first.respiratory.value);
+          break;
+        case 11:
+          result = cowDataA.data.first.cowDataHour.first.bcs.value.compareTo(cowDataB.data.first.cowDataHour.first.bcs.value);
+          break;
+        default:
+        &#47;&#47; 기본 정렬상태, 소 아이디 오름차순으로 정렬
+          result = int.parse(a.id.substring(4)).compareTo(int.parse(b.id.substring(4)));
+          break;
+      }
+      return result;
+    });
+  } else {
+    &#47;&#47; 내림차순 정렬
+    cows!.sort((a, b) {
+      int result = 0;
+      CowData? cowDataA = cowDatas?.firstWhereOrNull((element) =&gt; element.cow == a);
+      CowData? cowDataB = cowDatas?.firstWhereOrNull((element) =&gt; element.cow == b);
+
+      if (cowDataA == null || cowDataB == null) return 1;
+
+      switch (sortColumnIdx) {
+        case 0:
+          result = b.getDayAfterBirthFromDateTime(selectedDateTime).compareTo(a.getDayAfterBirthFromDateTime(selectedDateTime));
+          break;
+        case 1:
+          result = cowDataB.data.first.cowDataHour.first.lactation.value.compareTo(cowDataA.data.first.cowDataHour.first.lactation.value);
+          break;
+        case 2:
+          result = cowDataB.data.first.cowDataHour.first.eating.value.compareTo(cowDataA.data.first.cowDataHour.first.eating.value);
+          break;
+        case 3:
+          result = cowDataB.data.first.cowDataHour.first.ruminant.value.compareTo(cowDataA.data.first.cowDataHour.first.ruminant.value);
+          break;
+        &#47;&#47; case 4:
+        &#47;&#47;   result = cowDataB.data.first.cowDataHour.first.drinking.value.compareTo(cowDataA.data.first.cowDataHour.first.drinking.value);
+        &#47;&#47;   break;
+        case 4:
+          result = cowDataB.data.first.cowDataHour.first.heading.value.compareTo(cowDataA.data.first.cowDataHour.first.heading.value);
+          break;
+        case 5:
+          result = cowDataB.data.first.cowDataHour.first.sitting.value.compareTo(cowDataA.data.first.cowDataHour.first.sitting.value);
+          break;
+        case 6:
+          result = cowDataB.data.first.cowDataHour.first.standing.value.compareTo(cowDataA.data.first.cowDataHour.first.standing.value);
+          break;
+        case 7:
+          result = cowDataB.data.first.cowDataHour.first.cough.value.compareTo(cowDataA.data.first.cowDataHour.first.cough.value);
+          break;
+        case 8:
+          result = cowDataB.data.first.cowDataHour.first.activity.value.compareTo(cowDataA.data.first.cowDataHour.first.activity.value);
+          break;
+        case 9:
+          result = cowDataB.data.first.cowDataHour.first.digestive.value.compareTo(cowDataA.data.first.cowDataHour.first.digestive.value);
+          break;
+        case 10:
+          result = cowDataB.data.first.cowDataHour.first.respiratory.value.compareTo(cowDataA.data.first.cowDataHour.first.respiratory.value);
+          break;
+        case 11:
+          result = cowDataB.data.first.cowDataHour.first.bcs.value.compareTo(cowDataA.data.first.cowDataHour.first.bcs.value);
+          break;
+        default:
+        &#47;&#47; 기본 정렬상태, 소 아이디 오름차순으로 정렬
+          result = a.id.compareTo(b.id);
+          break;
+      }
+      return result;
+    });
+  }
+
+  dataTableRows = cows!.mapIndexed((Cow cow, i) {
+    CowData? cowData = cowDatas?.firstWhereOrNull((element) =&gt; element.cow == cow);
+    if (cowData == null) cowData = CowData.fromEmpty(cow);
+    Color highlightedColor = CustomColors.grapefruit.withOpacity(0.4);
+
+    DataTableRow dataTableRow = DataTableRow(
+      id: &quot;${cow.id}&quot;,
+      cells: [
+        DataTableCell(
+          id: &quot;cowManagementNumber&quot;,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(cow.cowStatus.icon, width: 24, height: 24),
+              Container(width: 4),
+              Text(&quot;${cowData.cow?.managementNumber.toString()}&quot;, textAlign: TextAlign.center),
+            ],
+          ),
+          onTap: () {
+            LogManager().addLog(&quot;${cow.id} ${cow.managementNumber} 돋보기 버튼)&quot;, action: LogConstants.buttonTap, screen: runtimeType.toString());
+            Navigator.of(ApiService().context, rootNavigator: true).pushNamed(CowDetailScreen.routeName, arguments: CowDetailScreenArguments(cow: cowData!.cow!, selectedDate: selectedDateTime));
+          },
+        ),
+        DataTableCell(id: &quot;dayAfterBirth&quot;, text: cowData.cow?.getDayAfterBirthStrFromDateTime(selectedDateTime)),
+        DataTableCell(
+          id: &quot;lactation&quot;,
+          child: Container(
+            color: Helper().isCowDataHighlighted(cowData.data.first.cowDataHour.first.lactation) ? highlightedColor : Colors.transparent,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(width: 0),
+                RotatedBox(
+                  quarterTurns: 2,
+                  child: LinearProgressBar(
+                    value: cowData.data.first.cowDataHour.first.lactation.value,
+                    maxValue: Helper().getMaxValueFromCowData(cowDatas: cowDatas, action: ActionType.lactation),
+                    size: Size(60, 16),
+                    progressColor: CustomColors.light_gold,
+                    backgroundColor: CustomColors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        DataTableCell(
+          id: &quot;eating&quot;,
+          child: Container(
+            color: Helper().isCowDataHighlighted(cowData.data.first.cowDataHour.first.eating) ? highlightedColor : Colors.transparent,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(width: 0),
+                RotatedBox(
+                  quarterTurns: 0,
+                  child: LinearProgressBar(
+                    value: cowData.data.first.cowDataHour.first.eating.value,
+                    maxValue: Helper().getMaxValueFromCowData(cowDatas: cowDatas, action: ActionType.eating),
+                    size: Size(60, 16),
+                    progressColor: CustomColors.emerald,
+                    backgroundColor: CustomColors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        DataTableCell(
+          id: &quot;ruminant&quot;,
+          child: Container(
+            color: Helper().isCowDataHighlighted(cowData.data.first.cowDataHour.first.ruminant) ? highlightedColor : Colors.transparent,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(width: 0),
+                RotatedBox(
+                  quarterTurns: 0,
+                  child: LinearProgressBar(
+                    value: cowData.data.first.cowDataHour.first.ruminant.value,
+                    maxValue: Helper().getMaxValueFromCowData(cowDatas: cowDatas, action: ActionType.ruminant),
+                    size: Size(60, 16),
+                    progressColor: CustomColors.light_teal,
+                    backgroundColor: CustomColors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        &#47;&#47; DataTableCell(
+        &#47;&#47;   id: &quot;drinking&quot;,
+        &#47;&#47;   child: Container(
+        &#47;&#47;     margin: EdgeInsets.symmetric(horizontal: 6),
+        &#47;&#47;     child: RotatedBox(
+        &#47;&#47;       quarterTurns: 0,
+        &#47;&#47;       child: LinearProgressBar(
+        &#47;&#47;         value: cowData.data.first.cowDataHour.first.drinking.value,
+        &#47;&#47;         maxValue: Helper().getMaxValueFromCowData(cowDatas: cowDatas, action: ActionType.drinking),
+        &#47;&#47;         size: Size(100, 16),
+        &#47;&#47;         progressColor: CustomColors.sky,
+        &#47;&#47;         backgroundColor: CustomColors.white,
+        &#47;&#47;       ),
+        &#47;&#47;     ),
+        &#47;&#47;   ),
+        &#47;&#47; ),
+        DataTableCell(
+          id: &quot;heading&quot;,
+          child: Container(
+            color: Helper().isCowDataHighlighted(cowData.data.first.cowDataHour.first.heading) ? highlightedColor : Colors.transparent,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(width: 0),
+                RotatedBox(
+                  quarterTurns: 0,
+                  child: LinearProgressBar(
+                    value: cowData.data.first.cowDataHour.first.heading.value,
+                    maxValue: Helper().getMaxValueFromCowData(cowDatas: cowDatas, action: ActionType.heading),
+                    size: Size(60, 16),
+                    progressColor: CustomColors.peachy_pink,
+                    backgroundColor: CustomColors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        DataTableCell(
+          id: &quot;sitting&quot;,
+          child: Container(
+            color: Helper().isCowDataHighlighted(cowData.data.first.cowDataHour.first.sitting) ? highlightedColor : Colors.transparent,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(width: 0),
+                RotatedBox(
+                  quarterTurns: 2,
+                  child: LinearProgressBar(
+                    value: cowData.data.first.cowDataHour.first.sitting.value,
+                    maxValue: Helper().getMaxValueFromCowData(cowDatas: cowDatas, action: ActionType.sitting),
+                    size: Size(60, 16),
+                    progressColor: CustomColors.lighter_purple,
+                    backgroundColor: CustomColors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        DataTableCell(
+          id: &quot;standing&quot;,
+          child: Container(
+            color: Helper().isCowDataHighlighted(cowData.data.first.cowDataHour.first.standing) ? highlightedColor : Colors.transparent,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(width: 0),
+                RotatedBox(
+                  quarterTurns: 0,
+                  child: LinearProgressBar(
+                    value: cowData.data.first.cowDataHour.first.standing.value,
+                    maxValue: Helper().getMaxValueFromCowData(cowDatas: cowDatas, action: ActionType.standing),
+                    size: Size(60, 16),
+                    progressColor: CustomColors.very_light_purple,
+                    backgroundColor: CustomColors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        DataTableCell(
+          id: &quot;cough&quot;,
+          child: Container(
+            color: Helper().isCowDataHighlighted(cowData.data.first.cowDataHour.first.cough) ? highlightedColor : Colors.transparent,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(width: 0),
+                RotatedBox(
+                  quarterTurns: 0,
+                  child: LinearProgressBar(
+                    value: cowData.data.first.cowDataHour.first.cough.value,
+                    maxValue: Helper().getMaxValueFromCowData(cowDatas: cowDatas, action: ActionType.cough),
+                    size: Size(60, 16),
+                    progressColor: CustomColors.sky,
+                    backgroundColor: CustomColors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        DataTableCell(
+          id: &quot;activity&quot;,
+          child: Container(
+            color: Helper().isCowDataHighlighted(cowData.data.first.cowDataHour.first.activity) ? highlightedColor : Colors.transparent,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(width: 0),
+                RotatedBox(
+                  quarterTurns: 0,
+                  child: LinearProgressBar(
+                    value: cowData.data.first.cowDataHour.first.activity.value,
+                    maxValue: Helper().getMaxValueFromCowData(cowDatas: cowDatas, action: ActionType.activity),
+                    size: Size(60, 16),
+                    progressColor: CustomColors.dodger_blue,
+                    backgroundColor: CustomColors.white,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        DataTableCell(id: &quot;digestive&quot;, text: cowData.data.first.cowDataHour.first.digestive.value.toInt() == -1 ? &quot;-&quot; : cowData.data.first.cowDataHour.first.digestive.value.toInt().toString()),
+        DataTableCell(
+            id: &quot;respiratory&quot;, text: cowData.data.first.cowDataHour.first.respiratory.value.toInt() == -1 ? &quot;-&quot; : cowData.data.first.cowDataHour.first.respiratory.value.toInt().toString()),
+        DataTableCell(id: &quot;bcs&quot;, text: BCSType.good.codeFromIndex(cowData.data.first.cowDataHour.first.bcs.value.toInt())),
+      ],
+      selected: cows!.firstWhereOrNull((element) =&gt; element.id == cow.id) != null ? cows!.firstWhereOrNull((element) =&gt; element.id == cow.id)!.isSelected : false,
+      onSelectChanged: (bool? selected) =&gt; onSelectChanged(selected, cows!.firstWhereOrNull((element) =&gt; element.id == cow.id)),
+    );
+
+    return dataTableRow;
+  }).toList();
+
+  cows!.where((cow) =&gt; cowDatas?.firstWhereOrNull((element) =&gt; element.cow == cow) != null).mapIndexed((Cow cow, i) {
+    CowData? cowData = cowDatas?.firstWhereOrNull((element) =&gt; element.cow == cow);
+    if (cowData == null) cowData = CowData.fromEmpty(cow);
+
+    if (cow.isSelected == true) {
+      dataTableRows!.insert(
+        i + 1,
+        DataTableRow(
+          id: &quot;expanded&quot;,
+          cells: [
+            DataTableCell(
+              id: &quot;expanded&quot;,
+              child: CowCurrentStatusDataTableExpandedRow(
+                columns: CustomDataTableType.cowCurrentStatus.columns,
+                cowData: cowData,
+                backgroundColor: CustomColors.emerald.withOpacity(0.05),
+                values: [
+                  0,
+                  0,
+                  cowData.data.first.cowDataHour.first.lactation.value,
+                  cowData.data.first.cowDataHour.first.eating.value,
+                  cowData.data.first.cowDataHour.first.ruminant.value,
+                  &#47;&#47; cowData.data.first.cowDataHour.first.drinking.value,
+                  cowData.data.first.cowDataHour.first.heading.value,
+                  cowData.data.first.cowDataHour.first.sitting.value,
+                  cowData.data.first.cowDataHour.first.standing.value,
+                  cowData.data.first.cowDataHour.first.cough.value,
+                  cowData.data.first.cowDataHour.first.activity.value,
+                  cowData.data.first.cowDataHour.first.digestive.value,
+                  cowData.data.first.cowDataHour.first.respiratory.value,
+                  cowData.data.first.cowDataHour.first.bcs.value,
+                ],
+              ),
+            ),
+            ...List.generate(CustomDataTableType.cowCurrentStatus.columns.length - 1, (index) =&gt; DataTableCell(id: &#39;&#39;, child: Container()))
+          ],
+        ),
+      );
+    }
+    return cow;
+  }).toList();
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">farmershands</a></li>
+  <li><a href="../../view_models_cow_current_status_screen_vm/view_models_cow_current_status_screen_vm-library.html">cow_current_status_screen_vm</a></li>
+  <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM-class.html">CowCurrentStatusScreenVM</a></li>
+  <li class="self-crumb">updateDataTableRows method</li>
+</ol>
+
+
+    <h5>CowCurrentStatusScreenVM class</h5>
+    <ol>
+
+    <li class="section-title"><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM-class.html#constructors">Constructors</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/CowCurrentStatusScreenVM.html">CowCurrentStatusScreenVM</a></li>
+
+
+    <li class="section-title">
+      <a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM-class.html#instance-properties">Properties</a>
+    </li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/cowDatas.html">cowDatas</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/cows.html">cows</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/cowStatusToday.html">cowStatusToday</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/cowStatusYesterday.html">cowStatusYesterday</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/dataTableColumns.html">dataTableColumns</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/dataTableRows.html">dataTableRows</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier/hasListeners.html">hasListeners</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/refreshController.html">refreshController</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/selectedDateTime.html">selectedDateTime</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/sortColumnIdx.html">sortColumnIdx</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/sortIsAscending.html">sortIsAscending</a></li>
+
+    <li class="section-title"><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM-class.html#instance-methods">Methods</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier/addListener.html">addListener</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/checkIfCowGroupChanged.html">checkIfCowGroupChanged</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier/dispose.html">dispose</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/fetchCowData.html">fetchCowData</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/fetchCowDataListener.html">fetchCowDataListener</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/fetchCowsCntByStatus.html">fetchCowsCntByStatus</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/init.html">init</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier/notifyListeners.html">notifyListeners</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/onLoading.html">onLoading</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/onPressCalendar.html">onPressCalendar</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/onPressNextDate.html">onPressNextDate</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/onPressPrevDate.html">onPressPrevDate</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/onRefresh.html">onRefresh</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/onSelectChanged.html">onSelectChanged</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier/removeListener.html">removeListener</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/requestRefresh.html">requestRefresh</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/updateDataTableColumns.html">updateDataTableColumns</a></li>
+    <li><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM/updateDataTableRows.html">updateDataTableRows</a></li>
+
+    <li class="section-title inherited"><a href="../../view_models_cow_current_status_screen_vm/CowCurrentStatusScreenVM-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    farmershands
+      1.4.0-dev6+78
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

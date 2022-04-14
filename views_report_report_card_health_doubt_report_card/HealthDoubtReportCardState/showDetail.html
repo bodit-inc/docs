@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the showDetail method from the HealthDoubtReportCardState class, for the Dart programming language.">
+  <title>showDetail method - HealthDoubtReportCardState class - health_doubt_report_card library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">farmershands</a></li>
+    <li><a href="../../views_report_report_card_health_doubt_report_card/views_report_report_card_health_doubt_report_card-library.html">health_doubt_report_card</a></li>
+    <li><a href="../../views_report_report_card_health_doubt_report_card/HealthDoubtReportCardState-class.html">HealthDoubtReportCardState</a></li>
+    <li class="self-crumb">showDetail method</li>
+  </ol>
+  <div class="self-name">showDetail</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-method">showDetail</span> method 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a></span>
+<span class="name ">showDetail</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="showDetail-param-isOpen"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isOpen</span></span></li>
+</ol>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>자세히보기와 접기 버튼을 눌러서 보여지는 위젯 스크린입니다.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">Widget showDetail(bool isOpen) {
+  if (isOpen) {
+    return Container(
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: HorizontalMenuView(
+              values: widget.reportCardViewVM.report.actions?.map((e) =&gt; e.name).toList() ?? [],
+              defaultValue: widget.reportCardViewVM.report.actions?.first.name ?? &quot;&quot;,
+              onSelected: (e) async {
+                widget.reportCardViewVM.selectedAction = ActionType.values.firstWhere((element) =&gt; element.name == e);
+                widget.reportCardViewVM.barDayItems = null;
+                LogManager().addLog(&quot;${widget.reportCardViewVM.selectedAction?.name} 선택&quot;, action: LogConstants.menuTap);
+                await widget.reportCardViewVM.fetchGraphData();
+                widget.reportCardViewVM.hideGraph = true;
+                await Future.delayed(Duration(milliseconds: 100));
+                widget.reportCardViewVM.hideGraph = false;
+                barGraphKey.currentState!.scrollController.jumpTo(barGraphKey.currentState!.scrollController.position.maxScrollExtent - 1);
+              },
+            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+              boxShadow: [
+                BoxShadow(color: CustomColors.black.withOpacity(0.16)),
+                BoxShadow(color: CustomColors.pale_grey, spreadRadius: -6.0, blurRadius: 6.0),
+              ],
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 16),
+            child: Column(
+              children: [
+                if (widget.reportCardViewVM.report.actions != null) ...[
+                  Container(height: 16),
+                  Container(
+                    child: BarGraph(
+                      key: barGraphKey,
+                      cow: widget.reportCardViewVM.report.cow,
+                      barDayItems: widget.reportCardViewVM.barDayItems,
+                      size: Size(270, 240),
+                      isLoading: widget.reportCardViewVM.isLoading,
+                      hideGraph: widget.reportCardViewVM.hideGraph,
+                      isBiDirectional:
+                          [ActionType.standing, ActionType.sitting, ActionType.sittingStanding, ActionType.irregularSittingStanding].contains(widget.reportCardViewVM.report.actions!.first),
+                      prevSelectedViewType: widget.reportCardViewVM.prevSelectedGraphViewType,
+                      selectedViewType: widget.reportCardViewVM.selectedGraphViewType,
+                      onSelectViewType: (String e) async {
+                        widget.reportCardViewVM.selectedGraphViewType = GraphViewType.values.firstWhere((element) =&gt; element.name == e);
+                        widget.reportCardViewVM.barDayItems = null;
+                        setState(() {});
+                        await widget.reportCardViewVM.fetchGraphData();
+                        await scrollToEnd();
+                      },
+                      onScrollReachEnd: () async {
+                        LogManager().addLog(&quot;스크롤이 끝에 다다름&quot;, screen: runtimeType.toString());
+                        widget.reportCardViewVM.isLoading = true;
+                        setState(() {});
+                        await widget.reportCardViewVM.loadMoreGraphData(action: &quot;end&quot;);
+
+                        &#47;&#47; 현재 스크롤 위치를 유지
+                        widget.reportCardViewVM.hideGraph = true;
+                        setState(() {});
+                        await Future.delayed(Duration(milliseconds: 100));
+                        barGraphKey.currentState!.scrollController.jumpTo(barGraphKey.currentState!.scrollController.offset + 1);
+                        widget.reportCardViewVM.hideGraph = false;
+
+                        widget.reportCardViewVM.isLoading = false;
+                        setState(() {});
+                      },
+                      onScrollReachStart: () async {
+                        LogManager().addLog(&quot;스크롤이 처음에 다다름&quot;, screen: runtimeType.toString());
+                        widget.reportCardViewVM.isLoading = true;
+                        setState(() {});
+                        await widget.reportCardViewVM.loadMoreGraphData(action: &quot;start&quot;);
+
+                        &#47;&#47; 현재 스크롤 위치를 유지
+                        widget.reportCardViewVM.hideGraph = true;
+                        setState(() {});
+                        await Future.delayed(Duration(milliseconds: 100));
+                        barGraphKey.currentState!.scrollController.jumpTo(barGraphKey.currentState!.scrollController.position.maxScrollExtent - scrollState.maxOffsetX);
+                        widget.reportCardViewVM.hideGraph = false;
+
+                        widget.reportCardViewVM.isLoading = false;
+                        setState(() {});
+                      },
+                      selectedAvgType: GraphAvgType.TOTAL,
+                      onSelectAvgType: () {},
+                    ),
+                  ),
+                  Container(height: 16),
+                ],
+                &#47;&#47; CustomOutlinedButton(
+                &#47;&#47;   text: &quot;자가진단 하기&quot;,
+                &#47;&#47;   padding: EdgeInsets.symmetric(vertical: 6, horizontal: 20),
+                &#47;&#47;   onTap: () {
+                &#47;&#47;     Navigator.of(context, rootNavigator: true).pushNamed(SelfDiagnosisScreen.routeName);
+                &#47;&#47;   },
+                &#47;&#47; ),
+                FeedbackButtonsView(report: widget.reportCardViewVM.report),
+                Container(height: 16),
+                ReportCardInputMemoView(reportCardViewVM: widget.reportCardViewVM),
+                Container(height: 16),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  } else {
+    return Container();
+  }
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">farmershands</a></li>
+  <li><a href="../../views_report_report_card_health_doubt_report_card/views_report_report_card_health_doubt_report_card-library.html">health_doubt_report_card</a></li>
+  <li><a href="../../views_report_report_card_health_doubt_report_card/HealthDoubtReportCardState-class.html">HealthDoubtReportCardState</a></li>
+  <li class="self-crumb">showDetail method</li>
+</ol>
+
+
+    <h5>HealthDoubtReportCardState class</h5>
+    <ol>
+
+    <li class="section-title"><a href="../../views_report_report_card_health_doubt_report_card/HealthDoubtReportCardState-class.html#constructors">Constructors</a></li>
+    <li><a href="../../views_report_report_card_health_doubt_report_card/HealthDoubtReportCardState/HealthDoubtReportCardState.html">HealthDoubtReportCardState</a></li>
+
+
+    <li class="section-title">
+      <a href="../../views_report_report_card_health_doubt_report_card/HealthDoubtReportCardState-class.html#instance-properties">Properties</a>
+    </li>
+    <li><a href="../../views_report_report_card_health_doubt_report_card/HealthDoubtReportCardState/barGraphKey.html">barGraphKey</a></li>
+    <li class="inherited"><a href="../../views_report_report_card_base_report_card/BaseReportCardState/colorBlack.html">colorBlack</a></li>
+    <li class="inherited"><a href="../../views_report_report_card_base_report_card/BaseReportCardState/colorBlue.html">colorBlue</a></li>
+    <li class="inherited"><a href="../../views_report_report_card_base_report_card/BaseReportCardState/colorGrey.html">colorGrey</a></li>
+    <li class="inherited"><a href="../../views_report_report_card_base_report_card/BaseReportCardState/colorOpacity.html">colorOpacity</a></li>
+    <li class="inherited"><a href="../../views_report_report_card_base_report_card/BaseReportCardState/colorRed.html">colorRed</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/context.html">context</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/mounted.html">mounted</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li><a href="../../views_report_report_card_health_doubt_report_card/HealthDoubtReportCardState/scrollState.html">scrollState</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/widget.html">widget</a></li>
+
+    <li class="section-title"><a href="../../views_report_report_card_health_doubt_report_card/HealthDoubtReportCardState-class.html#instance-methods">Methods</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/activate.html">activate</a></li>
+    <li><a href="../../views_report_report_card_health_doubt_report_card/HealthDoubtReportCardState/build.html">build</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/deactivate.html">deactivate</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/debugFillProperties.html">debugFillProperties</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/didChangeDependencies.html">didChangeDependencies</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/didUpdateWidget.html">didUpdateWidget</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/dispose.html">dispose</a></li>
+    <li><a href="../../views_report_report_card_health_doubt_report_card/HealthDoubtReportCardState/init.html">init</a></li>
+    <li><a href="../../views_report_report_card_health_doubt_report_card/HealthDoubtReportCardState/initState.html">initState</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li><a href="../../views_report_report_card_health_doubt_report_card/HealthDoubtReportCardState/onTapDetail.html">onTapDetail</a></li>
+    <li><a href="../../views_report_report_card_health_doubt_report_card/HealthDoubtReportCardState/onTapPinned.html">onTapPinned</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/reassemble.html">reassemble</a></li>
+    <li><a href="../../views_report_report_card_health_doubt_report_card/HealthDoubtReportCardState/scrollToEnd.html">scrollToEnd</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/State/setState.html">setState</a></li>
+    <li><a href="../../views_report_report_card_health_doubt_report_card/HealthDoubtReportCardState/showDetail.html">showDetail</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/Diagnosticable/toDiagnosticsNode.html">toDiagnosticsNode</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/Diagnosticable/toString.html">toString</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/Diagnosticable/toStringShort.html">toStringShort</a></li>
+
+    <li class="section-title inherited"><a href="../../views_report_report_card_health_doubt_report_card/HealthDoubtReportCardState-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    farmershands
+      1.4.0-dev6+78
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

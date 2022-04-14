@@ -1,0 +1,2235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="generator" content="made with love by dartdoc 5.0.1">
+  <meta name="description" content="farmershands API docs, for the Dart programming language.">
+  <title>farmershands - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href=""
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li class="self-crumb">farmershands package</li>
+  </ol>
+  <div class="self-name">farmershands</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="-">파머스핸즈 앱</h1>
+<p>송아지 질병관찰 앱</p>
+<h1 id="">목차</h1>
+<ul>
+<li><a href="#디렉토리-구조">디렉토리 구조</a></li>
+<li><a href="#모델-업데이트">모델 업데이트</a></li>
+<li><a href="#Git">Git</a></li>
+<li><a href="#개발-환경">개발 환경</a></li>
+<li><a href="#배포">배포</a></li>
+</ul>
+<h1 id="--2">디렉토리 구조</h1>
+<pre class="language-dart"><code>project
+│   pubspec.yaml
+│   package.json
+│   deploy.sh
+│   flutter_launcher_icons-envDev.yaml
+│   flutter_launcher_icons-envProd.yaml
+│   flutter_launcher_icons-envTest.yaml
+│
+└───amplify
+│   │   team-provider-info.json
+│   └───backend
+│       └───api
+│           └───FarmersHandsClientAPI
+│       └───auth
+│       └───function
+│           └───farmershandsuserappc02bf2d8
+│               │   tsconfig.json
+│               │
+│               └───src
+│               └───ts-src
+│                   └───routes
+│                       │   app.ts
+│                       │   index.ts
+│                       │   utils.ts
+│                       │   package.json
+│                       │
+│                       └───api
+│                           │   cow_data.ts
+│                           │   cow_group.ts
+│                           │   cows.ts
+│                           │   disease_observations.ts
+│                           │   engagement.ts
+│                           │   farms.ts
+│                           │   index.ts
+│                           │   reports.ts
+│                           │   user.ts
+│
+└───android
+│   │   build.gradle
+│   │   key.properties
+│   │   local.properties
+│   │   
+│   └───app
+│       │   build.gradle
+│       │   google-services.json
+│       │   key.jks
+│       │   
+│       └───src
+│           │   
+│           └───main
+│               │   AndroidManifest.xml
+│
+└───assets
+│   └───icons
+│   └───images
+│   └───vectors
+│
+└───google_fonts
+│
+│   
+└───ios
+│   │   Runner.xcodeproj
+│   │   Runner.xcworkspace
+│   │
+│   └───Flutter
+│   │
+│   └───Runner
+│   
+└───lib
+    │   app_entry.dart
+    │   main.dart
+    │   main_dev.dart
+    │   main_test.dart
+    │   notifications.dart
+    │
+    └───components
+    │
+    └───events
+    │
+    └───extensions
+    │
+    └───interfaces
+    │
+    └───models
+    │
+    └───screen_arguments
+    │
+    └───screens
+    │
+    └───services
+    │
+    └───stores
+    │
+    └───types
+    │
+    └───utils
+    │
+    └───views
+</code></pre>
+<h1 id="--3">개발 환경</h1>
+<pre class="language-shell"><code class="language-shell"># git 브랜치 변경
+$ git checkout &lt;develop | test | prod&gt;
+
+# amplify 환경 변경 
+$ amplify env checkout &lt;dev | test | prod&gt; 
+</code></pre>
+<h1 id="--4">모델 업데이트</h1>
+<p>모델을 수정하였을 경우 프로젝트 root 경로에서 아래 명령어를 실행하여 <code>&lt;model&gt;.g.dart</code> 파일을 생성 또는 업데이트 해줍니다.</p>
+<pre class="language-shell"><code class="language-shell">$ flutter pub run build_runner build --delete-conflicting-outputs
+</code></pre>
+<h1 id="git">Git</h1>
+<h1 id="-2">배포</h1>
+<p><code>deploy.sh</code> 파일을 실행시킵니다.</p>
+<pre class="language-shell"><code class="language-shell">$ &lt;PROJECT_ROOT&gt;/deploy.sh
+</code></pre>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="account_subscreen">
+  <span class="name"><a href="screens_main_tab_screens_settings_screen_subscreens_account_subscreen/screens_main_tab_screens_settings_screen_subscreens_account_subscreen-library.html">account_subscreen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="action_type">
+  <span class="name"><a href="types_action_type/types_action_type-library.html">action_type</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="add_cows_to_cow_group_popup">
+  <span class="name"><a href="components_popup_popups_add_cows_to_cow_group_popup/components_popup_popups_add_cows_to_cow_group_popup-library.html">add_cows_to_cow_group_popup</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="alert_popup">
+  <span class="name"><a href="components_popup_popups_alert_popup/components_popup_popups_alert_popup-library.html">alert_popup</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="amplifyconfiguration">
+  <span class="name"><a href="amplifyconfiguration/amplifyconfiguration-library.html">amplifyconfiguration</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="api_service">
+  <span class="name"><a href="services_api_service/services_api_service-library.html">api_service</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="app_config">
+  <span class="name"><a href="utils_app_config/utils_app_config-library.html">app_config</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="app_constants">
+  <span class="name"><a href="utils_app_constants/utils_app_constants-library.html">app_constants</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="app_entry">
+  <span class="name"><a href="app_entry/app_entry-library.html">app_entry</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="app_state">
+  <span class="name"><a href="stores_app_state/stores_app_state-library.html">app_state</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="bar_day_data">
+  <span class="name"><a href="models_bar_day_data/models_bar_day_data-library.html">bar_day_data</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="bar_graph">
+  <span class="name"><a href="components_graph_bar_graph/components_graph_bar_graph-library.html">bar_graph</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="bar_graph_painter">
+  <span class="name"><a href="components_graph_bar_graph_painter/components_graph_bar_graph_painter-library.html">bar_graph_painter</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="bar_graph_ylabel_painter">
+  <span class="name"><a href="components_graph_bar_graph_ylabel_painter/components_graph_bar_graph_ylabel_painter-library.html">bar_graph_ylabel_painter</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="bar_hour_data">
+  <span class="name"><a href="models_bar_hour_data/models_bar_hour_data-library.html">bar_hour_data</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="base_popup">
+  <span class="name"><a href="components_popup_popups_base_popup/components_popup_popups_base_popup-library.html">base_popup</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="base_report_card">
+  <span class="name"><a href="views_report_report_card_base_report_card/views_report_report_card_base_report_card-library.html">base_report_card</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="bcs_type">
+  <span class="name"><a href="types_bcs_type/types_bcs_type-library.html">bcs_type</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="bottom_sheet_group_menu_view">
+  <span class="name"><a href="components_bottom_sheet_group_menu_view/components_bottom_sheet_group_menu_view-library.html">bottom_sheet_group_menu_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="chat_list_subscreen">
+  <span class="name"><a href="screens_chat_screen_subscreens_chat_list_subscreen/screens_chat_screen_subscreens_chat_list_subscreen-library.html">chat_list_subscreen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="chat_list_subscreen_arguments">
+  <span class="name"><a href="screen_arguments_chat_list_subscreen_arguments/screen_arguments_chat_list_subscreen_arguments-library.html">chat_list_subscreen_arguments</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="chat_list_subscreen_vm">
+  <span class="name"><a href="view_models_chat_list_subscreen_vm/view_models_chat_list_subscreen_vm-library.html">chat_list_subscreen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="chat_message">
+  <span class="name"><a href="models_chat_message/models_chat_message-library.html">chat_message</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="chat_message_bubble_view_me">
+  <span class="name"><a href="views_chat_chat_message_bubble_view_me/views_chat_chat_message_bubble_view_me-library.html">chat_message_bubble_view_me</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="chat_message_bubble_view_you">
+  <span class="name"><a href="views_chat_chat_message_bubble_view_you/views_chat_chat_message_bubble_view_you-library.html">chat_message_bubble_view_you</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="chat_screen">
+  <span class="name"><a href="screens_chat_screen_chat_screen/screens_chat_screen_chat_screen-library.html">chat_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="chat_screen_vm">
+  <span class="name"><a href="view_models_chat_screen_vm/view_models_chat_screen_vm-library.html">chat_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="checkbox_form_view">
+  <span class="name"><a href="components_form_checkbox_form_view/components_form_checkbox_form_view-library.html">checkbox_form_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="circle_button">
+  <span class="name"><a href="components_circle_button/components_circle_button-library.html">circle_button</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="circle_image_view">
+  <span class="name"><a href="components_circle_image_view/components_circle_image_view-library.html">circle_image_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="common_app_bar">
+  <span class="name"><a href="components_common_app_bar/components_common_app_bar-library.html">common_app_bar</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="confirm_popup">
+  <span class="name"><a href="components_popup_popups_confirm_popup/components_popup_popups_confirm_popup-library.html">confirm_popup</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="constants">
+  <span class="name"><a href="components_graph_constants/components_graph_constants-library.html">constants</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="converting_methods">
+  <span class="name"><a href="models_converting_methods/models_converting_methods-library.html">converting_methods</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="copy_cows_to_other_group_popup">
+  <span class="name"><a href="components_popup_popups_copy_cows_to_other_group_popup/components_popup_popups_copy_cows_to_other_group_popup-library.html">copy_cows_to_other_group_popup</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow">
+  <span class="name"><a href="models_cow/models_cow-library.html">cow</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_current_status_data_table_expanded_row">
+  <span class="name"><a href="views_cow_current_status_cow_current_status_data_table_expanded_row/views_cow_current_status_cow_current_status_data_table_expanded_row-library.html">cow_current_status_data_table_expanded_row</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_current_status_data_table_expanded_row_painter">
+  <span class="name"><a href="views_cow_current_status_cow_current_status_data_table_expanded_row_painter/views_cow_current_status_cow_current_status_data_table_expanded_row_painter-library.html">cow_current_status_data_table_expanded_row_painter</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_current_status_screen">
+  <span class="name"><a href="screens_main_tab_screens_cow_current_status_screen/screens_main_tab_screens_cow_current_status_screen-library.html">cow_current_status_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_current_status_screen_vm">
+  <span class="name"><a href="view_models_cow_current_status_screen_vm/view_models_cow_current_status_screen_vm-library.html">cow_current_status_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_data">
+  <span class="name"><a href="models_cow_data/models_cow_data-library.html">cow_data</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_data_band_value">
+  <span class="name"><a href="models_cow_data_band_value/models_cow_data_band_value-library.html">cow_data_band_value</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_data_day">
+  <span class="name"><a href="models_cow_data_day/models_cow_data_day-library.html">cow_data_day</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_data_hour">
+  <span class="name"><a href="models_cow_data_hour/models_cow_data_hour-library.html">cow_data_hour</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_data_value">
+  <span class="name"><a href="models_cow_data_value/models_cow_data_value-library.html">cow_data_value</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_detail_screen">
+  <span class="name"><a href="screens_cow_detail_screen/screens_cow_detail_screen-library.html">cow_detail_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_detail_screen_arguments">
+  <span class="name"><a href="screen_arguments_cow_detail_screen_arguments/screen_arguments_cow_detail_screen_arguments-library.html">cow_detail_screen_arguments</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_detail_screen_vm">
+  <span class="name"><a href="view_models_cow_detail_screen_vm/view_models_cow_detail_screen_vm-library.html">cow_detail_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_group">
+  <span class="name"><a href="models_cow_group/models_cow_group-library.html">cow_group</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_group_management_subscreen">
+  <span class="name"><a href="screens_cow_settings_screen_subscreens_cow_group_management_subscreen/screens_cow_settings_screen_subscreens_cow_group_management_subscreen-library.html">cow_group_management_subscreen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_group_state">
+  <span class="name"><a href="stores_cow_group_state/stores_cow_group_state-library.html">cow_group_state</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_history_subscreen">
+  <span class="name"><a href="screens_report_screen_subscreens_cow_history_subscreen/screens_report_screen_subscreens_cow_history_subscreen-library.html">cow_history_subscreen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_management_subscreen">
+  <span class="name"><a href="screens_cow_settings_screen_subscreens_cow_management_subscreen/screens_cow_settings_screen_subscreens_cow_management_subscreen-library.html">cow_management_subscreen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_settings_screen">
+  <span class="name"><a href="screens_cow_settings_screen_cow_settings_screen/screens_cow_settings_screen_cow_settings_screen-library.html">cow_settings_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_settings_screen_vm">
+  <span class="name"><a href="view_models_cow_settings_screen_vm/view_models_cow_settings_screen_vm-library.html">cow_settings_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_state">
+  <span class="name"><a href="stores_cow_state/stores_cow_state-library.html">cow_state</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_status">
+  <span class="name"><a href="models_cow_status/models_cow_status-library.html">cow_status</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_status_distribution_column_view">
+  <span class="name"><a href="views_home_cow_status_distribution_column_view/views_home_cow_status_distribution_column_view-library.html">cow_status_distribution_column_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_status_distribution_view">
+  <span class="name"><a href="views_home_cow_status_distribution_view/views_home_cow_status_distribution_view-library.html">cow_status_distribution_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="cow_status_type">
+  <span class="name"><a href="types_cow_status_type/types_cow_status_type-library.html">cow_status_type</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="create_new_cow_group_popup">
+  <span class="name"><a href="components_popup_popups_create_new_cow_group_popup/components_popup_popups_create_new_cow_group_popup-library.html">create_new_cow_group_popup</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="create_new_cow_popup">
+  <span class="name"><a href="components_popup_popups_create_new_cow_popup/components_popup_popups_create_new_cow_popup-library.html">create_new_cow_popup</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="custom_colors">
+  <span class="name"><a href="utils_custom_colors/utils_custom_colors-library.html">custom_colors</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="custom_data_table">
+  <span class="name"><a href="components_custom_data_table_custom_data_table/components_custom_data_table_custom_data_table-library.html">custom_data_table</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="custom_data_table_type">
+  <span class="name"><a href="types_custom_data_table_type/types_custom_data_table_type-library.html">custom_data_table_type</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="custom_outlined_button">
+  <span class="name"><a href="components_custom_outlined_button/components_custom_outlined_button-library.html">custom_outlined_button</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="custom_refresher">
+  <span class="name"><a href="components_custom_refresher/components_custom_refresher-library.html">custom_refresher</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="custom_scrollbar">
+  <span class="name"><a href="components_custom_scrollbar/components_custom_scrollbar-library.html">custom_scrollbar</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="data_table_cell">
+  <span class="name"><a href="models_data_table_cell/models_data_table_cell-library.html">data_table_cell</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="data_table_column">
+  <span class="name"><a href="models_data_table_column/models_data_table_column-library.html">data_table_column</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="data_table_row">
+  <span class="name"><a href="models_data_table_row/models_data_table_row-library.html">data_table_row</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="datetime_picker_screen">
+  <span class="name"><a href="screens_datetime_picker_screen/screens_datetime_picker_screen-library.html">datetime_picker_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="datetime_picker_screen_arguments">
+  <span class="name"><a href="screen_arguments_datetime_picker_screen_arguments/screen_arguments_datetime_picker_screen_arguments-library.html">datetime_picker_screen_arguments</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="desc_dropdown_view">
+  <span class="name"><a href="components_popup_desc_dropdown_view/components_popup_desc_dropdown_view-library.html">desc_dropdown_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="desc_text_view">
+  <span class="name"><a href="components_popup_desc_text_view/components_popup_desc_text_view-library.html">desc_text_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="desc_textfield_view">
+  <span class="name"><a href="components_popup_desc_textfield_view/components_popup_desc_textfield_view-library.html">desc_textfield_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="device_management_subscreen">
+  <span class="name"><a href="screens_main_tab_screens_settings_screen_subscreens_device_management_subscreen/screens_main_tab_screens_settings_screen_subscreens_device_management_subscreen-library.html">device_management_subscreen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="disease_observation">
+  <span class="name"><a href="models_disease_observation/models_disease_observation-library.html">disease_observation</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="disease_observation_create_screen">
+  <span class="name"><a href="screens_main_tab_screens_disease_observation_screen_disease_observation_create_screen/screens_main_tab_screens_disease_observation_screen_disease_observation_create_screen-library.html">disease_observation_create_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="disease_observation_create_screen_arguments">
+  <span class="name"><a href="screen_arguments_disease_observation_create_screen_arguments/screen_arguments_disease_observation_create_screen_arguments-library.html">disease_observation_create_screen_arguments</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="disease_observation_create_screen_vm">
+  <span class="name"><a href="view_models_disease_observation_create_screen_vm/view_models_disease_observation_create_screen_vm-library.html">disease_observation_create_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="disease_observation_list_screen">
+  <span class="name"><a href="screens_main_tab_screens_disease_observation_screen_disease_observation_list_screen/screens_main_tab_screens_disease_observation_screen_disease_observation_list_screen-library.html">disease_observation_list_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="disease_observation_list_screen_vm">
+  <span class="name"><a href="view_models_disease_observation_list_screen_vm/view_models_disease_observation_list_screen_vm-library.html">disease_observation_list_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="doctor">
+  <span class="name"><a href="models_doctor/models_doctor-library.html">doctor</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="drop_down_menu">
+  <span class="name"><a href="components_drop_down_menu/components_drop_down_menu-library.html">drop_down_menu</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="dropdown_form_view">
+  <span class="name"><a href="components_form_dropdown_form_view/components_form_dropdown_form_view-library.html">dropdown_form_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="empty_screen">
+  <span class="name"><a href="screens_empty_screen/screens_empty_screen-library.html">empty_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="event">
+  <span class="name"><a href="models_event/models_event-library.html">event</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="event_handler">
+  <span class="name"><a href="components_event_handler/components_event_handler-library.html">event_handler</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="event_service">
+  <span class="name"><a href="services_event_service/services_event_service-library.html">event_service</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="farm">
+  <span class="name"><a href="models_farm/models_farm-library.html">farm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="farm_info_screen">
+  <span class="name"><a href="screens_farm_info_screen/screens_farm_info_screen-library.html">farm_info_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="farm_info_screen_vm">
+  <span class="name"><a href="view_models_farm_info_screen_vm/view_models_farm_info_screen_vm-library.html">farm_info_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="farm_input_code_screen">
+  <span class="name"><a href="screens_farm_input_code_screen/screens_farm_input_code_screen-library.html">farm_input_code_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="farm_input_code_screen_vm">
+  <span class="name"><a href="view_models_farm_input_code_screen_vm/view_models_farm_input_code_screen_vm-library.html">farm_input_code_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="farm_loading_screen">
+  <span class="name"><a href="screens_farm_loading_screen/screens_farm_loading_screen-library.html">farm_loading_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="farm_loading_screen_vm">
+  <span class="name"><a href="view_models_farm_loading_screen_vm/view_models_farm_loading_screen_vm-library.html">farm_loading_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="farm_management_subscreen">
+  <span class="name"><a href="screens_main_tab_screens_settings_screen_subscreens_farm_management_subscreen/screens_main_tab_screens_settings_screen_subscreens_farm_management_subscreen-library.html">farm_management_subscreen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="farm_select_screen">
+  <span class="name"><a href="screens_farm_select_screen/screens_farm_select_screen-library.html">farm_select_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="farm_select_screen_vm">
+  <span class="name"><a href="view_models_farm_select_screen_vm/view_models_farm_select_screen_vm-library.html">farm_select_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="farm_state">
+  <span class="name"><a href="stores_farm_state/stores_farm_state-library.html">farm_state</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="feedback_type">
+  <span class="name"><a href="types_feedback_type/types_feedback_type-library.html">feedback_type</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="find_password_screen">
+  <span class="name"><a href="screens_account_find_password_screen/screens_account_find_password_screen-library.html">find_password_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="find_password_screen_vm">
+  <span class="name"><a href="view_models_find_password_screen_vm/view_models_find_password_screen_vm-library.html">find_password_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="find_username_screen">
+  <span class="name"><a href="screens_account_find_username_screen/screens_account_find_username_screen-library.html">find_username_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="find_username_screen_vm">
+  <span class="name"><a href="view_models_find_username_screen_vm/view_models_find_username_screen_vm-library.html">find_username_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="gateway">
+  <span class="name"><a href="models_gateway/models_gateway-library.html">gateway</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="gateway_management_subscreen">
+  <span class="name"><a href="screens_main_tab_screens_settings_screen_subscreens_device_management_gateway_management_subscreen/screens_main_tab_screens_settings_screen_subscreens_device_management_gateway_management_subscreen-library.html">gateway_management_subscreen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="gateway_need_check_report_card">
+  <span class="name"><a href="views_report_report_card_gateway_need_check_report_card/views_report_report_card_gateway_need_check_report_card-library.html">gateway_need_check_report_card</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="gateway_popup">
+  <span class="name"><a href="components_popup_popups_gateway_popup/components_popup_popups_gateway_popup-library.html">gateway_popup</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="gateway_state">
+  <span class="name"><a href="stores_gateway_state/stores_gateway_state-library.html">gateway_state</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="generated_plugin_registrant">
+  <span class="name"><a href="generated_plugin_registrant/generated_plugin_registrant-library.html">generated_plugin_registrant</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="graph_avg_type">
+  <span class="name"><a href="components_graph_graph_avg_type/components_graph_graph_avg_type-library.html">graph_avg_type</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="graph_view_type">
+  <span class="name"><a href="components_graph_graph_view_type/components_graph_graph_view_type-library.html">graph_view_type</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="graph_ylabel_text">
+  <span class="name"><a href="components_graph_views_graph_ylabel_text/components_graph_views_graph_ylabel_text-library.html">graph_ylabel_text</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="grid_menu_view">
+  <span class="name"><a href="views_home_grid_menu_view/views_home_grid_menu_view-library.html">grid_menu_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="grid_sub_view">
+  <span class="name"><a href="views_home_grid_sub_view/views_home_grid_sub_view-library.html">grid_sub_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="group_list_view">
+  <span class="name"><a href="components_group_list_view/components_group_list_view-library.html">group_list_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="group_menu_view">
+  <span class="name"><a href="components_group_menu_view/components_group_menu_view-library.html">group_menu_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="header_text_view">
+  <span class="name"><a href="views_farm_loading_header_text_view/views_farm_loading_header_text_view-library.html">header_text_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="header_view">
+  <span class="name"><a href="views_cow_settings_header_view/views_cow_settings_header_view-library.html">header_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="header_view">
+  <span class="name"><a href="views_cow_current_status_header_view/views_cow_current_status_header_view-library.html">header_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="header_view">
+  <span class="name"><a href="views_cow_detail_header_view/views_cow_detail_header_view-library.html">header_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="health_doubt_report_card">
+  <span class="name"><a href="views_report_report_card_health_doubt_report_card/views_report_report_card_health_doubt_report_card-library.html">health_doubt_report_card</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="health_doubt_subscreen">
+  <span class="name"><a href="screens_report_screen_subscreens_health_doubt_subscreen/screens_report_screen_subscreens_health_doubt_subscreen-library.html">health_doubt_subscreen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="helper">
+  <span class="name"><a href="utils_helper/utils_helper-library.html">helper</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="helpful_buttons_view">
+  <span class="name"><a href="views_report_helpful_buttons_view/views_report_helpful_buttons_view-library.html">helpful_buttons_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="home_menu_type">
+  <span class="name"><a href="types_home_menu_type/types_home_menu_type-library.html">home_menu_type</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="home_screen">
+  <span class="name"><a href="screens_main_tab_screens_home_screen/screens_main_tab_screens_home_screen-library.html">home_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="home_screen_vm">
+  <span class="name"><a href="view_models_home_screen_vm/view_models_home_screen_vm-library.html">home_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="horizontal_menu_view">
+  <span class="name"><a href="components_horizontal_menu_view/components_horizontal_menu_view-library.html">horizontal_menu_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="ic_circle_grey_info">
+  <span class="name"><a href="components_popup_ic_circle_grey_info/components_popup_ic_circle_grey_info-library.html">ic_circle_grey_info</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="input_mode_type">
+  <span class="name"><a href="types_input_mode_type/types_input_mode_type-library.html">input_mode_type</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="iterable">
+  <span class="name"><a href="extensions_iterable/extensions_iterable-library.html">iterable</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="juso">
+  <span class="name"><a href="components_juso_model_juso/components_juso_model_juso-library.html">juso</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="juso_point">
+  <span class="name"><a href="components_juso_model_juso_point/components_juso_model_juso_point-library.html">juso_point</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="juso_returns">
+  <span class="name"><a href="components_juso_model_juso_returns/components_juso_model_juso_returns-library.html">juso_returns</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="juso_service">
+  <span class="name"><a href="components_juso_service_juso_service/components_juso_service_juso_service-library.html">juso_service</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="juso_vm">
+  <span class="name"><a href="components_juso_juso_vm/components_juso_juso_vm-library.html">juso_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="large_header_view">
+  <span class="name"><a href="components_large_header_view/components_large_header_view-library.html">large_header_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="linear_progress_bar">
+  <span class="name"><a href="components_progress_linear_progress_bar/components_progress_linear_progress_bar-library.html">linear_progress_bar</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="linear_progress_bar_painter">
+  <span class="name"><a href="components_progress_linear_progress_bar_painter/components_progress_linear_progress_bar_painter-library.html">linear_progress_bar_painter</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="loading_popup">
+  <span class="name"><a href="components_popup_popups_loading_popup/components_popup_popups_loading_popup-library.html">loading_popup</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="loading_view">
+  <span class="name"><a href="components_loading_view/components_loading_view-library.html">loading_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="log_constants">
+  <span class="name"><a href="utils_log_constants/utils_log_constants-library.html">log_constants</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="log_manager">
+  <span class="name"><a href="utils_log_manager/utils_log_manager-library.html">log_manager</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="main">
+  <span class="name"><a href="main/main-library.html">main</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="main_circle_view">
+  <span class="name"><a href="views_home_main_circle_view/views_home_main_circle_view-library.html">main_circle_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="main_dev">
+  <span class="name"><a href="main_dev/main_dev-library.html">main_dev</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="main_screen">
+  <span class="name"><a href="screens_main_screen/screens_main_screen-library.html">main_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="main_test">
+  <span class="name"><a href="main_test/main_test-library.html">main_test</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="menu_item_view">
+  <span class="name"><a href="views_settings_menu_item_view/views_settings_menu_item_view-library.html">menu_item_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="move_cows_to_other_cow_group_popup">
+  <span class="name"><a href="components_popup_popups_move_cows_to_other_cow_group_popup/components_popup_popups_move_cows_to_other_cow_group_popup-library.html">move_cows_to_other_cow_group_popup</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="navigator_history">
+  <span class="name"><a href="utils_navigator_history/utils_navigator_history-library.html">navigator_history</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="need_check_subscreen">
+  <span class="name"><a href="screens_report_screen_subscreens_need_check_subscreen/screens_report_screen_subscreens_need_check_subscreen-library.html">need_check_subscreen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="no_animation_tab_controller">
+  <span class="name"><a href="extensions_no_animation_tab_controller/extensions_no_animation_tab_controller-library.html">no_animation_tab_controller</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="no_glow_scroll_behavior">
+  <span class="name"><a href="utils_no_glow_scroll_behavior/utils_no_glow_scroll_behavior-library.html">no_glow_scroll_behavior</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="notification_management_subscreen">
+  <span class="name"><a href="screens_main_tab_screens_settings_screen_subscreens_notification_management_subscreen/screens_main_tab_screens_settings_screen_subscreens_notification_management_subscreen-library.html">notification_management_subscreen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="notification_service">
+  <span class="name"><a href="services_notification_service/services_notification_service-library.html">notification_service</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="numeric_constants">
+  <span class="name"><a href="utils_numeric_constants/utils_numeric_constants-library.html">numeric_constants</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="odd_action_report_card">
+  <span class="name"><a href="views_report_report_card_odd_action_report_card/views_report_report_card_odd_action_report_card-library.html">odd_action_report_card</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="odd_action_subscreen">
+  <span class="name"><a href="screens_report_screen_subscreens_odd_action_subscreen/screens_report_screen_subscreens_odd_action_subscreen-library.html">odd_action_subscreen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="phone_auth_resend_screen">
+  <span class="name"><a href="screens_account_phone_auth_resend_screen/screens_account_phone_auth_resend_screen-library.html">phone_auth_resend_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="phone_auth_resend_screen_vm">
+  <span class="name"><a href="view_models_phone_auth_resend_screen_vm/view_models_phone_auth_resend_screen_vm-library.html">phone_auth_resend_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="phone_auth_screen">
+  <span class="name"><a href="screens_account_phone_auth_screen/screens_account_phone_auth_screen-library.html">phone_auth_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="phone_auth_screen_arguments">
+  <span class="name"><a href="screen_arguments_phone_auth_screen_arguments/screen_arguments_phone_auth_screen_arguments-library.html">phone_auth_screen_arguments</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="phone_auth_screen_vm">
+  <span class="name"><a href="view_models_phone_auth_screen_vm/view_models_phone_auth_screen_vm-library.html">phone_auth_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="phone_number_formatter">
+  <span class="name"><a href="components_form_phone_number_formatter/components_form_phone_number_formatter-library.html">phone_number_formatter</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="photo_view_screen">
+  <span class="name"><a href="screens_photo_view_screen/screens_photo_view_screen-library.html">photo_view_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="photo_view_screen_arguments">
+  <span class="name"><a href="screen_arguments_photo_view_screen_arguments/screen_arguments_photo_view_screen_arguments-library.html">photo_view_screen_arguments</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="popup_action">
+  <span class="name"><a href="types_popup_action/types_popup_action-library.html">popup_action</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="popup_action_button_view">
+  <span class="name"><a href="components_popup_popup_action_button_view/components_popup_popup_action_button_view-library.html">popup_action_button_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="popup_events">
+  <span class="name"><a href="events_popup_events/events_popup_events-library.html">popup_events</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="popup_impl">
+  <span class="name"><a href="interfaces_popup_impl/interfaces_popup_impl-library.html">popup_impl</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="popup_screen">
+  <span class="name"><a href="screens_popup_screen/screens_popup_screen-library.html">popup_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="popup_screen_arguments">
+  <span class="name"><a href="screen_arguments_popup_screen_arguments/screen_arguments_popup_screen_arguments-library.html">popup_screen_arguments</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="popup_subname_view">
+  <span class="name"><a href="components_popup_popup_subname_view/components_popup_popup_subname_view-library.html">popup_subname_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="popup_title_view">
+  <span class="name"><a href="components_popup_popup_title_view/components_popup_popup_title_view-library.html">popup_title_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="popup_type">
+  <span class="name"><a href="types_popup_type/types_popup_type-library.html">popup_type</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="preference">
+  <span class="name"><a href="models_preference/models_preference-library.html">preference</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="prefs_constants">
+  <span class="name"><a href="utils_prefs_constants/utils_prefs_constants-library.html">prefs_constants</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="remove_cow_group_popup">
+  <span class="name"><a href="components_popup_popups_remove_cow_group_popup/components_popup_popups_remove_cow_group_popup-library.html">remove_cow_group_popup</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="remove_cow_groups_popup">
+  <span class="name"><a href="components_popup_popups_remove_cow_groups_popup/components_popup_popups_remove_cow_groups_popup-library.html">remove_cow_groups_popup</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="remove_cow_popup">
+  <span class="name"><a href="components_popup_popups_remove_cow_popup/components_popup_popups_remove_cow_popup-library.html">remove_cow_popup</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="remove_cows_from_cow_group_popup">
+  <span class="name"><a href="components_popup_popups_remove_cows_from_cow_group_popup/components_popup_popups_remove_cows_from_cow_group_popup-library.html">remove_cows_from_cow_group_popup</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="report">
+  <span class="name"><a href="models_report/models_report-library.html">report</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="report_card_count_item_view">
+  <span class="name"><a href="components_report_card_count_item_view/components_report_card_count_item_view-library.html">report_card_count_item_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="report_card_count_view">
+  <span class="name"><a href="components_report_card_count_view/components_report_card_count_view-library.html">report_card_count_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="report_card_desc_text_view">
+  <span class="name"><a href="views_report_report_card_desc_text_view/views_report_report_card_desc_text_view-library.html">report_card_desc_text_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="report_card_input_memo_view">
+  <span class="name"><a href="views_report_report_card_input_memo_view/views_report_report_card_input_memo_view-library.html">report_card_input_memo_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="report_card_list_title_view">
+  <span class="name"><a href="views_report_report_card_list_title_view/views_report_report_card_list_title_view-library.html">report_card_list_title_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="report_card_list_view">
+  <span class="name"><a href="views_report_report_card_list_view/views_report_report_card_list_view-library.html">report_card_list_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="report_card_title_text_view">
+  <span class="name"><a href="views_report_report_card_title_text_view/views_report_report_card_title_text_view-library.html">report_card_title_text_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="report_card_view_vm">
+  <span class="name"><a href="view_models_report_card_view_vm/view_models_report_card_view_vm-library.html">report_card_view_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="report_events">
+  <span class="name"><a href="events_report_events/events_report_events-library.html">report_events</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="report_group">
+  <span class="name"><a href="types_report_group/types_report_group-library.html">report_group</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="report_header_view">
+  <span class="name"><a href="views_report_report_header_view/views_report_report_header_view-library.html">report_header_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="report_screen">
+  <span class="name"><a href="screens_report_screen_report_screen/screens_report_screen_report_screen-library.html">report_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="report_screen_arguments">
+  <span class="name"><a href="screen_arguments_report_screen_arguments/screen_arguments_report_screen_arguments-library.html">report_screen_arguments</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="report_screen_vm">
+  <span class="name"><a href="view_models_report_screen_vm/view_models_report_screen_vm-library.html">report_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="report_state">
+  <span class="name"><a href="stores_report_state/stores_report_state-library.html">report_state</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="report_title">
+  <span class="name"><a href="models_report_title/models_report_title-library.html">report_title</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="report_type">
+  <span class="name"><a href="types_report_type/types_report_type-library.html">report_type</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="rest_body">
+  <span class="name"><a href="models_rest_body/models_rest_body-library.html">rest_body</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="root_report_card_view">
+  <span class="name"><a href="views_report_root_report_card_view/views_report_root_report_card_view-library.html">root_report_card_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="round_container_view">
+  <span class="name"><a href="components_round_container_view/components_round_container_view-library.html">round_container_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="screen_impl">
+  <span class="name"><a href="interfaces_screen_impl/interfaces_screen_impl-library.html">screen_impl</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="scroll_state">
+  <span class="name"><a href="stores_scroll_state/stores_scroll_state-library.html">scroll_state</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="search_cow_action">
+  <span class="name"><a href="types_search_cow_action/types_search_cow_action-library.html">search_cow_action</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="search_cow_events">
+  <span class="name"><a href="events_search_cow_events/events_search_cow_events-library.html">search_cow_events</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="search_cow_result">
+  <span class="name"><a href="models_search_cow_result/models_search_cow_result-library.html">search_cow_result</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="search_cow_screen">
+  <span class="name"><a href="screens_search_cow_screen/screens_search_cow_screen-library.html">search_cow_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="search_cow_screen_vm">
+  <span class="name"><a href="view_models_search_cow_screen_vm/view_models_search_cow_screen_vm-library.html">search_cow_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="search_juso">
+  <span class="name"><a href="components_juso_search_juso/components_juso_search_juso-library.html">search_juso</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="search_result_list_item_view">
+  <span class="name"><a href="components_search_cow_search_result_list_item_view/components_search_cow_search_result_list_item_view-library.html">search_result_list_item_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="search_result_list_view">
+  <span class="name"><a href="components_search_cow_search_result_list_view/components_search_cow_search_result_list_view-library.html">search_result_list_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="search_textfield_view">
+  <span class="name"><a href="components_search_cow_search_textfield_view/components_search_cow_search_textfield_view-library.html">search_textfield_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="select_date_view">
+  <span class="name"><a href="components_select_date_view/components_select_date_view-library.html">select_date_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="self_diagnosis">
+  <span class="name"><a href="models_self_diagnosis/models_self_diagnosis-library.html">self_diagnosis</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="self_diagnosis_screen">
+  <span class="name"><a href="screens_self_diagnosis_screen/screens_self_diagnosis_screen-library.html">self_diagnosis_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="sensor">
+  <span class="name"><a href="models_sensor/models_sensor-library.html">sensor</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="sensor_management_subscreen">
+  <span class="name"><a href="screens_main_tab_screens_settings_screen_subscreens_device_management_sensor_management_subscreen/screens_main_tab_screens_settings_screen_subscreens_device_management_sensor_management_subscreen-library.html">sensor_management_subscreen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="sensor_popup">
+  <span class="name"><a href="components_popup_popups_sensor_popup/components_popup_popups_sensor_popup-library.html">sensor_popup</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="sensor_removal_report_card">
+  <span class="name"><a href="views_report_report_card_sensor_removal_report_card/views_report_report_card_sensor_removal_report_card-library.html">sensor_removal_report_card</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="sensor_state">
+  <span class="name"><a href="stores_sensor_state/stores_sensor_state-library.html">sensor_state</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="settings_screen">
+  <span class="name"><a href="screens_main_tab_screens_settings_screen_settings_screen/screens_main_tab_screens_settings_screen_settings_screen-library.html">settings_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="settings_screen_vm">
+  <span class="name"><a href="view_models_settings_screen_vm/view_models_settings_screen_vm-library.html">settings_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="settings_subscreen">
+  <span class="name"><a href="screens_main_tab_screens_settings_screen_subscreens_settings_subscreen/screens_main_tab_screens_settings_screen_subscreens_settings_subscreen-library.html">settings_subscreen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="signin_screen">
+  <span class="name"><a href="screens_account_signin_screen/screens_account_signin_screen-library.html">signin_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="signin_screen_vm">
+  <span class="name"><a href="view_models_signin_screen_vm/view_models_signin_screen_vm-library.html">signin_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="signup_screen">
+  <span class="name"><a href="screens_account_signup_screen/screens_account_signup_screen-library.html">signup_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="signup_screen_vm">
+  <span class="name"><a href="view_models_signup_screen_vm/view_models_signup_screen_vm-library.html">signup_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="software_management_subscreen">
+  <span class="name"><a href="screens_main_tab_screens_settings_screen_subscreens_software_management_subscreen/screens_main_tab_screens_settings_screen_subscreens_software_management_subscreen-library.html">software_management_subscreen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="splash_screen">
+  <span class="name"><a href="screens_splash_screen/screens_splash_screen-library.html">splash_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="stack_data">
+  <span class="name"><a href="utils_stack_data/utils_stack_data-library.html">stack_data</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="stat_item_view">
+  <span class="name"><a href="views_cow_detail_stat_item_view/views_cow_detail_stat_item_view-library.html">stat_item_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="stateful_widget_template">
+  <span class="name"><a href="components_stateful_widget_template/components_stateful_widget_template-library.html">stateful_widget_template</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="stateless_widget_template">
+  <span class="name"><a href="components_stateless_widget_template/components_stateless_widget_template-library.html">stateless_widget_template</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="string_constants">
+  <span class="name"><a href="utils_string_constants/utils_string_constants-library.html">string_constants</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="text_form_view">
+  <span class="name"><a href="components_form_text_form_view/components_form_text_form_view-library.html">text_form_view</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="update_cow_popup">
+  <span class="name"><a href="components_popup_popups_update_cow_popup/components_popup_popups_update_cow_popup-library.html">update_cow_popup</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="user">
+  <span class="name"><a href="models_user/models_user-library.html">user</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="user_info_screen_vm">
+  <span class="name"><a href="view_models_user_info_screen_vm/view_models_user_info_screen_vm-library.html">user_info_screen_vm</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="user_info_subscreen">
+  <span class="name"><a href="screens_main_tab_screens_settings_screen_subscreens_account_user_info_subscreen/screens_main_tab_screens_settings_screen_subscreens_account_user_info_subscreen-library.html">user_info_subscreen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="user_list_subscreen">
+  <span class="name"><a href="screens_chat_screen_subscreens_user_list_subscreen/screens_chat_screen_subscreens_user_list_subscreen-library.html">user_list_subscreen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="user_state">
+  <span class="name"><a href="stores_user_state/stores_user_state-library.html">user_state</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="validators">
+  <span class="name"><a href="utils_validators/utils_validators-library.html">validators</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="weather_service">
+  <span class="name"><a href="services_weather_service/services_weather_service-library.html">weather_service</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="webview_screen">
+  <span class="name"><a href="screens_webview_screen/screens_webview_screen-library.html">webview_screen</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="webview_screen_arguments">
+  <span class="name"><a href="screen_arguments_webview_screen_arguments/screen_arguments_webview_screen_arguments-library.html">webview_screen_arguments</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+          <dt id="worker">
+  <span class="name"><a href="models_worker/models_worker-library.html">worker</a></span> 
+
+</dt>
+<dd> 
+</dd>
+
+        </dl>
+      </section>
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li class="self-crumb">farmershands package</li>
+</ol>
+
+
+    <h5 class="hidden-xs"><span class="package-name">farmershands</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+      <li><a href="screens_main_tab_screens_settings_screen_subscreens_account_subscreen/screens_main_tab_screens_settings_screen_subscreens_account_subscreen-library.html">account_subscreen</a></li>
+      <li><a href="types_action_type/types_action_type-library.html">action_type</a></li>
+      <li><a href="components_popup_popups_add_cows_to_cow_group_popup/components_popup_popups_add_cows_to_cow_group_popup-library.html">add_cows_to_cow_group_popup</a></li>
+      <li><a href="components_popup_popups_alert_popup/components_popup_popups_alert_popup-library.html">alert_popup</a></li>
+      <li><a href="amplifyconfiguration/amplifyconfiguration-library.html">amplifyconfiguration</a></li>
+      <li><a href="services_api_service/services_api_service-library.html">api_service</a></li>
+      <li><a href="utils_app_config/utils_app_config-library.html">app_config</a></li>
+      <li><a href="utils_app_constants/utils_app_constants-library.html">app_constants</a></li>
+      <li><a href="app_entry/app_entry-library.html">app_entry</a></li>
+      <li><a href="stores_app_state/stores_app_state-library.html">app_state</a></li>
+      <li><a href="models_bar_day_data/models_bar_day_data-library.html">bar_day_data</a></li>
+      <li><a href="components_graph_bar_graph/components_graph_bar_graph-library.html">bar_graph</a></li>
+      <li><a href="components_graph_bar_graph_painter/components_graph_bar_graph_painter-library.html">bar_graph_painter</a></li>
+      <li><a href="components_graph_bar_graph_ylabel_painter/components_graph_bar_graph_ylabel_painter-library.html">bar_graph_ylabel_painter</a></li>
+      <li><a href="models_bar_hour_data/models_bar_hour_data-library.html">bar_hour_data</a></li>
+      <li><a href="components_popup_popups_base_popup/components_popup_popups_base_popup-library.html">base_popup</a></li>
+      <li><a href="views_report_report_card_base_report_card/views_report_report_card_base_report_card-library.html">base_report_card</a></li>
+      <li><a href="types_bcs_type/types_bcs_type-library.html">bcs_type</a></li>
+      <li><a href="components_bottom_sheet_group_menu_view/components_bottom_sheet_group_menu_view-library.html">bottom_sheet_group_menu_view</a></li>
+      <li><a href="screens_chat_screen_subscreens_chat_list_subscreen/screens_chat_screen_subscreens_chat_list_subscreen-library.html">chat_list_subscreen</a></li>
+      <li><a href="screen_arguments_chat_list_subscreen_arguments/screen_arguments_chat_list_subscreen_arguments-library.html">chat_list_subscreen_arguments</a></li>
+      <li><a href="view_models_chat_list_subscreen_vm/view_models_chat_list_subscreen_vm-library.html">chat_list_subscreen_vm</a></li>
+      <li><a href="models_chat_message/models_chat_message-library.html">chat_message</a></li>
+      <li><a href="views_chat_chat_message_bubble_view_me/views_chat_chat_message_bubble_view_me-library.html">chat_message_bubble_view_me</a></li>
+      <li><a href="views_chat_chat_message_bubble_view_you/views_chat_chat_message_bubble_view_you-library.html">chat_message_bubble_view_you</a></li>
+      <li><a href="screens_chat_screen_chat_screen/screens_chat_screen_chat_screen-library.html">chat_screen</a></li>
+      <li><a href="view_models_chat_screen_vm/view_models_chat_screen_vm-library.html">chat_screen_vm</a></li>
+      <li><a href="components_form_checkbox_form_view/components_form_checkbox_form_view-library.html">checkbox_form_view</a></li>
+      <li><a href="components_circle_button/components_circle_button-library.html">circle_button</a></li>
+      <li><a href="components_circle_image_view/components_circle_image_view-library.html">circle_image_view</a></li>
+      <li><a href="components_common_app_bar/components_common_app_bar-library.html">common_app_bar</a></li>
+      <li><a href="components_popup_popups_confirm_popup/components_popup_popups_confirm_popup-library.html">confirm_popup</a></li>
+      <li><a href="components_graph_constants/components_graph_constants-library.html">constants</a></li>
+      <li><a href="models_converting_methods/models_converting_methods-library.html">converting_methods</a></li>
+      <li><a href="components_popup_popups_copy_cows_to_other_group_popup/components_popup_popups_copy_cows_to_other_group_popup-library.html">copy_cows_to_other_group_popup</a></li>
+      <li><a href="models_cow/models_cow-library.html">cow</a></li>
+      <li><a href="views_cow_current_status_cow_current_status_data_table_expanded_row/views_cow_current_status_cow_current_status_data_table_expanded_row-library.html">cow_current_status_data_table_expanded_row</a></li>
+      <li><a href="views_cow_current_status_cow_current_status_data_table_expanded_row_painter/views_cow_current_status_cow_current_status_data_table_expanded_row_painter-library.html">cow_current_status_data_table_expanded_row_painter</a></li>
+      <li><a href="screens_main_tab_screens_cow_current_status_screen/screens_main_tab_screens_cow_current_status_screen-library.html">cow_current_status_screen</a></li>
+      <li><a href="view_models_cow_current_status_screen_vm/view_models_cow_current_status_screen_vm-library.html">cow_current_status_screen_vm</a></li>
+      <li><a href="models_cow_data/models_cow_data-library.html">cow_data</a></li>
+      <li><a href="models_cow_data_band_value/models_cow_data_band_value-library.html">cow_data_band_value</a></li>
+      <li><a href="models_cow_data_day/models_cow_data_day-library.html">cow_data_day</a></li>
+      <li><a href="models_cow_data_hour/models_cow_data_hour-library.html">cow_data_hour</a></li>
+      <li><a href="models_cow_data_value/models_cow_data_value-library.html">cow_data_value</a></li>
+      <li><a href="screens_cow_detail_screen/screens_cow_detail_screen-library.html">cow_detail_screen</a></li>
+      <li><a href="screen_arguments_cow_detail_screen_arguments/screen_arguments_cow_detail_screen_arguments-library.html">cow_detail_screen_arguments</a></li>
+      <li><a href="view_models_cow_detail_screen_vm/view_models_cow_detail_screen_vm-library.html">cow_detail_screen_vm</a></li>
+      <li><a href="models_cow_group/models_cow_group-library.html">cow_group</a></li>
+      <li><a href="screens_cow_settings_screen_subscreens_cow_group_management_subscreen/screens_cow_settings_screen_subscreens_cow_group_management_subscreen-library.html">cow_group_management_subscreen</a></li>
+      <li><a href="stores_cow_group_state/stores_cow_group_state-library.html">cow_group_state</a></li>
+      <li><a href="screens_report_screen_subscreens_cow_history_subscreen/screens_report_screen_subscreens_cow_history_subscreen-library.html">cow_history_subscreen</a></li>
+      <li><a href="screens_cow_settings_screen_subscreens_cow_management_subscreen/screens_cow_settings_screen_subscreens_cow_management_subscreen-library.html">cow_management_subscreen</a></li>
+      <li><a href="screens_cow_settings_screen_cow_settings_screen/screens_cow_settings_screen_cow_settings_screen-library.html">cow_settings_screen</a></li>
+      <li><a href="view_models_cow_settings_screen_vm/view_models_cow_settings_screen_vm-library.html">cow_settings_screen_vm</a></li>
+      <li><a href="stores_cow_state/stores_cow_state-library.html">cow_state</a></li>
+      <li><a href="models_cow_status/models_cow_status-library.html">cow_status</a></li>
+      <li><a href="views_home_cow_status_distribution_column_view/views_home_cow_status_distribution_column_view-library.html">cow_status_distribution_column_view</a></li>
+      <li><a href="views_home_cow_status_distribution_view/views_home_cow_status_distribution_view-library.html">cow_status_distribution_view</a></li>
+      <li><a href="types_cow_status_type/types_cow_status_type-library.html">cow_status_type</a></li>
+      <li><a href="components_popup_popups_create_new_cow_group_popup/components_popup_popups_create_new_cow_group_popup-library.html">create_new_cow_group_popup</a></li>
+      <li><a href="components_popup_popups_create_new_cow_popup/components_popup_popups_create_new_cow_popup-library.html">create_new_cow_popup</a></li>
+      <li><a href="utils_custom_colors/utils_custom_colors-library.html">custom_colors</a></li>
+      <li><a href="components_custom_data_table_custom_data_table/components_custom_data_table_custom_data_table-library.html">custom_data_table</a></li>
+      <li><a href="types_custom_data_table_type/types_custom_data_table_type-library.html">custom_data_table_type</a></li>
+      <li><a href="components_custom_outlined_button/components_custom_outlined_button-library.html">custom_outlined_button</a></li>
+      <li><a href="components_custom_refresher/components_custom_refresher-library.html">custom_refresher</a></li>
+      <li><a href="components_custom_scrollbar/components_custom_scrollbar-library.html">custom_scrollbar</a></li>
+      <li><a href="models_data_table_cell/models_data_table_cell-library.html">data_table_cell</a></li>
+      <li><a href="models_data_table_column/models_data_table_column-library.html">data_table_column</a></li>
+      <li><a href="models_data_table_row/models_data_table_row-library.html">data_table_row</a></li>
+      <li><a href="screens_datetime_picker_screen/screens_datetime_picker_screen-library.html">datetime_picker_screen</a></li>
+      <li><a href="screen_arguments_datetime_picker_screen_arguments/screen_arguments_datetime_picker_screen_arguments-library.html">datetime_picker_screen_arguments</a></li>
+      <li><a href="components_popup_desc_dropdown_view/components_popup_desc_dropdown_view-library.html">desc_dropdown_view</a></li>
+      <li><a href="components_popup_desc_text_view/components_popup_desc_text_view-library.html">desc_text_view</a></li>
+      <li><a href="components_popup_desc_textfield_view/components_popup_desc_textfield_view-library.html">desc_textfield_view</a></li>
+      <li><a href="screens_main_tab_screens_settings_screen_subscreens_device_management_subscreen/screens_main_tab_screens_settings_screen_subscreens_device_management_subscreen-library.html">device_management_subscreen</a></li>
+      <li><a href="models_disease_observation/models_disease_observation-library.html">disease_observation</a></li>
+      <li><a href="screens_main_tab_screens_disease_observation_screen_disease_observation_create_screen/screens_main_tab_screens_disease_observation_screen_disease_observation_create_screen-library.html">disease_observation_create_screen</a></li>
+      <li><a href="screen_arguments_disease_observation_create_screen_arguments/screen_arguments_disease_observation_create_screen_arguments-library.html">disease_observation_create_screen_arguments</a></li>
+      <li><a href="view_models_disease_observation_create_screen_vm/view_models_disease_observation_create_screen_vm-library.html">disease_observation_create_screen_vm</a></li>
+      <li><a href="screens_main_tab_screens_disease_observation_screen_disease_observation_list_screen/screens_main_tab_screens_disease_observation_screen_disease_observation_list_screen-library.html">disease_observation_list_screen</a></li>
+      <li><a href="view_models_disease_observation_list_screen_vm/view_models_disease_observation_list_screen_vm-library.html">disease_observation_list_screen_vm</a></li>
+      <li><a href="models_doctor/models_doctor-library.html">doctor</a></li>
+      <li><a href="components_drop_down_menu/components_drop_down_menu-library.html">drop_down_menu</a></li>
+      <li><a href="components_form_dropdown_form_view/components_form_dropdown_form_view-library.html">dropdown_form_view</a></li>
+      <li><a href="screens_empty_screen/screens_empty_screen-library.html">empty_screen</a></li>
+      <li><a href="models_event/models_event-library.html">event</a></li>
+      <li><a href="components_event_handler/components_event_handler-library.html">event_handler</a></li>
+      <li><a href="services_event_service/services_event_service-library.html">event_service</a></li>
+      <li><a href="models_farm/models_farm-library.html">farm</a></li>
+      <li><a href="screens_farm_info_screen/screens_farm_info_screen-library.html">farm_info_screen</a></li>
+      <li><a href="view_models_farm_info_screen_vm/view_models_farm_info_screen_vm-library.html">farm_info_screen_vm</a></li>
+      <li><a href="screens_farm_input_code_screen/screens_farm_input_code_screen-library.html">farm_input_code_screen</a></li>
+      <li><a href="view_models_farm_input_code_screen_vm/view_models_farm_input_code_screen_vm-library.html">farm_input_code_screen_vm</a></li>
+      <li><a href="screens_farm_loading_screen/screens_farm_loading_screen-library.html">farm_loading_screen</a></li>
+      <li><a href="view_models_farm_loading_screen_vm/view_models_farm_loading_screen_vm-library.html">farm_loading_screen_vm</a></li>
+      <li><a href="screens_main_tab_screens_settings_screen_subscreens_farm_management_subscreen/screens_main_tab_screens_settings_screen_subscreens_farm_management_subscreen-library.html">farm_management_subscreen</a></li>
+      <li><a href="screens_farm_select_screen/screens_farm_select_screen-library.html">farm_select_screen</a></li>
+      <li><a href="view_models_farm_select_screen_vm/view_models_farm_select_screen_vm-library.html">farm_select_screen_vm</a></li>
+      <li><a href="stores_farm_state/stores_farm_state-library.html">farm_state</a></li>
+      <li><a href="types_feedback_type/types_feedback_type-library.html">feedback_type</a></li>
+      <li><a href="screens_account_find_password_screen/screens_account_find_password_screen-library.html">find_password_screen</a></li>
+      <li><a href="view_models_find_password_screen_vm/view_models_find_password_screen_vm-library.html">find_password_screen_vm</a></li>
+      <li><a href="screens_account_find_username_screen/screens_account_find_username_screen-library.html">find_username_screen</a></li>
+      <li><a href="view_models_find_username_screen_vm/view_models_find_username_screen_vm-library.html">find_username_screen_vm</a></li>
+      <li><a href="models_gateway/models_gateway-library.html">gateway</a></li>
+      <li><a href="screens_main_tab_screens_settings_screen_subscreens_device_management_gateway_management_subscreen/screens_main_tab_screens_settings_screen_subscreens_device_management_gateway_management_subscreen-library.html">gateway_management_subscreen</a></li>
+      <li><a href="views_report_report_card_gateway_need_check_report_card/views_report_report_card_gateway_need_check_report_card-library.html">gateway_need_check_report_card</a></li>
+      <li><a href="components_popup_popups_gateway_popup/components_popup_popups_gateway_popup-library.html">gateway_popup</a></li>
+      <li><a href="stores_gateway_state/stores_gateway_state-library.html">gateway_state</a></li>
+      <li><a href="generated_plugin_registrant/generated_plugin_registrant-library.html">generated_plugin_registrant</a></li>
+      <li><a href="components_graph_graph_avg_type/components_graph_graph_avg_type-library.html">graph_avg_type</a></li>
+      <li><a href="components_graph_graph_view_type/components_graph_graph_view_type-library.html">graph_view_type</a></li>
+      <li><a href="components_graph_views_graph_ylabel_text/components_graph_views_graph_ylabel_text-library.html">graph_ylabel_text</a></li>
+      <li><a href="views_home_grid_menu_view/views_home_grid_menu_view-library.html">grid_menu_view</a></li>
+      <li><a href="views_home_grid_sub_view/views_home_grid_sub_view-library.html">grid_sub_view</a></li>
+      <li><a href="components_group_list_view/components_group_list_view-library.html">group_list_view</a></li>
+      <li><a href="components_group_menu_view/components_group_menu_view-library.html">group_menu_view</a></li>
+      <li><a href="views_farm_loading_header_text_view/views_farm_loading_header_text_view-library.html">header_text_view</a></li>
+      <li><a href="views_cow_settings_header_view/views_cow_settings_header_view-library.html">header_view</a></li>
+      <li><a href="views_cow_current_status_header_view/views_cow_current_status_header_view-library.html">header_view</a></li>
+      <li><a href="views_cow_detail_header_view/views_cow_detail_header_view-library.html">header_view</a></li>
+      <li><a href="views_report_report_card_health_doubt_report_card/views_report_report_card_health_doubt_report_card-library.html">health_doubt_report_card</a></li>
+      <li><a href="screens_report_screen_subscreens_health_doubt_subscreen/screens_report_screen_subscreens_health_doubt_subscreen-library.html">health_doubt_subscreen</a></li>
+      <li><a href="utils_helper/utils_helper-library.html">helper</a></li>
+      <li><a href="views_report_helpful_buttons_view/views_report_helpful_buttons_view-library.html">helpful_buttons_view</a></li>
+      <li><a href="types_home_menu_type/types_home_menu_type-library.html">home_menu_type</a></li>
+      <li><a href="screens_main_tab_screens_home_screen/screens_main_tab_screens_home_screen-library.html">home_screen</a></li>
+      <li><a href="view_models_home_screen_vm/view_models_home_screen_vm-library.html">home_screen_vm</a></li>
+      <li><a href="components_horizontal_menu_view/components_horizontal_menu_view-library.html">horizontal_menu_view</a></li>
+      <li><a href="components_popup_ic_circle_grey_info/components_popup_ic_circle_grey_info-library.html">ic_circle_grey_info</a></li>
+      <li><a href="types_input_mode_type/types_input_mode_type-library.html">input_mode_type</a></li>
+      <li><a href="extensions_iterable/extensions_iterable-library.html">iterable</a></li>
+      <li><a href="components_juso_model_juso/components_juso_model_juso-library.html">juso</a></li>
+      <li><a href="components_juso_model_juso_point/components_juso_model_juso_point-library.html">juso_point</a></li>
+      <li><a href="components_juso_model_juso_returns/components_juso_model_juso_returns-library.html">juso_returns</a></li>
+      <li><a href="components_juso_service_juso_service/components_juso_service_juso_service-library.html">juso_service</a></li>
+      <li><a href="components_juso_juso_vm/components_juso_juso_vm-library.html">juso_vm</a></li>
+      <li><a href="components_large_header_view/components_large_header_view-library.html">large_header_view</a></li>
+      <li><a href="components_progress_linear_progress_bar/components_progress_linear_progress_bar-library.html">linear_progress_bar</a></li>
+      <li><a href="components_progress_linear_progress_bar_painter/components_progress_linear_progress_bar_painter-library.html">linear_progress_bar_painter</a></li>
+      <li><a href="components_popup_popups_loading_popup/components_popup_popups_loading_popup-library.html">loading_popup</a></li>
+      <li><a href="components_loading_view/components_loading_view-library.html">loading_view</a></li>
+      <li><a href="utils_log_constants/utils_log_constants-library.html">log_constants</a></li>
+      <li><a href="utils_log_manager/utils_log_manager-library.html">log_manager</a></li>
+      <li><a href="main/main-library.html">main</a></li>
+      <li><a href="views_home_main_circle_view/views_home_main_circle_view-library.html">main_circle_view</a></li>
+      <li><a href="main_dev/main_dev-library.html">main_dev</a></li>
+      <li><a href="screens_main_screen/screens_main_screen-library.html">main_screen</a></li>
+      <li><a href="main_test/main_test-library.html">main_test</a></li>
+      <li><a href="views_settings_menu_item_view/views_settings_menu_item_view-library.html">menu_item_view</a></li>
+      <li><a href="components_popup_popups_move_cows_to_other_cow_group_popup/components_popup_popups_move_cows_to_other_cow_group_popup-library.html">move_cows_to_other_cow_group_popup</a></li>
+      <li><a href="utils_navigator_history/utils_navigator_history-library.html">navigator_history</a></li>
+      <li><a href="screens_report_screen_subscreens_need_check_subscreen/screens_report_screen_subscreens_need_check_subscreen-library.html">need_check_subscreen</a></li>
+      <li><a href="extensions_no_animation_tab_controller/extensions_no_animation_tab_controller-library.html">no_animation_tab_controller</a></li>
+      <li><a href="utils_no_glow_scroll_behavior/utils_no_glow_scroll_behavior-library.html">no_glow_scroll_behavior</a></li>
+      <li><a href="screens_main_tab_screens_settings_screen_subscreens_notification_management_subscreen/screens_main_tab_screens_settings_screen_subscreens_notification_management_subscreen-library.html">notification_management_subscreen</a></li>
+      <li><a href="services_notification_service/services_notification_service-library.html">notification_service</a></li>
+      <li><a href="utils_numeric_constants/utils_numeric_constants-library.html">numeric_constants</a></li>
+      <li><a href="views_report_report_card_odd_action_report_card/views_report_report_card_odd_action_report_card-library.html">odd_action_report_card</a></li>
+      <li><a href="screens_report_screen_subscreens_odd_action_subscreen/screens_report_screen_subscreens_odd_action_subscreen-library.html">odd_action_subscreen</a></li>
+      <li><a href="screens_account_phone_auth_resend_screen/screens_account_phone_auth_resend_screen-library.html">phone_auth_resend_screen</a></li>
+      <li><a href="view_models_phone_auth_resend_screen_vm/view_models_phone_auth_resend_screen_vm-library.html">phone_auth_resend_screen_vm</a></li>
+      <li><a href="screens_account_phone_auth_screen/screens_account_phone_auth_screen-library.html">phone_auth_screen</a></li>
+      <li><a href="screen_arguments_phone_auth_screen_arguments/screen_arguments_phone_auth_screen_arguments-library.html">phone_auth_screen_arguments</a></li>
+      <li><a href="view_models_phone_auth_screen_vm/view_models_phone_auth_screen_vm-library.html">phone_auth_screen_vm</a></li>
+      <li><a href="components_form_phone_number_formatter/components_form_phone_number_formatter-library.html">phone_number_formatter</a></li>
+      <li><a href="screens_photo_view_screen/screens_photo_view_screen-library.html">photo_view_screen</a></li>
+      <li><a href="screen_arguments_photo_view_screen_arguments/screen_arguments_photo_view_screen_arguments-library.html">photo_view_screen_arguments</a></li>
+      <li><a href="types_popup_action/types_popup_action-library.html">popup_action</a></li>
+      <li><a href="components_popup_popup_action_button_view/components_popup_popup_action_button_view-library.html">popup_action_button_view</a></li>
+      <li><a href="events_popup_events/events_popup_events-library.html">popup_events</a></li>
+      <li><a href="interfaces_popup_impl/interfaces_popup_impl-library.html">popup_impl</a></li>
+      <li><a href="screens_popup_screen/screens_popup_screen-library.html">popup_screen</a></li>
+      <li><a href="screen_arguments_popup_screen_arguments/screen_arguments_popup_screen_arguments-library.html">popup_screen_arguments</a></li>
+      <li><a href="components_popup_popup_subname_view/components_popup_popup_subname_view-library.html">popup_subname_view</a></li>
+      <li><a href="components_popup_popup_title_view/components_popup_popup_title_view-library.html">popup_title_view</a></li>
+      <li><a href="types_popup_type/types_popup_type-library.html">popup_type</a></li>
+      <li><a href="models_preference/models_preference-library.html">preference</a></li>
+      <li><a href="utils_prefs_constants/utils_prefs_constants-library.html">prefs_constants</a></li>
+      <li><a href="components_popup_popups_remove_cow_group_popup/components_popup_popups_remove_cow_group_popup-library.html">remove_cow_group_popup</a></li>
+      <li><a href="components_popup_popups_remove_cow_groups_popup/components_popup_popups_remove_cow_groups_popup-library.html">remove_cow_groups_popup</a></li>
+      <li><a href="components_popup_popups_remove_cow_popup/components_popup_popups_remove_cow_popup-library.html">remove_cow_popup</a></li>
+      <li><a href="components_popup_popups_remove_cows_from_cow_group_popup/components_popup_popups_remove_cows_from_cow_group_popup-library.html">remove_cows_from_cow_group_popup</a></li>
+      <li><a href="models_report/models_report-library.html">report</a></li>
+      <li><a href="components_report_card_count_item_view/components_report_card_count_item_view-library.html">report_card_count_item_view</a></li>
+      <li><a href="components_report_card_count_view/components_report_card_count_view-library.html">report_card_count_view</a></li>
+      <li><a href="views_report_report_card_desc_text_view/views_report_report_card_desc_text_view-library.html">report_card_desc_text_view</a></li>
+      <li><a href="views_report_report_card_input_memo_view/views_report_report_card_input_memo_view-library.html">report_card_input_memo_view</a></li>
+      <li><a href="views_report_report_card_list_title_view/views_report_report_card_list_title_view-library.html">report_card_list_title_view</a></li>
+      <li><a href="views_report_report_card_list_view/views_report_report_card_list_view-library.html">report_card_list_view</a></li>
+      <li><a href="views_report_report_card_title_text_view/views_report_report_card_title_text_view-library.html">report_card_title_text_view</a></li>
+      <li><a href="view_models_report_card_view_vm/view_models_report_card_view_vm-library.html">report_card_view_vm</a></li>
+      <li><a href="events_report_events/events_report_events-library.html">report_events</a></li>
+      <li><a href="types_report_group/types_report_group-library.html">report_group</a></li>
+      <li><a href="views_report_report_header_view/views_report_report_header_view-library.html">report_header_view</a></li>
+      <li><a href="screens_report_screen_report_screen/screens_report_screen_report_screen-library.html">report_screen</a></li>
+      <li><a href="screen_arguments_report_screen_arguments/screen_arguments_report_screen_arguments-library.html">report_screen_arguments</a></li>
+      <li><a href="view_models_report_screen_vm/view_models_report_screen_vm-library.html">report_screen_vm</a></li>
+      <li><a href="stores_report_state/stores_report_state-library.html">report_state</a></li>
+      <li><a href="models_report_title/models_report_title-library.html">report_title</a></li>
+      <li><a href="types_report_type/types_report_type-library.html">report_type</a></li>
+      <li><a href="models_rest_body/models_rest_body-library.html">rest_body</a></li>
+      <li><a href="views_report_root_report_card_view/views_report_root_report_card_view-library.html">root_report_card_view</a></li>
+      <li><a href="components_round_container_view/components_round_container_view-library.html">round_container_view</a></li>
+      <li><a href="interfaces_screen_impl/interfaces_screen_impl-library.html">screen_impl</a></li>
+      <li><a href="stores_scroll_state/stores_scroll_state-library.html">scroll_state</a></li>
+      <li><a href="types_search_cow_action/types_search_cow_action-library.html">search_cow_action</a></li>
+      <li><a href="events_search_cow_events/events_search_cow_events-library.html">search_cow_events</a></li>
+      <li><a href="models_search_cow_result/models_search_cow_result-library.html">search_cow_result</a></li>
+      <li><a href="screens_search_cow_screen/screens_search_cow_screen-library.html">search_cow_screen</a></li>
+      <li><a href="view_models_search_cow_screen_vm/view_models_search_cow_screen_vm-library.html">search_cow_screen_vm</a></li>
+      <li><a href="components_juso_search_juso/components_juso_search_juso-library.html">search_juso</a></li>
+      <li><a href="components_search_cow_search_result_list_item_view/components_search_cow_search_result_list_item_view-library.html">search_result_list_item_view</a></li>
+      <li><a href="components_search_cow_search_result_list_view/components_search_cow_search_result_list_view-library.html">search_result_list_view</a></li>
+      <li><a href="components_search_cow_search_textfield_view/components_search_cow_search_textfield_view-library.html">search_textfield_view</a></li>
+      <li><a href="components_select_date_view/components_select_date_view-library.html">select_date_view</a></li>
+      <li><a href="models_self_diagnosis/models_self_diagnosis-library.html">self_diagnosis</a></li>
+      <li><a href="screens_self_diagnosis_screen/screens_self_diagnosis_screen-library.html">self_diagnosis_screen</a></li>
+      <li><a href="models_sensor/models_sensor-library.html">sensor</a></li>
+      <li><a href="screens_main_tab_screens_settings_screen_subscreens_device_management_sensor_management_subscreen/screens_main_tab_screens_settings_screen_subscreens_device_management_sensor_management_subscreen-library.html">sensor_management_subscreen</a></li>
+      <li><a href="components_popup_popups_sensor_popup/components_popup_popups_sensor_popup-library.html">sensor_popup</a></li>
+      <li><a href="views_report_report_card_sensor_removal_report_card/views_report_report_card_sensor_removal_report_card-library.html">sensor_removal_report_card</a></li>
+      <li><a href="stores_sensor_state/stores_sensor_state-library.html">sensor_state</a></li>
+      <li><a href="screens_main_tab_screens_settings_screen_settings_screen/screens_main_tab_screens_settings_screen_settings_screen-library.html">settings_screen</a></li>
+      <li><a href="view_models_settings_screen_vm/view_models_settings_screen_vm-library.html">settings_screen_vm</a></li>
+      <li><a href="screens_main_tab_screens_settings_screen_subscreens_settings_subscreen/screens_main_tab_screens_settings_screen_subscreens_settings_subscreen-library.html">settings_subscreen</a></li>
+      <li><a href="screens_account_signin_screen/screens_account_signin_screen-library.html">signin_screen</a></li>
+      <li><a href="view_models_signin_screen_vm/view_models_signin_screen_vm-library.html">signin_screen_vm</a></li>
+      <li><a href="screens_account_signup_screen/screens_account_signup_screen-library.html">signup_screen</a></li>
+      <li><a href="view_models_signup_screen_vm/view_models_signup_screen_vm-library.html">signup_screen_vm</a></li>
+      <li><a href="screens_main_tab_screens_settings_screen_subscreens_software_management_subscreen/screens_main_tab_screens_settings_screen_subscreens_software_management_subscreen-library.html">software_management_subscreen</a></li>
+      <li><a href="screens_splash_screen/screens_splash_screen-library.html">splash_screen</a></li>
+      <li><a href="utils_stack_data/utils_stack_data-library.html">stack_data</a></li>
+      <li><a href="views_cow_detail_stat_item_view/views_cow_detail_stat_item_view-library.html">stat_item_view</a></li>
+      <li><a href="components_stateful_widget_template/components_stateful_widget_template-library.html">stateful_widget_template</a></li>
+      <li><a href="components_stateless_widget_template/components_stateless_widget_template-library.html">stateless_widget_template</a></li>
+      <li><a href="utils_string_constants/utils_string_constants-library.html">string_constants</a></li>
+      <li><a href="components_form_text_form_view/components_form_text_form_view-library.html">text_form_view</a></li>
+      <li><a href="components_popup_popups_update_cow_popup/components_popup_popups_update_cow_popup-library.html">update_cow_popup</a></li>
+      <li><a href="models_user/models_user-library.html">user</a></li>
+      <li><a href="view_models_user_info_screen_vm/view_models_user_info_screen_vm-library.html">user_info_screen_vm</a></li>
+      <li><a href="screens_main_tab_screens_settings_screen_subscreens_account_user_info_subscreen/screens_main_tab_screens_settings_screen_subscreens_account_user_info_subscreen-library.html">user_info_subscreen</a></li>
+      <li><a href="screens_chat_screen_subscreens_user_list_subscreen/screens_chat_screen_subscreens_user_list_subscreen-library.html">user_list_subscreen</a></li>
+      <li><a href="stores_user_state/stores_user_state-library.html">user_state</a></li>
+      <li><a href="utils_validators/utils_validators-library.html">validators</a></li>
+      <li><a href="services_weather_service/services_weather_service-library.html">weather_service</a></li>
+      <li><a href="screens_webview_screen/screens_webview_screen-library.html">webview_screen</a></li>
+      <li><a href="screen_arguments_webview_screen_arguments/screen_arguments_webview_screen_arguments-library.html">webview_screen_arguments</a></li>
+      <li><a href="models_worker/models_worker-library.html">worker</a></li>
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+
+</main>
+
+<footer>
+  <span class="no-break">
+    farmershands
+      1.4.0-dev6+78
+  </span>
+
+  
+</footer>
+
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

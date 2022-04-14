@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the fetchTodayYesterdayData method from the CowDetailScreenVM class, for the Dart programming language.">
+  <title>fetchTodayYesterdayData method - CowDetailScreenVM class - cow_detail_screen_vm library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">farmershands</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/view_models_cow_detail_screen_vm-library.html">cow_detail_screen_vm</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM-class.html">CowDetailScreenVM</a></li>
+    <li class="self-crumb">fetchTodayYesterdayData method</li>
+  </ol>
+  <div class="self-name">fetchTodayYesterdayData</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-method">fetchTodayYesterdayData</span> method 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype">void</span>
+<span class="name ">fetchTodayYesterdayData</span>(<wbr>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>어제 대비 오늘 날짜 데이</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">void fetchTodayYesterdayData() {
+  _fetchTodayYesterdayDataSub?.cancel();
+  if (_isLoading == false) {
+    _isLoading = true;
+    if (forceRender != null) forceRender!();
+  }
+
+  _fetchTodayYesterdayDataSub = _fetchTodayYesterdayData().asStream().listen(
+    (void _) async {
+      _isLoading = false;
+      if (forceRender != null) forceRender!();
+    },
+    cancelOnError: true,
+  );
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">farmershands</a></li>
+  <li><a href="../../view_models_cow_detail_screen_vm/view_models_cow_detail_screen_vm-library.html">cow_detail_screen_vm</a></li>
+  <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM-class.html">CowDetailScreenVM</a></li>
+  <li class="self-crumb">fetchTodayYesterdayData method</li>
+</ol>
+
+
+    <h5>CowDetailScreenVM class</h5>
+    <ol>
+
+    <li class="section-title"><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM-class.html#constructors">Constructors</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/CowDetailScreenVM.html">CowDetailScreenVM</a></li>
+
+
+    <li class="section-title">
+      <a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM-class.html#instance-properties">Properties</a>
+    </li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/barDayItems.html">barDayItems</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/birth.html">birth</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/cow.html">cow</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/cowData.html">cowData</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/currentEndAt.html">currentEndAt</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/currentStartAt.html">currentStartAt</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/forceRender.html">forceRender</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/gender.html">gender</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/group.html">group</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/hideGraph.html">hideGraph</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/isLoading.html">isLoading</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/memo.html">memo</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/prevSelectedGraphViewType.html">prevSelectedGraphViewType</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/selectedAction.html">selectedAction</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/selectedDateTime.html">selectedDateTime</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/selectedGraphAvgType.html">selectedGraphAvgType</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/selectedGraphViewType.html">selectedGraphViewType</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/title.html">title</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/todayCowData.html">todayCowData</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/todayValues.html">todayValues</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/weight.html">weight</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/yesterdayCowData.html">yesterdayCowData</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/yesterdayValues.html">yesterdayValues</a></li>
+
+    <li class="section-title"><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM-class.html#instance-methods">Methods</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/fetchAll.html">fetchAll</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/fetchGraphData.html">fetchGraphData</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/fetchTodayYesterdayData.html">fetchTodayYesterdayData</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/init.html">init</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/loadMoreGraphData.html">loadMoreGraphData</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/onPressCalendar.html">onPressCalendar</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/onPressNextDate.html">onPressNextDate</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/onPressPrevDate.html">onPressPrevDate</a></li>
+    <li><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM/release.html">release</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
+
+    <li class="section-title inherited"><a href="../../view_models_cow_detail_screen_vm/CowDetailScreenVM-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    farmershands
+      1.4.0-dev6+78
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

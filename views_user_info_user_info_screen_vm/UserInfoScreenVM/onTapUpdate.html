@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the onTapUpdate method from the UserInfoScreenVM class, for the Dart programming language.">
+  <title>onTapUpdate method - UserInfoScreenVM class - user_info_screen_vm library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">farmershands</a></li>
+    <li><a href="../../views_user_info_user_info_screen_vm/views_user_info_user_info_screen_vm-library.html">user_info_screen_vm</a></li>
+    <li><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM-class.html">UserInfoScreenVM</a></li>
+    <li class="self-crumb">onTapUpdate method</li>
+  </ol>
+  <div class="self-name">onTapUpdate</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-method">onTapUpdate</span> method 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype">void</span>
+<span class="name ">onTapUpdate</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="onTapUpdate-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span></span></li>
+</ol>)
+
+      
+
+    </section>
+    
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">void onTapUpdate(BuildContext context) async {
+  String username = usernameController.text.trim();
+  String email = emailController.text.trim();
+  String name = nameController.text.trim();
+  String phoneNumber = phoneNumberController.text.trim();
+  String birth = birthController.text.trim();
+  String oldPassword = oldPasswordController.text.trim();
+  String newPassword = newPasswordController.text.trim();
+  String newPasswordConfirm = newPasswordConfirmController.text.trim();
+
+  String errTitle = &quot;&quot;;
+  String errContent = &quot;&quot;;
+
+  &#47;&#47; if (phoneNumber.isEmpty) {
+  &#47;&#47;   errTitle = &quot;올바른 핸드폰 번호&quot;;
+  &#47;&#47;   errContent = &quot;올바른 핸드폰 번호를 입력하세요. 계정 인증에 꼭 필요합니다.&quot;;
+  &#47;&#47; }
+
+  &#47;&#47; if (Validators.phoneNumberValidator(phoneNumber)) {
+  &#47;&#47;   phoneNumber = &quot;+82&quot; + phoneNumber.substring(1);
+  &#47;&#47;   phoneNumber = phoneNumber.replaceAll(&quot;-&quot;, &quot;&quot;);
+  &#47;&#47; } else {
+  &#47;&#47;   errTitle = &quot;올바른 핸드폰 번호&quot;;
+  &#47;&#47;   errContent = &quot;올바른 핸드폰 번호를 입력하세요.&quot;;
+  &#47;&#47; }
+
+  if (oldPassword.isNotEmpty) {
+    if (newPassword.isEmpty) {
+      errTitle = &quot;오류&quot;;
+      errContent = &quot;새로운 비밀번호를 입력하세요.&quot;;
+    }
+    if (newPassword.length &lt; 8) {
+      errTitle = &quot;오류&quot;;
+      errContent = &quot;새로운 비밀번호는 최소 8자 이상이어야 합니다.&quot;;
+    }
+    if (newPasswordConfirm.isEmpty) {
+      errTitle = &quot;오류&quot;;
+      errContent = &quot;새로운 비밀번호를 입력하세요.&quot;;
+    }
+    if (newPasswordConfirm.length &lt; 8) {
+      errTitle = &quot;오류&quot;;
+      errContent = &quot;새로운 비밀번호 확인은 최소 8자 이상이어야 합니다.&quot;;
+    }
+    if (newPassword != newPasswordConfirm) {
+      errTitle = &quot;오류&quot;;
+      errContent = &quot;새로운 비밀번호와 새로운 비밀번호 확인이 일치하지 않습니다.&quot;;
+    }
+  }
+
+  if (errTitle.isNotEmpty) {
+    EventService().eventBus.fire(
+          PopupEvent(
+            type: PopupType.alert,
+            action: PopupAction.show,
+            data: {&quot;title&quot;: errTitle, &quot;content&quot;: errContent},
+            onClose: () {
+              Navigator.of(context, rootNavigator: true).popUntil((route) =&gt; !route.settings.name!.startsWith(PopupScreen.routeName));
+            },
+          ),
+        );
+    return;
+  }
+
+  Map&lt;String, dynamic&gt; info = {
+    &quot;name&quot;: name,
+    &quot;phone&quot;: phoneNumber,
+    &quot;birth&quot;: birth,
+    &quot;isAgreeTerm&quot;: isAgreeTerm,
+    &quot;isAgreePrivateInfo&quot;: isAgreePrivateInfo,
+    &quot;isAgreeMaketingInfo&quot;: isAgreeMarketingInfo,
+  };
+
+  List&lt;AuthUserAttribute&gt; authUserAttributes = await Amplify.Auth.fetchUserAttributes();
+  if (authUserAttributes.indexWhere((element) =&gt; element.userAttributeKey == &#39;email&#39;) == -1) authUserAttributes.add(AuthUserAttribute(userAttributeKey: &quot;email&quot;, value: &#39;&#39;));
+  if (authUserAttributes.indexWhere((element) =&gt; element.userAttributeKey == &#39;name&#39;) == -1) authUserAttributes.add(AuthUserAttribute(userAttributeKey: &quot;name&quot;, value: &#39;&#39;));
+  if (authUserAttributes.indexWhere((element) =&gt; element.userAttributeKey == &#39;phone_number&#39;) == -1) authUserAttributes.add(AuthUserAttribute(userAttributeKey: &quot;phone_number&quot;, value: &#39;&#39;));
+  if (authUserAttributes.indexWhere((element) =&gt; element.userAttributeKey == &#39;birthdate&#39;) == -1) authUserAttributes.add(AuthUserAttribute(userAttributeKey: &quot;birthdate&quot;, value: &#39;&#39;));
+
+  List&lt;AuthUserAttribute&gt; updateUserAttributes = [];
+  for (AuthUserAttribute e in authUserAttributes) {
+    switch (e.userAttributeKey) {
+      case &quot;name&quot;:
+        if (name.isNotEmpty) e.value = name;
+        updateUserAttributes.add(e);
+        break;
+      case &quot;email&quot;:
+        if (email.isNotEmpty) e.value = email;
+        updateUserAttributes.add(e);
+        break;
+      &#47;&#47; case &quot;phone_number&quot;:
+      &#47;&#47;   if (phoneNumber.isNotEmpty) e.value = phoneNumber;
+      &#47;&#47;   updateUserAttributes.add(e);
+      &#47;&#47;   break;
+      case &quot;birthdate&quot;:
+        if (birth.isNotEmpty) e.value = DateFormat(StringConstants.timeYMDDashFormat).format(DateTime.parse(birth));
+        updateUserAttributes.add(e);
+        break;
+    }
+  }
+
+  try {
+    &#47;&#47; print(authUserAttributes.length);
+    &#47;&#47; print(authUserAttributes.map((e) =&gt; print(&quot;${e.userAttributeKey} ${e.value}&quot;)));
+    print(updateUserAttributes.length);
+    print(updateUserAttributes.map((e) =&gt; print(&quot;${e.userAttributeKey} ${e.value}&quot;)));
+    await Amplify.Auth.updateUserAttributes(attributes: updateUserAttributes);
+    if (oldPassword.isNotEmpty) await Amplify.Auth.updatePassword(oldPassword: oldPassword, newPassword: newPassword);
+
+    if (email.isNotEmpty) currentUser.email = email;
+    if (name.isNotEmpty) currentUser.name = name;
+    if (phoneNumber.isNotEmpty) currentUser.phoneNumber = phoneNumber;
+    if (birth.isNotEmpty) currentUser.birth = DateTime.parse(birth);
+
+    oldPasswordController.text = &quot;&quot;;
+    newPasswordController.text = &quot;&quot;;
+    newPasswordConfirmController.text = &quot;&quot;;
+    EventService().eventBus.fire(PopupEvent(type: PopupType.alert, action: PopupAction.show, data: {&quot;title&quot;: &quot;회원정보 수정&quot;, &quot;content&quot;: &quot;회원정보 수정에 성공하였습니다.&quot;}));
+  } on AmplifyException catch (e) {
+    LogManager().addLog(e.toString());
+    EventService().eventBus.fire(PopupEvent(type: PopupType.alert, action: PopupAction.show, data: {&quot;title&quot;: &quot;회원정보 수정&quot;, &quot;content&quot;: &quot;회원정보 수정에 실패하였습니다.&quot;}));
+  }
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">farmershands</a></li>
+  <li><a href="../../views_user_info_user_info_screen_vm/views_user_info_user_info_screen_vm-library.html">user_info_screen_vm</a></li>
+  <li><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM-class.html">UserInfoScreenVM</a></li>
+  <li class="self-crumb">onTapUpdate method</li>
+</ol>
+
+
+    <h5>UserInfoScreenVM class</h5>
+    <ol>
+
+    <li class="section-title"><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM-class.html#constructors">Constructors</a></li>
+    <li><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM/UserInfoScreenVM.html">UserInfoScreenVM</a></li>
+
+
+    <li class="section-title">
+      <a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM-class.html#instance-properties">Properties</a>
+    </li>
+    <li><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM/birthController.html">birthController</a></li>
+    <li><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM/currentUser.html">currentUser</a></li>
+    <li><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM/emailController.html">emailController</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM/isAgreeMarketingInfo.html">isAgreeMarketingInfo</a></li>
+    <li><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM/isAgreePrivateInfo.html">isAgreePrivateInfo</a></li>
+    <li><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM/isAgreeTerm.html">isAgreeTerm</a></li>
+    <li><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM/nameController.html">nameController</a></li>
+    <li><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM/newPasswordConfirmController.html">newPasswordConfirmController</a></li>
+    <li><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM/newPasswordController.html">newPasswordController</a></li>
+    <li><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM/oldPasswordController.html">oldPasswordController</a></li>
+    <li><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM/phoneNumberController.html">phoneNumberController</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM/selectBirthDate.html">selectBirthDate</a></li>
+    <li><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM/usernameController.html">usernameController</a></li>
+
+    <li class="section-title"><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM-class.html#instance-methods">Methods</a></li>
+    <li><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM/init.html">init</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM/onTapUpdate.html">onTapUpdate</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
+
+    <li class="section-title inherited"><a href="../../views_user_info_user_info_screen_vm/UserInfoScreenVM-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    farmershands
+      1.3.12+61
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

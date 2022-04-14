@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the build method from the HeaderView class, for the Dart programming language.">
+  <title>build method - HeaderView class - header_view library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">farmershands</a></li>
+    <li><a href="../../views_cow_detail_header_view/views_cow_detail_header_view-library.html">header_view</a></li>
+    <li><a href="../../views_cow_detail_header_view/HeaderView-class.html">HeaderView</a></li>
+    <li class="self-crumb">build method</li>
+  </ol>
+  <div class="self-name">build</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-method">build</span> method 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype"><a href="https://api.flutter.dev/flutter/widgets/Widget-class.html">Widget</a></span>
+<span class="name ">build</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="build-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span></span></li>
+</ol>)
+
+      <div class="features">override</div>
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Describes the part of the user interface represented by this widget.</p>
+<p>The framework calls this method when this widget is inserted into the tree
+in a given <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a> and when the dependencies of this widget change
+(e.g., an <a href="https://api.flutter.dev/flutter/widgets/InheritedWidget-class.html">InheritedWidget</a> referenced by this widget changes). This
+method can potentially be called in every frame and should not have any side
+effects beyond building a widget.</p>
+<p>The framework replaces the subtree below this widget with the widget
+returned by this method, either by updating the existing subtree or by
+removing the subtree and inflating a new subtree, depending on whether the
+widget returned by this method can update the root of the existing
+subtree, as determined by calling <a href="https://api.flutter.dev/flutter/widgets/Widget/canUpdate.html">Widget.canUpdate</a>.</p>
+<p>Typically implementations return a newly created constellation of widgets
+that are configured with information from this widget's constructor and
+from the given <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a>.</p>
+<p>The given <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a> contains information about the location in the
+tree at which this widget is being built. For example, the context
+provides the set of inherited widgets for this location in the tree. A
+given widget might be built with multiple different <a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a>
+arguments over time if the widget is moved around the tree or if the
+widget is inserted into the tree in multiple places at once.</p>
+<p>The implementation of this method must only depend on:</p>
+<ul>
+<li>the fields of the widget, which themselves must not change over time,
+and</li>
+<li>any ambient state obtained from the <code>context</code> using
+<a href="https://api.flutter.dev/flutter/widgets/BuildContext/dependOnInheritedWidgetOfExactType.html">BuildContext.dependOnInheritedWidgetOfExactType</a>.</li>
+</ul>
+<p>If a widget's <a href="../../views_cow_detail_header_view/HeaderView/build.html">build</a> method is to depend on anything else, use a
+<a href="https://api.flutter.dev/flutter/widgets/StatefulWidget-class.html">StatefulWidget</a> instead.</p>
+<p>See also:</p>
+<ul>
+<li><a href="https://api.flutter.dev/flutter/widgets/StatelessWidget-class.html">StatelessWidget</a>, which contains the discussion on performance considerations.</li>
+</ul>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">Widget build(BuildContext context) {
+  return LargeHeaderView(
+    child: RoundContainerView(
+      borderWidth: 6,
+      margin: EdgeInsets.all(16),
+      backgroundColor: Colors.white,
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.only(left: 16, right: 16, top: 20),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  margin: EdgeInsets.only(right: 12),
+                  child: CircleImageView(
+                    image: Image.asset(&quot;assets&#47;images&#47;no_image_type_a.png&quot;),
+                    width: 56,
+                    height: 56,
+                  ),
+                ),
+                Flexible(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          SvgPicture.asset(&quot;assets&#47;icons&#47;ic_lightning.svg&quot;, semanticsLabel: &#39;번개&#39;),
+                          Container(width: 4),
+                          Flexible(
+                            child: Container(
+                              margin: EdgeInsets.only(bottom: 4),
+                              child: Text(
+                                &quot;#${cow.managementNumber} (${cow.name})&quot;,
+                                overflow: TextOverflow.fade,
+                                softWrap: false,
+                                maxLines: 1,
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                          ),
+                          Container(width: 6),
+                          CustomOutlinedButton(
+                            text: &quot;이력정보&quot;,
+                            onTap: () async {
+                              await LogManager().addLog(&quot;${ReportGroup.cowHistory.name} 누름&quot;, action: LogConstants.buttonTap, screen: runtimeType.toString());
+                              Navigator.of(context, rootNavigator: true).pushNamed(ReportScreen.routeName, arguments: ReportScreenArguments(reportGroup: ReportGroup.cowHistory, cow: cow));
+                            },
+                          ),
+                        ],
+                      ),
+                      Container(height: 5),
+                      Row(
+                        children: [
+                          SvgPicture.asset(&quot;assets&#47;icons&#47;ic_info.svg&quot;, semanticsLabel: &#39;정보&#39;),
+                          Container(width: 3),
+                          Text(&quot;센서번호&quot;, style: TextStyle(color: CustomColors.cool_grey, fontSize: 12)),
+                          Container(width: 1),
+                          Text(cow.sensor != null ? cow.sensor!.id : &quot;-&quot;, style: TextStyle(color: CustomColors.slate_grey, fontSize: 12)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(height: 3, color: CustomColors.white_two, margin: EdgeInsets.symmetric(horizontal: 20, vertical: 14)),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 16),
+            child: Table(
+              children: [
+                TableRow(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 6),
+                      child: RichText(
+                        text: TextSpan(
+                          text: &quot;출생일자  &quot;,
+                          style: TextStyle(color: CustomColors.cool_grey, fontSize: 14),
+                          children: &lt;TextSpan&gt;[
+                            TextSpan(
+                              text: DateFormat(StringConstants.timeYMDDashFormat).format(DateTime.parse(vm.birth)),
+                              style: TextStyle(color: Colors.black, fontSize: 13),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 6),
+                      child: RichText(
+                        text: TextSpan(
+                          text: &quot;생시체중  &quot;,
+                          style: TextStyle(color: CustomColors.cool_grey, fontSize: 14),
+                          children: &lt;TextSpan&gt;[
+                            TextSpan(text: vm.weight, style: TextStyle(color: Colors.black)),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 6),
+                      child: RichText(
+                        overflow: TextOverflow.ellipsis,
+                        text: TextSpan(
+                          text: &quot;메모  &quot;,
+                          style: TextStyle(color: CustomColors.cool_grey, fontSize: 14),
+                          children: &lt;TextSpan&gt;[
+                            TextSpan(text: vm.memo, style: TextStyle(color: Colors.black, fontSize: 13)),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 16),
+            child: Table(
+              children: [
+                TableRow(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 6),
+                      child: RichText(
+                        text: TextSpan(
+                          text: &quot;그룹  &quot;,
+                          style: TextStyle(color: CustomColors.cool_grey, fontSize: 14),
+                          children: &lt;TextSpan&gt;[
+                            TextSpan(text: vm.group, style: TextStyle(color: Colors.black)),
+                            TextSpan(text: &quot;    성별&quot;, style: TextStyle(color: CustomColors.cool_grey)),
+                            TextSpan(text: &quot;   ${vm.gender}&quot;, style: TextStyle(color: Colors.black)),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.symmetric(vertical: 8),
+            child: SelectDateView(
+              selectedDate: selectedDate,
+              onPressPrevDate: onPressPrevDate,
+              onPressNextDate: onPressNextDate,
+              onPressCalendar: onPressCalendar,
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 8),
+            child: SingleChildScrollView(
+              &#47;&#47; scrollDirection: Axis.horizontal,
+              child: Table(
+                children: [
+                  TableRow(children: [
+                    StatItemView(
+                      action: &quot;포유&quot;,
+                      seconds: todayCowData?.cowDataHour.first.lactation.value,
+                      prevSeconds: yesterdayCowData?.cowDataHour.first.lactation.value,
+                      selectedDate: selectedDate,
+                    ),
+                    StatItemView(
+                      action: &quot;사료섭취&quot;,
+                      seconds: todayCowData?.cowDataHour.first.eating.value,
+                      prevSeconds: yesterdayCowData?.cowDataHour.first.eating.value,
+                      selectedDate: selectedDate,
+                    ),
+                  ]),
+                  TableRow(children: [
+                    StatItemView(
+                      action: &quot;반추&quot;,
+                      seconds: todayCowData?.cowDataHour.first.ruminant.value,
+                      prevSeconds: yesterdayCowData?.cowDataHour.first.ruminant.value,
+                      selectedDate: selectedDate,
+                    ),
+                    StatItemView(
+                      action: &quot;음수&quot;,
+                      seconds: todayCowData?.cowDataHour.first.drinking.value,
+                      prevSeconds: yesterdayCowData?.cowDataHour.first.drinking.value,
+                      selectedDate: selectedDate,
+                    ),
+                  ]),
+                  TableRow(children: [
+                    StatItemView(
+                      action: &quot;앉기&quot;,
+                      seconds: todayCowData?.cowDataHour.first.sitting.value,
+                      prevSeconds: yesterdayCowData?.cowDataHour.first.sitting.value,
+                      isReverse: true,
+                      selectedDate: selectedDate,
+                    ),
+                    StatItemView(
+                      action: &quot;기침&quot;,
+                      seconds: todayCowData?.cowDataHour.first.cough.value,
+                      prevSeconds: yesterdayCowData?.cowDataHour.first.cough.value,
+                      isReverse: true,
+                      isIntValue: true,
+                      selectedDate: selectedDate,
+                    ),
+                  ]),
+                  TableRow(children: [
+                    StatItemView(
+                      action: &quot;활동량&quot;,
+                      seconds: (todayCowData?.cowDataHour.first.activity.value ?? 0) * NumericConstants.activityScale,
+                      prevSeconds: (yesterdayCowData?.cowDataHour.first.activity.value ?? 0) * NumericConstants.activityScale,
+                      isReverse: false,
+                      isIntValue: true,
+                      suffix: &quot;&quot;,
+                      selectedDate: selectedDate,
+                    ),
+                    StatItemView(
+                      action: &quot;일령&quot;,
+                      seconds: cow.getDayAfterBirthFromDateTime(selectedDate).toDouble(),
+                      prevSeconds: cow.getDayAfterBirthFromDateTime(selectedDate).toDouble(),
+                      isReverse: true,
+                      isIntValue: true,
+                      suffix: &quot;일&quot;,
+                      showDifference: false,
+                      selectedDate: selectedDate,
+                    ),
+                  ]),
+                ],
+              ),
+            ),
+          )
+        ],
+      ),
+    ),
+  );
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">farmershands</a></li>
+  <li><a href="../../views_cow_detail_header_view/views_cow_detail_header_view-library.html">header_view</a></li>
+  <li><a href="../../views_cow_detail_header_view/HeaderView-class.html">HeaderView</a></li>
+  <li class="self-crumb">build method</li>
+</ol>
+
+
+    <h5>HeaderView class</h5>
+    <ol>
+
+    <li class="section-title"><a href="../../views_cow_detail_header_view/HeaderView-class.html#constructors">Constructors</a></li>
+    <li><a href="../../views_cow_detail_header_view/HeaderView/HeaderView.html">HeaderView</a></li>
+
+
+    <li class="section-title">
+      <a href="../../views_cow_detail_header_view/HeaderView-class.html#instance-properties">Properties</a>
+    </li>
+    <li><a href="../../views_cow_detail_header_view/HeaderView/cow.html">cow</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/Widget/hashCode.html">hashCode</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/Widget/key.html">key</a></li>
+    <li><a href="../../views_cow_detail_header_view/HeaderView/onPressCalendar.html">onPressCalendar</a></li>
+    <li><a href="../../views_cow_detail_header_view/HeaderView/onPressNextDate.html">onPressNextDate</a></li>
+    <li><a href="../../views_cow_detail_header_view/HeaderView/onPressPrevDate.html">onPressPrevDate</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li><a href="../../views_cow_detail_header_view/HeaderView/selectedDate.html">selectedDate</a></li>
+    <li><a href="../../views_cow_detail_header_view/HeaderView/todayCowData.html">todayCowData</a></li>
+    <li><a href="../../views_cow_detail_header_view/HeaderView/vm.html">vm</a></li>
+    <li><a href="../../views_cow_detail_header_view/HeaderView/yesterdayCowData.html">yesterdayCowData</a></li>
+
+    <li class="section-title"><a href="../../views_cow_detail_header_view/HeaderView-class.html#instance-methods">Methods</a></li>
+    <li><a href="../../views_cow_detail_header_view/HeaderView/build.html">build</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/StatelessWidget/createElement.html">createElement</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/DiagnosticableTree/debugDescribeChildren.html">debugDescribeChildren</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/Widget/debugFillProperties.html">debugFillProperties</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/DiagnosticableTree/toDiagnosticsNode.html">toDiagnosticsNode</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/Diagnosticable/toString.html">toString</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/DiagnosticableTree/toStringDeep.html">toStringDeep</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/DiagnosticableTree/toStringShallow.html">toStringShallow</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/Widget/toStringShort.html">toStringShort</a></li>
+
+    <li class="section-title inherited"><a href="../../views_cow_detail_header_view/HeaderView-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/Widget/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    farmershands
+      1.4.0-dev6+78
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

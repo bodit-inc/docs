@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the loginAction method from the SignInScreenVM class, for the Dart programming language.">
+  <title>loginAction method - SignInScreenVM class - signin_screen_vm library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">farmershands</a></li>
+    <li><a href="../../views_account_signin_screen_vm/views_account_signin_screen_vm-library.html">signin_screen_vm</a></li>
+    <li><a href="../../views_account_signin_screen_vm/SignInScreenVM-class.html">SignInScreenVM</a></li>
+    <li class="self-crumb">loginAction method</li>
+  </ol>
+  <div class="self-name">loginAction</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-method">loginAction</span> method 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype">dynamic</span>
+<span class="name ">loginAction</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="loginAction-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span></span></li>
+</ol>)
+
+      
+
+    </section>
+    
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">loginAction(BuildContext context) async {
+  if (_isSubmitting) return;
+
+  _isSubmitting = true;
+  final username = usernameController.text.trim();
+  final password = passController.text.trim();
+
+  try {
+    EventService().eventBus.fire(PopupEvent(type: PopupType.loading, action: PopupAction.show));
+
+    SignInResult signInResult = await Amplify.Auth.signIn(username: username, password: password);
+
+    if (signInResult.isSignedIn) {
+      &#47;&#47; 로그인 성공
+      splashScreenKey.currentState?.resetState();
+      Navigator.of(context, rootNavigator: true).popUntil((route) =&gt; !route.settings.name!.startsWith(PopupScreen.routeName));
+      Navigator.of(context, rootNavigator: true).pushReplacementNamed(FarmLoadingScreen.routeName);
+      _isSubmitting = false;
+      return;
+    }
+
+    &#47;&#47; 로그인 실패
+    String content = &quot;&quot;;
+    switch (signInResult.nextStep?.signInStep) {
+      case &quot;CONFIRM_SIGN_IN_WITH_NEW_PASSWORD&quot;:
+        &#47;&#47; 새 비밀번호 필요할 때
+        &#47;&#47; 현재 시나리오상 걸리는 일이 있는지 모르겠음. Amplify Studio에서 계정을 생성한 뒤 로그인하면 이 메세지가 뜸.
+        content = &quot;login step CONFIRM_SIGN_IN_WITH_NEW_PASSWORD&quot;;
+        break;
+      default:
+        content = &quot;알수없는 에러가 발생했습니다.&quot;;
+        break;
+    }
+    EventService().eventBus.fire(
+          PopupEvent(
+            type: PopupType.alert,
+            action: PopupAction.show,
+            data: {&quot;title&quot;: &quot;로그인 실패&quot;, &quot;content&quot;: content},
+            onClose: () {
+              Navigator.of(context, rootNavigator: true).popUntil((route) =&gt; !route.settings.name!.startsWith(PopupScreen.routeName));
+            },
+          ),
+        );
+  } on AuthException catch (e) {
+    print(&quot;login error: $e&quot;);
+
+    if (e.message == &quot;User is not confirmed.&quot;) {
+      EventService().eventBus.fire(
+            PopupEvent(
+              type: PopupType.alert,
+              action: PopupAction.show,
+              data: {&quot;title&quot;: &quot;인증되지 않은 계정입니다.&quot;, &quot;content&quot;: &quot;인증을 다시 진행해 주세요.&quot;},
+              onClose: () async {
+                await Amplify.Auth.resendSignUpCode(username: username);
+                Navigator.of(context, rootNavigator: true).popUntil((route) =&gt; route.settings.name == SplashScreen.routeName);
+                Navigator.of(context, rootNavigator: true).pushNamed(PhoneAuthScreen.routeName, arguments: PhoneAuthScreenArguments(username: username));
+              },
+            ),
+          );
+    } else if (e.message == &quot;User does not exist.&quot;) {
+      EventService().eventBus.fire(
+            PopupEvent(
+              type: PopupType.alert,
+              action: PopupAction.show,
+              data: {&quot;title&quot;: &quot;등록되지 않은 계정&quot;, &quot;content&quot;: &quot;등록되지 않은 계정입니다.&quot;},
+              onClose: () async {
+                Navigator.of(context, rootNavigator: true).popUntil((route) =&gt; !route.settings.name!.startsWith(PopupScreen.routeName));
+              },
+            ),
+          );
+    } else {
+      EventService().eventBus.fire(
+            PopupEvent(
+              type: PopupType.alert,
+              action: PopupAction.show,
+              data: {&quot;title&quot;: &quot;로그인 실패&quot;, &quot;content&quot;: &quot;아이디와 비밀번호를 다시 확인하세요.&quot;},
+              onClose: () {
+                Navigator.of(context, rootNavigator: true).popUntil((route) =&gt; !route.settings.name!.startsWith(PopupScreen.routeName));
+              },
+            ),
+          );
+    }
+  } catch (e) {
+    EventService().eventBus.fire(
+          PopupEvent(
+            type: PopupType.alert,
+            action: PopupAction.show,
+            data: {&quot;title&quot;: &quot;오류&quot;, &quot;content&quot;: &quot;알 수 없는 오류가 발생하였습니다.&quot;},
+            onClose: () {
+              Navigator.of(context, rootNavigator: true).popUntil((route) =&gt; !route.settings.name!.startsWith(PopupScreen.routeName));
+            },
+          ),
+        );
+  }
+  _isSubmitting = false;
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">farmershands</a></li>
+  <li><a href="../../views_account_signin_screen_vm/views_account_signin_screen_vm-library.html">signin_screen_vm</a></li>
+  <li><a href="../../views_account_signin_screen_vm/SignInScreenVM-class.html">SignInScreenVM</a></li>
+  <li class="self-crumb">loginAction method</li>
+</ol>
+
+
+    <h5>SignInScreenVM class</h5>
+    <ol>
+
+    <li class="section-title"><a href="../../views_account_signin_screen_vm/SignInScreenVM-class.html#constructors">Constructors</a></li>
+    <li><a href="../../views_account_signin_screen_vm/SignInScreenVM/SignInScreenVM.html">SignInScreenVM</a></li>
+
+
+    <li class="section-title">
+      <a href="../../views_account_signin_screen_vm/SignInScreenVM-class.html#instance-properties">Properties</a>
+    </li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li><a href="../../views_account_signin_screen_vm/SignInScreenVM/isChecked.html">isChecked</a></li>
+    <li><a href="../../views_account_signin_screen_vm/SignInScreenVM/passController.html">passController</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li><a href="../../views_account_signin_screen_vm/SignInScreenVM/usernameController.html">usernameController</a></li>
+
+    <li class="section-title"><a href="../../views_account_signin_screen_vm/SignInScreenVM-class.html#instance-methods">Methods</a></li>
+    <li><a href="../../views_account_signin_screen_vm/SignInScreenVM/findIDAction.html">findIDAction</a></li>
+    <li><a href="../../views_account_signin_screen_vm/SignInScreenVM/findPassAction.html">findPassAction</a></li>
+    <li><a href="../../views_account_signin_screen_vm/SignInScreenVM/loginAction.html">loginAction</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
+
+    <li class="section-title inherited"><a href="../../views_account_signin_screen_vm/SignInScreenVM-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    farmershands
+      1.3.12+61
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

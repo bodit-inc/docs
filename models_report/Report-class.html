@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the Report class from the report library, for the Dart programming language.">
+  <title>Report class - report library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">farmershands</a></li>
+    <li><a href="../models_report/models_report-library.html">report</a></li>
+    <li class="self-crumb">Report class</li>
+  </ol>
+  <div class="self-name">Report</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-class">Report</span> class 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+ 
+</h1></div>
+
+    
+
+
+    <section>
+      <dl class="dl-horizontal">
+
+
+
+
+
+        <dt>Annotations</dt>
+        <dd><ul class="annotation-list clazz-relationships">
+          <li>@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonSerializable-class.html">JsonSerializable</a>()</li>
+        </ul></dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="constructors">
+      <h2>Constructors</h2>
+
+      <dl class="constructor-summary-list">
+        <dt id="Report" class="callable">
+          <span class="name"><a href="../models_report/Report/Report.html">Report</a></span><span class="signature">(<span class="parameter" id="-param-id">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">id</span>, </span><span class="parameter" id="-param-farm"><span class="type-annotation"><a href="../models_farm/Farm-class.html">Farm</a>?</span> <span class="parameter-name">farm</span>, </span><span class="parameter" id="-param-cow"><span class="type-annotation"><a href="../models_cow/Cow-class.html">Cow</a>?</span> <span class="parameter-name">cow</span>, </span><span class="parameter" id="-param-sensor"><span class="type-annotation"><a href="../models_sensor/Sensor-class.html">Sensor</a>?</span> <span class="parameter-name">sensor</span>, </span><span class="parameter" id="-param-gateway"><span class="type-annotation"><a href="../models_gateway/Gateway-class.html">Gateway</a>?</span> <span class="parameter-name">gateway</span>, </span><span class="parameter" id="-param-group"><span>required</span> <span class="type-annotation"><a href="../types_report_group/ReportGroup.html">ReportGroup</a></span> <span class="parameter-name">group</span>, </span><span class="parameter" id="-param-type"><span>required</span> <span class="type-annotation"><a href="../types_report_type/ReportType.html">ReportType</a></span> <span class="parameter-name">type</span>, </span><span class="parameter" id="-param-title"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">title</span>, </span><span class="parameter" id="-param-actions"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../types_action_type/ActionType.html">ActionType</a></span>&gt;</span>?</span> <span class="parameter-name">actions</span>, </span><span class="parameter" id="-param-feedback"><span class="type-annotation"><a href="../types_feedback_type/FeedbackType.html">FeedbackType</a>?</span> <span class="parameter-name">feedback</span>, </span><span class="parameter" id="-param-level"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">level</span>, </span><span class="parameter" id="-param-continuedDays"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> <span class="parameter-name">continuedDays</span>, </span><span class="parameter" id="-param-cardData"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span>?</span> <span class="parameter-name">cardData</span>, </span><span class="parameter" id="-param-isPinned"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isPinned</span>, </span><span class="parameter" id="-param-createdAt"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/DateTime-class.html">DateTime</a>?</span> <span class="parameter-name">createdAt</span>, </span><span class="parameter" id="-param-targetAt"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/DateTime-class.html">DateTime</a>?</span> <span class="parameter-name">targetAt</span>}</span>)</span>
+        </dt>
+        <dd>
+           
+        </dd>
+        <dt id="Report.fromJson" class="callable">
+          <span class="name"><a href="../models_report/Report/Report.fromJson.html">Report.fromJson</a></span><span class="signature">(<span class="parameter" id="fromJson-param-json"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span> <span class="parameter-name">json</span></span>)</span>
+        </dt>
+        <dd>
+           
+          <div class="constructor-modifier features">factory</div>
+        </dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="instance-properties">
+      <h2>Properties</h2>
+
+      <dl class="properties">
+        <dt id="actions" class="property">
+  <span class="name"><a href="../models_report/Report/actions.html">actions</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../types_action_type/ActionType.html">ActionType</a></span>&gt;</span>?</span> 
+
+</dt>
+<dd>
+   
+  <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;actions&#39;, fromJson: actionsFromJson, toJson: actionsToJson), read / write</div>
+
+</dd>
+
+        <dt id="cardData" class="property">
+  <span class="name"><a href="../models_report/Report/cardData.html">cardData</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span>?</span> 
+
+</dt>
+<dd>
+   
+  <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;card_data&#39;, fromJson: mapFromJson, toJson: mapToJson), read / write</div>
+
+</dd>
+
+        <dt id="continuedDays" class="property">
+  <span class="name"><a href="../models_report/Report/continuedDays.html">continuedDays</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> 
+
+</dt>
+<dd>
+   
+  <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;continued_days&#39;), read / write</div>
+
+</dd>
+
+        <dt id="cow" class="property">
+  <span class="name"><a href="../models_report/Report/cow.html">cow</a></span>
+  <span class="signature">&#8596; <a href="../models_cow/Cow-class.html">Cow</a>?</span> 
+
+</dt>
+<dd>
+   
+  <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &quot;cow_id&quot;, fromJson: cowFromCowId, toJson: cowToCowId), read / write</div>
+
+</dd>
+
+        <dt id="createdAt" class="property">
+  <span class="name"><a href="../models_report/Report/createdAt.html">createdAt</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/DateTime-class.html">DateTime</a>?</span> 
+
+</dt>
+<dd>
+   
+  <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;created_at&#39;, fromJson: dateTimeFromJson, toJson: dateTimeToJson), read / write</div>
+
+</dd>
+
+        <dt id="farm" class="property">
+  <span class="name"><a href="../models_report/Report/farm.html">farm</a></span>
+  <span class="signature">&#8596; <a href="../models_farm/Farm-class.html">Farm</a>?</span> 
+
+</dt>
+<dd>
+   
+  <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;farm_id&#39;, fromJson: farmFromFarmId, toJson: farmToFarmId), read / write</div>
+
+</dd>
+
+        <dt id="feedback" class="property">
+  <span class="name"><a href="../models_report/Report/feedback.html">feedback</a></span>
+  <span class="signature">&#8596; <a href="../types_feedback_type/FeedbackType.html">FeedbackType</a>?</span> 
+
+</dt>
+<dd>
+   
+  <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;feedback&#39;, fromJson: feedbackFromJson, toJson: feedbackToJson), read / write</div>
+
+</dd>
+
+        <dt id="gateway" class="property">
+  <span class="name"><a href="../models_report/Report/gateway.html">gateway</a></span>
+  <span class="signature">&#8596; <a href="../models_gateway/Gateway-class.html">Gateway</a>?</span> 
+
+</dt>
+<dd>
+   
+  <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;gateway_id&#39;, fromJson: gatewayFromJson, toJson: gatewayToJson), read / write</div>
+
+</dd>
+
+        <dt id="group" class="property">
+  <span class="name"><a href="../models_report/Report/group.html">group</a></span>
+  <span class="signature">&#8596; <a href="../types_report_group/ReportGroup.html">ReportGroup</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;report_group&#39;, fromJson: reportGroupFromJson, toJson: reportGroupToJson), read / write</div>
+
+</dd>
+
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> 
+
+</dt>
+<dd class="inherited">
+  The hash code for this object. <a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">[...]</a>
+  <div class="features">read-only, inherited</div>
+
+</dd>
+
+        <dt id="id" class="property">
+  <span class="name"><a href="../models_report/Report/id.html">id</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;id&#39;), read / write</div>
+
+</dd>
+
+        <dt id="isChecked" class="property">
+  <span class="name"><a href="../models_report/Report/isChecked.html">isChecked</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(ignore: true), read / write</div>
+
+</dd>
+
+        <dt id="isPinned" class="property">
+  <span class="name"><a href="../models_report/Report/isPinned.html">isPinned</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &quot;is_pinned&quot;), read / write</div>
+
+</dd>
+
+        <dt id="level" class="property">
+  <span class="name"><a href="../models_report/Report/level.html">level</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> 
+
+</dt>
+<dd>
+   
+  <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;level&#39;), read / write</div>
+
+</dd>
+
+        <dt id="memo" class="property">
+  <span class="name"><a href="../models_report/Report/memo.html">memo</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> 
+
+</dt>
+<dd>
+   
+  <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;memo&#39;), read / write</div>
+
+</dd>
+
+        <dt id="reportTitle" class="property">
+  <span class="name"><a href="../models_report/Report/reportTitle.html">reportTitle</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">read-only</div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span> 
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object. 
+  <div class="features">read-only, inherited</div>
+
+</dd>
+
+        <dt id="selfDiagnosis" class="property">
+  <span class="name"><a href="../models_report/Report/selfDiagnosis.html">selfDiagnosis</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a>?</span> 
+
+</dt>
+<dd>
+   
+  <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &quot;self_diagnosis_id&quot;), read / write</div>
+
+</dd>
+
+        <dt id="sensor" class="property">
+  <span class="name"><a href="../models_report/Report/sensor.html">sensor</a></span>
+  <span class="signature">&#8596; <a href="../models_sensor/Sensor-class.html">Sensor</a>?</span> 
+
+</dt>
+<dd>
+   
+  <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;sensor_id&#39;, fromJson: sensorFromJson, toJson: sensorToJson), read / write</div>
+
+</dd>
+
+        <dt id="targetAt" class="property">
+  <span class="name"><a href="../models_report/Report/targetAt.html">targetAt</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/DateTime-class.html">DateTime</a>?</span> 
+
+</dt>
+<dd>
+   
+  <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;target_at&#39;, fromJson: dateTimeFromJson, toJson: dateTimeToJson), read / write</div>
+
+</dd>
+
+        <dt id="title" class="property">
+  <span class="name"><a href="../models_report/Report/title.html">title</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a>?</span> 
+
+</dt>
+<dd>
+   
+  <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;title&#39;), read / write</div>
+
+</dd>
+
+        <dt id="type" class="property">
+  <span class="name"><a href="../models_report/Report/type.html">type</a></span>
+  <span class="signature">&#8596; <a href="../types_report_type/ReportType.html">ReportType</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;report_type&#39;, fromJson: reportTypeFromJson, toJson: reportTypeToJson), read / write</div>
+
+</dd>
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="instance-methods">
+      <h2>Methods</h2>
+      <dl class="callables">
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a non-existent method or property is accessed. <a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">[...]</a>
+  <div class="features">inherited</div>
+
+</dd>
+
+        <dt id="toJson" class="callable">
+  <span class="name"><a href="../models_report/Report/toJson.html">toJson</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+   
+  
+
+</dd>
+
+        <dt id="toString" class="callable">
+  <span class="name"><a href="../models_report/Report/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  A string representation of this object. <a href="../models_report/Report/toString.html">[...]</a>
+  <div class="features">override</div>
+
+</dd>
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor inherited" id="operators">
+      <h2>Operators</h2>
+      <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator. <a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">[...]</a>
+  <div class="features">inherited</div>
+
+</dd>
+
+      </dl>
+    </section>
+
+
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../index.html">farmershands</a></li>
+  <li><a href="../models_report/models_report-library.html">report</a></li>
+  <li class="self-crumb">Report class</li>
+</ol>
+
+
+    <h5>report library</h5>
+    <ol>
+  <li class="section-title"><a href="../models_report/models_report-library.html#classes">Classes</a></li>
+  <li><a href="../models_report/Report-class.html">Report</a></li>
+
+
+
+
+
+
+
+
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+    <ol>
+
+    <li class="section-title"><a href="../models_report/Report-class.html#constructors">Constructors</a></li>
+    <li><a href="../models_report/Report/Report.html">Report</a></li>
+    <li><a href="../models_report/Report/Report.fromJson.html">fromJson</a></li>
+
+
+    <li class="section-title">
+      <a href="../models_report/Report-class.html#instance-properties">Properties</a>
+    </li>
+    <li><a href="../models_report/Report/actions.html">actions</a></li>
+    <li><a href="../models_report/Report/cardData.html">cardData</a></li>
+    <li><a href="../models_report/Report/continuedDays.html">continuedDays</a></li>
+    <li><a href="../models_report/Report/cow.html">cow</a></li>
+    <li><a href="../models_report/Report/createdAt.html">createdAt</a></li>
+    <li><a href="../models_report/Report/farm.html">farm</a></li>
+    <li><a href="../models_report/Report/feedback.html">feedback</a></li>
+    <li><a href="../models_report/Report/gateway.html">gateway</a></li>
+    <li><a href="../models_report/Report/group.html">group</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li><a href="../models_report/Report/id.html">id</a></li>
+    <li><a href="../models_report/Report/isChecked.html">isChecked</a></li>
+    <li><a href="../models_report/Report/isPinned.html">isPinned</a></li>
+    <li><a href="../models_report/Report/level.html">level</a></li>
+    <li><a href="../models_report/Report/memo.html">memo</a></li>
+    <li><a href="../models_report/Report/reportTitle.html">reportTitle</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li><a href="../models_report/Report/selfDiagnosis.html">selfDiagnosis</a></li>
+    <li><a href="../models_report/Report/sensor.html">sensor</a></li>
+    <li><a href="../models_report/Report/targetAt.html">targetAt</a></li>
+    <li><a href="../models_report/Report/title.html">title</a></li>
+    <li><a href="../models_report/Report/type.html">type</a></li>
+
+    <li class="section-title"><a href="../models_report/Report-class.html#instance-methods">Methods</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li><a href="../models_report/Report/toJson.html">toJson</a></li>
+    <li><a href="../models_report/Report/toString.html">toString</a></li>
+
+    <li class="section-title inherited"><a href="../models_report/Report-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    farmershands
+      1.4.0-dev6+78
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the columns property from the CustomDataTableTypeExt extension, for the Dart programming language.">
+  <title>columns property - CustomDataTableTypeExt extension - custom_data_table_type library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">farmershands</a></li>
+    <li><a href="../../types_custom_data_table_type/types_custom_data_table_type-library.html">custom_data_table_type</a></li>
+    <li><a href="../../types_custom_data_table_type/CustomDataTableTypeExt.html">CustomDataTableTypeExt</a></li>
+    <li class="self-crumb">columns property</li>
+  </ol>
+  <div class="self-name">columns</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-property">columns</span> property 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+
+        
+<section id="getter">
+
+<section class="multi-line-signature">
+  <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../models_data_table_column/DataTableColumn-class.html">DataTableColumn</a></span>&gt;</span></span>
+  <span class="name ">columns</span>
+  
+
+</section>
+
+
+<section class="desc markdown">
+  <p>각 표 타입의 칼럼을 가져옵니다.</p>
+</section>
+
+
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">List&lt;DataTableColumn&gt; get columns {
+  List&lt;DataTableColumn&gt; columns = [];
+
+  switch (this) {
+    case CustomDataTableType.cowCurrentStatus:
+      columns.addAll([
+        DataTableColumn(id: 0, text: &#39;개체관리번호&#39;, width: 100),
+        DataTableColumn(id: 1, text: &#39;일령&#39;, width: 50),
+        DataTableColumn(id: 2, text: &#39;포유&#39;, width: 80),
+        DataTableColumn(id: 3, text: &#39;사료섭취&#39;, width: 80),
+        DataTableColumn(id: 4, text: &#39;반추&#39;, width: 80),
+        DataTableColumn(id: 6, text: &#39;포유자극&#39;, width: 80),
+        DataTableColumn(id: 7, text: &#39;앉기&#39;, width: 80),
+        DataTableColumn(id: 8, text: &#39;서기&#39;, width: 80),
+        DataTableColumn(id: 5, text: &#39;기침&#39;, width: 80),
+        DataTableColumn(id: 9, text: &#39;활동량&#39;, width: 80),
+        DataTableColumn(id: 10, text: &#39;소화기&#39;, width: 60),
+        DataTableColumn(id: 11, text: &#39;호흡기&#39;, width: 60),
+        DataTableColumn(id: 12, text: &#39;BCS&#39;, width: 60),
+      ]);
+      break;
+    case CustomDataTableType.cowManagement:
+      if (ApiService().screenWidth &lt; 360) {
+        columns.addAll([
+          DataTableColumn(id: 0, text: &#39;수정&#39;, width: 36, showEditIcon: true),
+          DataTableColumn(id: 1, text: &#39;센서&#39;, width: 36),
+          DataTableColumn(id: 2, text: &#39;개체관리번호&#39;, width: 100),
+          DataTableColumn(id: 3, text: &#39;그룹&#39;, width: 30),
+          DataTableColumn(id: 4, text: &#39;성별&#39;, width: 30),
+          DataTableColumn(id: 5, text: &#39;출생일자&#39;, width: 100),
+          DataTableColumn(id: 6, text: &#39;체중&#39;, width: 30),
+          DataTableColumn(id: 7, text: &#39;메모&#39;, width: 50),
+        ]);
+      } else {
+        columns.addAll([
+          DataTableColumn(id: 0, text: &#39;수정&#39;, width: (ApiService().screenWidth &#47; 100) * 10, showEditIcon: true),
+          DataTableColumn(id: 1, text: &#39;센서&#39;, width: (ApiService().screenWidth &#47; 100) * 25),
+          DataTableColumn(id: 2, text: &#39;개체관리번호&#39;, width: (ApiService().screenWidth &#47; 100) * 25),
+          DataTableColumn(id: 3, text: &#39;그룹&#39;, width: (ApiService().screenWidth &#47; 100) * 10),
+          DataTableColumn(id: 4, text: &#39;성별&#39;, width: (ApiService().screenWidth &#47; 100) * 10),
+          DataTableColumn(id: 5, text: &#39;출생일자&#39;, width: (ApiService().screenWidth &#47; 100) * 20),
+          DataTableColumn(id: 6, text: &#39;체중&#39;, width: (ApiService().screenWidth &#47; 100) * 10),
+          DataTableColumn(id: 7, text: &#39;메모&#39;, width: (ApiService().screenWidth &#47; 100) * 20),
+        ]);
+      }
+      break;
+    case CustomDataTableType.diseaseObservation:
+      if (ApiService().screenWidth &lt; 360) {
+        columns.addAll([
+          DataTableColumn(id: 0, text: &#39;개체관리번호&#39;, width: 100),
+          DataTableColumn(id: 1, text: &#39;일령&#39;, width: 30),
+          DataTableColumn(id: 2, text: &#39;소화기&#39;, width: 40),
+          DataTableColumn(id: 3, text: &#39;호흡기&#39;, width: 40),
+          DataTableColumn(id: 4, text: &#39;BCS&#39;, width: 40),
+          DataTableColumn(id: 5, text: &#39;날짜&#39;, width: 100),
+        ]);
+      } else {
+        columns.addAll([
+          DataTableColumn(id: 0, text: &#39;개체관리번호&#39;, width: (ApiService().screenWidth &#47; 100) * 20),
+          DataTableColumn(id: 1, text: &#39;일령&#39;, width: (ApiService().screenWidth &#47; 100) * 10),
+          DataTableColumn(id: 2, text: &#39;소화기&#39;, width: (ApiService().screenWidth &#47; 100) * 10),
+          DataTableColumn(id: 3, text: &#39;호흡기&#39;, width: (ApiService().screenWidth &#47; 100) * 10),
+          DataTableColumn(id: 4, text: &#39;BCS&#39;, width: (ApiService().screenWidth &#47; 100) * 10),
+          DataTableColumn(id: 5, text: &#39;날짜&#39;, width: (ApiService().screenWidth &#47; 100) * 30),
+        ]);
+      }
+      break;
+    case CustomDataTableType.needCheck:
+      if (ApiService().screenWidth &lt; 360) {
+        columns.addAll([
+          DataTableColumn(id: 0, text: &#39;&#39;, width: 24),
+          DataTableColumn(id: 1, text: &#39;센서&#39;, width: 40),
+          DataTableColumn(id: 2, text: &#39;개체관리번호&#39;, width: 100),
+          DataTableColumn(id: 3, text: &#39;그룹&#39;, width: 40),
+          DataTableColumn(id: 4, text: &#39;배터리&#39;, width: 50),
+          DataTableColumn(id: 5, text: &#39;최근전송일시&#39;, width: 100),
+        ]);
+      } else {
+        columns.addAll([
+          DataTableColumn(id: 0, text: &#39;&#39;, width: (ApiService().screenWidth &#47; 100) * 10),
+          DataTableColumn(id: 1, text: &#39;센서&#39;, width: (ApiService().screenWidth &#47; 100) * 10),
+          DataTableColumn(id: 2, text: &#39;개체관리번호&#39;, width: (ApiService().screenWidth &#47; 100) * 22),
+          DataTableColumn(id: 3, text: &#39;그룹&#39;, width: (ApiService().screenWidth &#47; 100) * 10),
+          DataTableColumn(id: 4, text: &#39;배터리&#39;, width: (ApiService().screenWidth &#47; 100) * 20),
+          DataTableColumn(id: 5, text: &#39;최근전송일시&#39;, width: (ApiService().screenWidth &#47; 100) * 20),
+        ]);
+      }
+      break;
+    case CustomDataTableType.sensor:
+      if (ApiService().screenWidth &lt; 360) {
+        columns.addAll([
+          DataTableColumn(id: 0, text: &#39;&#39;, width: 24),
+          DataTableColumn(id: 1, text: &#39;센서&#39;, width: 40),
+          DataTableColumn(id: 2, text: &#39;개체관리번호&#39;, width: 100),
+          DataTableColumn(id: 3, text: &#39;그룹&#39;, width: 40),
+          DataTableColumn(id: 4, text: &#39;배터리&#39;, width: 50),
+          DataTableColumn(id: 5, text: &#39;최근전송일시&#39;, width: 100),
+        ]);
+      } else {
+        columns.addAll([
+          DataTableColumn(id: 0, text: &#39;&#39;, width: (ApiService().screenWidth &#47; 100) * 10),
+          DataTableColumn(id: 1, text: &#39;센서&#39;, width: (ApiService().screenWidth &#47; 100) * 20),
+          DataTableColumn(id: 2, text: &#39;개체관리번호&#39;, width: (ApiService().screenWidth &#47; 100) * 22),
+          DataTableColumn(id: 3, text: &#39;그룹&#39;, width: (ApiService().screenWidth &#47; 100) * 10),
+          DataTableColumn(id: 4, text: &#39;배터리&#39;, width: (ApiService().screenWidth &#47; 100) * 20),
+          DataTableColumn(id: 5, text: &#39;최근전송일시&#39;, width: (ApiService().screenWidth &#47; 100) * 20),
+        ]);
+      }
+      break;
+    case CustomDataTableType.gateway:
+      if (ApiService().screenWidth &lt; 360) {
+        columns.addAll([
+          DataTableColumn(id: 0, text: &#39;&#39;, width: 24),
+          DataTableColumn(id: 1, text: &#39;GW&#39;, width: 40),
+          DataTableColumn(id: 2, text: &#39;연결수&#39;, width: 100),
+          DataTableColumn(id: 3, text: &#39;메모&#39;, width: 40),
+          DataTableColumn(id: 4, text: &#39;전송율&#39;, width: 50),
+          DataTableColumn(id: 5, text: &#39;최근전송일시&#39;, width: 100),
+        ]);
+      } else {
+        columns.addAll([
+          DataTableColumn(id: 0, text: &#39;&#39;, width: (ApiService().screenWidth &#47; 100) * 10),
+          DataTableColumn(id: 1, text: &#39;GW&#39;, width: (ApiService().screenWidth &#47; 100) * 20),
+          DataTableColumn(id: 2, text: &#39;연결수&#39;, width: (ApiService().screenWidth &#47; 100) * 22),
+          DataTableColumn(id: 3, text: &#39;메모&#39;, width: (ApiService().screenWidth &#47; 100) * 10),
+          DataTableColumn(id: 4, text: &#39;전송율&#39;, width: (ApiService().screenWidth &#47; 100) * 10),
+          DataTableColumn(id: 5, text: &#39;최근전송일시&#39;, width: (ApiService().screenWidth &#47; 100) * 20),
+        ]);
+      }
+      break;
+    default:
+      break;
+  }
+
+  return columns;
+}</code></pre>
+</section>
+
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">farmershands</a></li>
+  <li><a href="../../types_custom_data_table_type/types_custom_data_table_type-library.html">custom_data_table_type</a></li>
+  <li><a href="../../types_custom_data_table_type/CustomDataTableTypeExt.html">CustomDataTableTypeExt</a></li>
+  <li class="self-crumb">columns property</li>
+</ol>
+
+
+    <h5>CustomDataTableTypeExt extension</h5>
+    <ol>
+
+
+
+
+    <li class="section-title"> <a href="../../types_custom_data_table_type/CustomDataTableTypeExt.html#instance-properties">Properties</a>
+    </li>
+    <li><a href="../../types_custom_data_table_type/CustomDataTableTypeExt/columns.html">columns</a></li>
+
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    farmershands
+      1.4.0-dev6+78
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

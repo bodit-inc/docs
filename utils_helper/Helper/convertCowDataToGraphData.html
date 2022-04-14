@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the convertCowDataToGraphData method from the Helper class, for the Dart programming language.">
+  <title>convertCowDataToGraphData method - Helper class - helper library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">farmershands</a></li>
+    <li><a href="../../utils_helper/utils_helper-library.html">helper</a></li>
+    <li><a href="../../utils_helper/Helper-class.html">Helper</a></li>
+    <li class="self-crumb">convertCowDataToGraphData method</li>
+  </ol>
+  <div class="self-name">convertCowDataToGraphData</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-method">convertCowDataToGraphData</span> method 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../models_bar_day_data/BarDayData-class.html">BarDayData</a></span>&gt;</span></span>
+<span class="name ">convertCowDataToGraphData</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="convertCowDataToGraphData-param-cowData">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../models_cow_data/CowData-class.html">CowData</a></span>&gt;</span>?</span> <span class="parameter-name">cowData</span>, </span></li>
+<li><span class="parameter" id="convertCowDataToGraphData-param-targetDateTime"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/DateTime-class.html">DateTime</a>?</span> <span class="parameter-name">targetDateTime</span>, </span></li>
+<li><span class="parameter" id="convertCowDataToGraphData-param-continuedDays"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">continuedDays</span> = <span class="default-value">0</span>, </span></li>
+<li><span class="parameter" id="convertCowDataToGraphData-param-graphViewType"><span>required</span> <span class="type-annotation"><a href="../../components_graph_graph_view_type/GraphViewType.html">GraphViewType</a></span> <span class="parameter-name">graphViewType</span>, </span></li>
+<li><span class="parameter" id="convertCowDataToGraphData-param-actionType"><span class="type-annotation"><a href="../../types_action_type/ActionType.html">ActionType</a>?</span> <span class="parameter-name">actionType</span>}</span></li>
+</ol>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>소데이터를 그래프 데이터로 변환</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">List&lt;BarDayData&gt; convertCowDataToGraphData({
+  required List&lt;CowData&gt;? cowData,
+  DateTime? targetDateTime,
+  int continuedDays = 0,
+  required GraphViewType graphViewType,
+  ActionType? actionType,
+}) {
+  if (targetDateTime != null) targetDateTime = DateTime(targetDateTime.year, targetDateTime.month, targetDateTime.day);
+  List&lt;CowDataDay&gt; cowDataDays = cowData != null &amp;&amp; cowData.length &gt; 0 ? cowData.first.data : [];
+  List&lt;BarDayData&gt; barDayDatas = [];
+  for (CowDataDay cowDataDay in cowDataDays) {
+    DateTime date = cowDataDay.date!;
+    String xLabelDate = DateFormat(&quot;MM&#47;dd&quot;).format(date);
+    List&lt;BarHourData?&gt; barHourDatas = List.filled(graphViewType.hourCntInDay, null);
+    bool isHighlighted = false;
+    for (CowDataHour cowDataHour in cowDataDay.cowDataHour) {
+      double value = 0, realValue = 0, valueBottom = 0, realValueBottom = 0;
+      DateTime dateTime = cowDataHour.datetime!;
+      switch (actionType) {
+        case ActionType.lactation:
+          value = cowDataHour.lactation.value;
+          realValue = cowDataHour.lactation.value;
+          isHighlighted = cowDataHour.lactation.isHighlighted == true;
+          break;
+        case ActionType.ruminant:
+          value = cowDataHour.ruminant.value;
+          realValue = cowDataHour.ruminant.value;
+          isHighlighted = cowDataHour.ruminant.isHighlighted == true;
+          break;
+        case ActionType.eating:
+          value = cowDataHour.eating.value;
+          realValue = cowDataHour.eating.value;
+          isHighlighted = cowDataHour.eating.isHighlighted == true;
+          break;
+        case ActionType.drinking:
+          value = cowDataHour.drinking.value;
+          realValue = cowDataHour.drinking.value;
+          isHighlighted = cowDataHour.drinking.isHighlighted == true;
+          break;
+        case ActionType.heading:
+          value = cowDataHour.heading.value.toDouble();
+          realValue = cowDataHour.heading.value.toDouble();
+          isHighlighted = cowDataHour.heading.isHighlighted == true;
+          break;
+        case ActionType.sittingStanding:
+        case ActionType.standing:
+        case ActionType.sitting:
+          value = cowDataHour.standing.value;
+          realValue = cowDataHour.standing.value;
+          valueBottom = cowDataHour.sitting.value;
+          realValueBottom = cowDataHour.sitting.value;
+          isHighlighted = cowDataHour.standing.isHighlighted == true || cowDataHour.sitting.isHighlighted == true;
+          break;
+        case ActionType.cough:
+          value = cowDataHour.cough.value.toDouble();
+          realValue = cowDataHour.cough.value.toDouble();
+          isHighlighted = cowDataHour.cough.isHighlighted == true;
+          break;
+        case ActionType.activity:
+          value = cowDataHour.activity.value;
+          realValue = cowDataHour.activity.value;
+          isHighlighted = cowDataHour.activity.isHighlighted == true;
+          break;
+        case ActionType.impulse:
+        case ActionType.irregularSittingStanding:
+        case ActionType.standingFail:
+        case ActionType.doridori:
+          break;
+      }
+
+      String suffix, valueLabel, valueBottomLabel;
+      if (actionType == ActionType.heading || actionType == ActionType.cough) {
+        suffix = &quot;회&quot;;
+      } else if (actionType == ActionType.activity) {
+        suffix = &quot;&quot;;
+        realValue = realValue * NumericConstants.activityScale;
+        value = value * NumericConstants.activityScale;
+      } else {
+        suffix = &quot;분&quot;;
+        realValue = (realValue &#47; 60).roundToDouble();
+        value = (value &#47; 60).roundToDouble();
+        realValueBottom = (realValueBottom &#47; 60).roundToDouble();
+        valueBottom = (valueBottom &#47; 60).roundToDouble();
+      }
+      valueLabel = &quot;${realValue.roundToDouble().toInt()}$suffix&quot;;
+      valueBottomLabel = &quot;${realValueBottom.roundToDouble().toInt()}$suffix&quot;;
+
+      barHourDatas[cowDataHour.hour] = BarHourData(
+        value: value,
+        valueLabel: valueLabel,
+        valueBottomLabel: valueBottomLabel,
+        realValue: realValue,
+        label: &quot;${graphViewType.hourUnit == GraphViewType.W1.hourUnit ? &quot;$xLabelDate&quot; : &quot;${cowDataHour.hour}시&quot;}&quot;,
+        dateTime: dateTime,
+        valueBottom: valueBottom,
+        realValueBottom: realValueBottom,
+        isHighlighted: isHighlighted,
+      );
+    }
+    BarDayData barDayData = BarDayData(
+      barHourData: barHourDatas,
+      dateTime: date,
+      sunRiseDateTime: DateTime.now(),
+      sunSetDateTime: DateTime.now(),
+      label: DateFormat(StringConstants.timeYMDDotFormat).format(date),
+    );
+    barDayDatas.add(barDayData);
+  }
+  return barDayDatas;
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">farmershands</a></li>
+  <li><a href="../../utils_helper/utils_helper-library.html">helper</a></li>
+  <li><a href="../../utils_helper/Helper-class.html">Helper</a></li>
+  <li class="self-crumb">convertCowDataToGraphData method</li>
+</ol>
+
+
+    <h5>Helper class</h5>
+    <ol>
+
+    <li class="section-title"><a href="../../utils_helper/Helper-class.html#constructors">Constructors</a></li>
+    <li><a href="../../utils_helper/Helper/Helper.html">Helper</a></li>
+
+
+    <li class="section-title">
+      <a href="../../utils_helper/Helper-class.html#instance-properties">Properties</a>
+    </li>
+    <li><a href="../../utils_helper/Helper/chatNavigatorKey.html">chatNavigatorKey</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li><a href="../../utils_helper/Helper/instanceId.html">instanceId</a></li>
+    <li><a href="../../utils_helper/Helper/rootNavigatorKey.html">rootNavigatorKey</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li><a href="../../utils_helper/Helper/settingsNavigatorKey.html">settingsNavigatorKey</a></li>
+
+    <li class="section-title"><a href="../../utils_helper/Helper-class.html#instance-methods">Methods</a></li>
+    <li><a href="../../utils_helper/Helper/convertCowDataToGraphData.html">convertCowDataToGraphData</a></li>
+    <li><a href="../../utils_helper/Helper/convertDateTimeToMidnight.html">convertDateTimeToMidnight</a></li>
+    <li><a href="../../utils_helper/Helper/getMaxValueFromBarDayData.html">getMaxValueFromBarDayData</a></li>
+    <li><a href="../../utils_helper/Helper/getMaxValueFromCowData.html">getMaxValueFromCowData</a></li>
+    <li><a href="../../utils_helper/Helper/isCowDataHighlighted.html">isCowDataHighlighted</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
+
+    <li class="section-title inherited"><a href="../../utils_helper/Helper-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+    <li class="section-title"><a href="../../utils_helper/Helper-class.html#static-methods">Static methods</a></li>
+    <li><a href="../../utils_helper/Helper/convertSecondsToHMFormat.html">convertSecondsToHMFormat</a></li>
+    <li><a href="../../utils_helper/Helper/convertWeekdayToKor.html">convertWeekdayToKor</a></li>
+    <li><a href="../../utils_helper/Helper/getFilenameFromPath.html">getFilenameFromPath</a></li>
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    farmershands
+      1.4.0-dev6+78
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the searchCow method from the ApiService class, for the Dart programming language.">
+  <title>searchCow method - ApiService class - api_service library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">farmershands</a></li>
+    <li><a href="../../services_api_service/services_api_service-library.html">api_service</a></li>
+    <li><a href="../../services_api_service/ApiService-class.html">ApiService</a></li>
+    <li class="self-crumb">searchCow method</li>
+  </ol>
+  <div class="self-name">searchCow</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-method">searchCow</span> method 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../models_search_cow_result/SearchCowResult-class.html">SearchCowResult</a></span>&gt;</span></span>
+<span class="name ">searchCow</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="searchCow-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span>, </span></li>
+<li><span class="parameter" id="searchCow-param-keyword"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">keyword</span></span></li>
+</ol>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>키워드로 소를 검색합니다.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">Future&lt;SearchCowResult&gt; searchCow(BuildContext context, String keyword) async {
+  CowState cowState = Provider.of&lt;CowState&gt;(context, listen: false);
+  List&lt;String&gt; splittedKeyword = keyword.split(&#39;&#39;);
+  if (isKorean(keyword)) splittedKeyword = splitJASO(keyword);
+  List&lt;Cow&gt; cows = cowState.cows.where((cow) {
+    bool hasMatch = false;
+    if (isKorean(keyword)) {
+      List&lt;String&gt; splittedName = splitJASO(cow.name);
+      List&lt;String&gt; splittedMemo = splitJASO(cow.memo);
+      String _keyword = splittedKeyword.join(&#39;&#39;);
+      String _name = splittedName.join(&#39;&#39;);
+      String _memo = splittedMemo.join(&#39;&#39;);
+      hasMatch = _name.startsWith(_keyword) || _memo.startsWith(_keyword);
+    }
+
+    &#47;&#47; var pos = cow.managementNumber.lastIndexOf(&#39;0&#39;);
+    &#47;&#47; String _managementNumber = (pos != -1) ? cow.managementNumber.substring(0, pos) : cow.managementNumber;
+    return cow.managementNumber.startsWith(keyword) || cow.memo.contains(keyword) || cow.name.contains(keyword) || hasMatch;
+  }).toList();
+
+  return SearchCowResult(cows: cows);
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">farmershands</a></li>
+  <li><a href="../../services_api_service/services_api_service-library.html">api_service</a></li>
+  <li><a href="../../services_api_service/ApiService-class.html">ApiService</a></li>
+  <li class="self-crumb">searchCow method</li>
+</ol>
+
+
+    <h5>ApiService class</h5>
+    <ol>
+
+    <li class="section-title"><a href="../../services_api_service/ApiService-class.html#constructors">Constructors</a></li>
+    <li><a href="../../services_api_service/ApiService/ApiService.html">ApiService</a></li>
+
+
+    <li class="section-title">
+      <a href="../../services_api_service/ApiService-class.html#instance-properties">Properties</a>
+    </li>
+    <li><a href="../../services_api_service/ApiService/chos19.html">chos19</a></li>
+    <li><a href="../../services_api_service/ApiService/context.html">context</a></li>
+    <li><a href="../../services_api_service/ApiService/cowGroupState.html">cowGroupState</a></li>
+    <li><a href="../../services_api_service/ApiService/cowState.html">cowState</a></li>
+    <li><a href="../../services_api_service/ApiService/demographic.html">demographic</a></li>
+    <li><a href="../../services_api_service/ApiService/deviceId.html">deviceId</a></li>
+    <li><a href="../../services_api_service/ApiService/endPoint.html">endPoint</a></li>
+    <li><a href="../../services_api_service/ApiService/farmState.html">farmState</a></li>
+    <li><a href="../../services_api_service/ApiService/gatewayState.html">gatewayState</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li><a href="../../services_api_service/ApiService/instanceId.html">instanceId</a></li>
+    <li><a href="../../services_api_service/ApiService/jong28.html">jong28</a></li>
+    <li><a href="../../services_api_service/ApiService/jungs21.html">jungs21</a></li>
+    <li><a href="../../services_api_service/ApiService/packageInfo.html">packageInfo</a></li>
+    <li><a href="../../services_api_service/ApiService/publishedClientAppBuildNumber.html">publishedClientAppBuildNumber</a></li>
+    <li><a href="../../services_api_service/ApiService/publishedClientAppVersion.html">publishedClientAppVersion</a></li>
+    <li><a href="../../services_api_service/ApiService/reportState.html">reportState</a></li>
+    <li><a href="../../services_api_service/ApiService/reportTitles.html">reportTitles</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li><a href="../../services_api_service/ApiService/screenHeight.html">screenHeight</a></li>
+    <li><a href="../../services_api_service/ApiService/screenWidth.html">screenWidth</a></li>
+    <li><a href="../../services_api_service/ApiService/sensorState.html">sensorState</a></li>
+    <li><a href="../../services_api_service/ApiService/userState.html">userState</a></li>
+
+    <li class="section-title"><a href="../../services_api_service/ApiService-class.html#instance-methods">Methods</a></li>
+    <li><a href="../../services_api_service/ApiService/addCowsToCowGroup.html">addCowsToCowGroup</a></li>
+    <li><a href="../../services_api_service/ApiService/createCow.html">createCow</a></li>
+    <li><a href="../../services_api_service/ApiService/createCowGroup.html">createCowGroup</a></li>
+    <li><a href="../../services_api_service/ApiService/createDiseaseObservations.html">createDiseaseObservations</a></li>
+    <li><a href="../../services_api_service/ApiService/deleteDiseaseObservations.html">deleteDiseaseObservations</a></li>
+    <li><a href="../../services_api_service/ApiService/fetchAuthSession.html">fetchAuthSession</a></li>
+    <li><a href="../../services_api_service/ApiService/fetchCowData.html">fetchCowData</a></li>
+    <li><a href="../../services_api_service/ApiService/fetchCowGroups.html">fetchCowGroups</a></li>
+    <li><a href="../../services_api_service/ApiService/fetchCows.html">fetchCows</a></li>
+    <li><a href="../../services_api_service/ApiService/fetchCowsCntByStatus.html">fetchCowsCntByStatus</a></li>
+    <li><a href="../../services_api_service/ApiService/fetchDemographic.html">fetchDemographic</a></li>
+    <li><a href="../../services_api_service/ApiService/fetchDiseaseObservations.html">fetchDiseaseObservations</a></li>
+    <li><a href="../../services_api_service/ApiService/fetchFarms.html">fetchFarms</a></li>
+    <li><a href="../../services_api_service/ApiService/fetchGateways.html">fetchGateways</a></li>
+    <li><a href="../../services_api_service/ApiService/fetchGraphData.html">fetchGraphData</a></li>
+    <li><a href="../../services_api_service/ApiService/fetchReports.html">fetchReports</a></li>
+    <li><a href="../../services_api_service/ApiService/fetchReportTitles.html">fetchReportTitles</a></li>
+    <li><a href="../../services_api_service/ApiService/fetchSensors.html">fetchSensors</a></li>
+    <li><a href="../../services_api_service/ApiService/fetchUnreadReportsCnt.html">fetchUnreadReportsCnt</a></li>
+    <li><a href="../../services_api_service/ApiService/getCurrentUser.html">getCurrentUser</a></li>
+    <li><a href="../../services_api_service/ApiService/getDeviceId.html">getDeviceId</a></li>
+    <li><a href="../../services_api_service/ApiService/isKorean.html">isKorean</a></li>
+    <li><a href="../../services_api_service/ApiService/moveOrCopyCowsToCowGroup.html">moveOrCopyCowsToCowGroup</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li><a href="../../services_api_service/ApiService/registerNotificationToken.html">registerNotificationToken</a></li>
+    <li><a href="../../services_api_service/ApiService/removeCow.html">removeCow</a></li>
+    <li><a href="../../services_api_service/ApiService/removeCowGroup.html">removeCowGroup</a></li>
+    <li><a href="../../services_api_service/ApiService/removeCowsFromCowGroup.html">removeCowsFromCowGroup</a></li>
+    <li><a href="../../services_api_service/ApiService/reqDELETE.html">reqDELETE</a></li>
+    <li><a href="../../services_api_service/ApiService/reqGET.html">reqGET</a></li>
+    <li><a href="../../services_api_service/ApiService/reqPOST.html">reqPOST</a></li>
+    <li><a href="../../services_api_service/ApiService/reqPUT.html">reqPUT</a></li>
+    <li><a href="../../services_api_service/ApiService/searchCow.html">searchCow</a></li>
+    <li><a href="../../services_api_service/ApiService/signIn.html">signIn</a></li>
+    <li><a href="../../services_api_service/ApiService/signOut.html">signOut</a></li>
+    <li><a href="../../services_api_service/ApiService/splitJASO.html">splitJASO</a></li>
+    <li><a href="../../services_api_service/ApiService/toggleReportPinned.html">toggleReportPinned</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
+    <li><a href="../../services_api_service/ApiService/unregisterNotificationToken.html">unregisterNotificationToken</a></li>
+    <li><a href="../../services_api_service/ApiService/updateCow.html">updateCow</a></li>
+    <li><a href="../../services_api_service/ApiService/updateCowGroup.html">updateCowGroup</a></li>
+    <li><a href="../../services_api_service/ApiService/updateCowGroups.html">updateCowGroups</a></li>
+    <li><a href="../../services_api_service/ApiService/updateDiseaseObservations.html">updateDiseaseObservations</a></li>
+    <li><a href="../../services_api_service/ApiService/updateReportFeedback.html">updateReportFeedback</a></li>
+    <li><a href="../../services_api_service/ApiService/updateReportMemo.html">updateReportMemo</a></li>
+    <li><a href="../../services_api_service/ApiService/userJoinFarm.html">userJoinFarm</a></li>
+
+    <li class="section-title inherited"><a href="../../services_api_service/ApiService-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    farmershands
+      1.4.0-dev6+78
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

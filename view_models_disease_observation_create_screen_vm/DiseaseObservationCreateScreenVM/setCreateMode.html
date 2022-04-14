@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the setCreateMode method from the DiseaseObservationCreateScreenVM class, for the Dart programming language.">
+  <title>setCreateMode method - DiseaseObservationCreateScreenVM class - disease_observation_create_screen_vm library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">farmershands</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/view_models_disease_observation_create_screen_vm-library.html">disease_observation_create_screen_vm</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM-class.html">DiseaseObservationCreateScreenVM</a></li>
+    <li class="self-crumb">setCreateMode method</li>
+  </ol>
+  <div class="self-name">setCreateMode</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-method">setCreateMode</span> method 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype">dynamic</span>
+<span class="name ">setCreateMode</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="setCreateMode-param-_"><span class="type-annotation"><a href="../../models_disease_observation/DiseaseObservation-class.html">DiseaseObservation</a>?</span> <span class="parameter-name">_</span></span></li>
+</ol>)
+
+      
+
+    </section>
+    
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">setCreateMode(DiseaseObservation? _) {
+  diseaseObservation = _!;
+  inputMode = InputModeType.create;
+  dehydrationRadios = [
+    RadioListGroup(text: &quot;탈수없거나 매우 미약. 강한 포유 반응&quot;, index: 0, selected: false),
+    RadioListGroup(text: &quot;설사 관찰. 강한 포유 반응 (탈수5-6%)&quot;, index: 1, selected: false),
+    RadioListGroup(text: &quot;약간의 우울감. 피부당김 회복속도 2-6초. 스스로 포유가능. 눈 안쪽 패임. 약해보임 (탈수6-8%)&quot;, index: 2, selected: false),
+    RadioListGroup(text: &quot;우울감. 앉아있음. 눈 매우 깊이 패임. 비강 마름. 피부당김 회복속도 6초 이상 (탈수8-10%)&quot;, index: 3, selected: false),
+    RadioListGroup(text: &quot;위중. 서기불가. 말초부위 저체온. 피부당김 회복안됨. 혼수상태 (탈수10-14%)&quot;, index: 4, selected: false),
+  ];
+
+  fecesRadios = [
+    RadioListGroup(text: &quot;모양이 일정하고 흐트러지지 않는 된장, 푸딩(pudding) 점도의 정상변&quot;, index: 0, selected: false),
+    RadioListGroup(text: &quot;약간 물러짐. 순두부, 떠먹는 요거트(yogurt) 성상과 유사한 변&quot;, index: 1, selected: false),
+    RadioListGroup(text: &quot;수분이 늘어나 더 묽어짐. 물엿(syrup)&quot;, index: 2, selected: false),
+    RadioListGroup(text: &quot;물엿 보다 물기가 많고 묽어진 사과주스(apple juice) 성상의 변. 분 성분(유색)은 아직 배출됨&quot;, index: 3, selected: false),
+    RadioListGroup(text: &quot;물(water)변(분성분 없음). 점액이나 혈액이 섞일 수 있음. 배뇨로 착각하지 않도록 각별히 주의. (설사시 강한 배출, 기다란 선을 그리며 흔적이 남음. 배뇨와 구분됨)&quot;, index: 4, selected: false),
+  ];
+
+  respiAndCoughRadios = [
+    RadioListGroup(text: &quot;정상 호흡범위(20-50회&#47;분)&quot;, index: 0, selected: false),
+    RadioListGroup(text: &quot;약한 기침. 콧물. 규칙적 호흡&quot;, index: 1, selected: false),
+    RadioListGroup(text: &quot;보통 기침. 빠른 호흡(50-100회&#47;분)&quot;, index: 2, selected: false),
+    RadioListGroup(text: &quot;빈번한 기침. 빠른 호흡&quot;, index: 3, selected: false),
+    RadioListGroup(text: &quot;빈번한 만성적 기침. 불규칙한 호흡&quot;, index: 4, selected: false),
+  ];
+
+  snotRadios = [
+    RadioListGroup(text: &quot;묽은 보통의 코점액. 흐르지 않음&quot;, index: 0, selected: false),
+    RadioListGroup(text: &quot;소량의 탁한 흰 콧물이 한쪽 콧구멍에서 배출. 또는 투명하나 끈적한 콧물&quot;, index: 1, selected: false),
+    RadioListGroup(text: &quot;탁한 흰콧물 또는 과한 점액질 콧물이 양쪽 콧구멍에서 배출&quot;, index: 2, selected: false),
+    RadioListGroup(text: &quot;다량의 화농성(황색 또는 녹색) 콧뭉리 양쪽 콧구멍에서 배출&quot;, index: 3, selected: false),
+  ];
+
+  eyeRadios = [
+    RadioListGroup(text: &quot;눈물 또는 눈곱 없음. 맑음.&quot;, index: 0, selected: false),
+    RadioListGroup(text: &quot;소량 눈물 또는 눈곱 배출&quot;, index: 1, selected: false),
+    RadioListGroup(text: &quot;두 눈에서 눈물 또는 눈곱 중량 배출&quot;, index: 2, selected: false),
+    RadioListGroup(text: &quot;눈물 또는 눈곱 다량 배출&quot;, index: 3, selected: false),
+  ];
+
+  appearanceRadios = [
+    RadioListGroup(text: &quot;각성. 활동적&quot;, index: 0, selected: false),
+    RadioListGroup(text: &quot;귀 쳐짐. 약간 무딘 반응&quot;, index: 1, selected: false),
+    RadioListGroup(text: &quot;중간정도 침울. 머리와 귀 쳐짐&quot;, index: 2, selected: false),
+    RadioListGroup(text: &quot;침울. 머리와 귀 쳐짐. 서기 욕구 없음&quot;, index: 3, selected: false),
+    RadioListGroup(text: &quot;납작 누워만 있음&quot;, index: 4, selected: false),
+  ];
+
+  earRadios = [
+    RadioListGroup(text: &quot;힘있게 바짝 선 귀&quot;, index: 0, selected: false),
+    RadioListGroup(text: &quot;귀를 가볍게 침, 또는 머리 흔듦&quot;, index: 1, selected: false),
+    RadioListGroup(text: &quot;한쪽 귀가 살짝 내려감&quot;, index: 2, selected: false),
+    RadioListGroup(text: &quot;머리가 한쪽으로 치우침, 또는 양쪽 귀 모두 내려감&quot;, index: 3, selected: false),
+  ];
+
+  sensorPositionRadios = [
+    RadioListGroup(text: &quot;중(정상)&quot;, index: 0, selected: false),
+    RadioListGroup(text: &quot;상&quot;, index: 1, selected: false),
+    RadioListGroup(text: &quot;하&quot;, index: 2, selected: false),
+    RadioListGroup(text: &quot;센서탈락&#47;재부착&quot;, index: 3, selected: false),
+  ];
+
+  bcsRadios = [
+    RadioListGroup(text: &quot;좋음(Good)&quot;, index: 0, selected: false),
+    RadioListGroup(text: &quot;보통(Moderate)&quot;, index: 1, selected: false),
+    RadioListGroup(text: &quot;나쁨(Bad)&quot;, index: 2, selected: false),
+  ];
+
+  temperatureController.text = &quot;&quot;;
+  memoController.text = &quot;&quot;;
+  notifyListeners();
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">farmershands</a></li>
+  <li><a href="../../view_models_disease_observation_create_screen_vm/view_models_disease_observation_create_screen_vm-library.html">disease_observation_create_screen_vm</a></li>
+  <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM-class.html">DiseaseObservationCreateScreenVM</a></li>
+  <li class="self-crumb">setCreateMode method</li>
+</ol>
+
+
+    <h5>DiseaseObservationCreateScreenVM class</h5>
+    <ol>
+
+    <li class="section-title"><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM-class.html#constructors">Constructors</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/DiseaseObservationCreateScreenVM.html">DiseaseObservationCreateScreenVM</a></li>
+
+
+    <li class="section-title">
+      <a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM-class.html#instance-properties">Properties</a>
+    </li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/appearance.html">appearance</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/appearanceRadios.html">appearanceRadios</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/bcs.html">bcs</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/bcsRadios.html">bcsRadios</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/buttonTitle.html">buttonTitle</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/context.html">context</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/currentGroup.html">currentGroup</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/dehydration.html">dehydration</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/dehydrationRadios.html">dehydrationRadios</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/diseaseObservation.html">diseaseObservation</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/ear.html">ear</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/earRadios.html">earRadios</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/eye.html">eye</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/eyeRadios.html">eyeRadios</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/feces.html">feces</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/fecesRadios.html">fecesRadios</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier/hasListeners.html">hasListeners</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/inputMode.html">inputMode</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/memo.html">memo</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/memoController.html">memoController</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/respiAndCough.html">respiAndCough</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/respiAndCoughRadios.html">respiAndCoughRadios</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/sensorPosition.html">sensorPosition</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/sensorPositionRadios.html">sensorPositionRadios</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/snot.html">snot</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/snotRadios.html">snotRadios</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/temperatureController.html">temperatureController</a></li>
+
+    <li class="section-title"><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM-class.html#instance-methods">Methods</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier/addListener.html">addListener</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/changeRadioSelect.html">changeRadioSelect</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier/dispose.html">dispose</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/init.html">init</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier/notifyListeners.html">notifyListeners</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/onSubmitCreateDiseaseObservation.html">onSubmitCreateDiseaseObservation</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/foundation/ChangeNotifier/removeListener.html">removeListener</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/setAppearance.html">setAppearance</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/setBCS.html">setBCS</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/setCow.html">setCow</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/setCreateMode.html">setCreateMode</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/setCurrentGroup.html">setCurrentGroup</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/setDehydration.html">setDehydration</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/setEar.html">setEar</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/setEye.html">setEye</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/setFeces.html">setFeces</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/setInputMode.html">setInputMode</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/setMemo.html">setMemo</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/setRespAndCough.html">setRespAndCough</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/setSensorPosition.html">setSensorPosition</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/setSnot.html">setSnot</a></li>
+    <li><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM/setUpdateMode.html">setUpdateMode</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
+
+    <li class="section-title inherited"><a href="../../view_models_disease_observation_create_screen_vm/DiseaseObservationCreateScreenVM-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    farmershands
+      1.4.0-dev6+78
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

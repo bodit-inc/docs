@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the paint method from the CowCurrentStatusDataTableExpandedRowPainter class, for the Dart programming language.">
+  <title>paint method - CowCurrentStatusDataTableExpandedRowPainter class - cow_current_status_data_table_expanded_row_painter library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">farmershands</a></li>
+    <li><a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/views_cow_current_status_cow_current_status_data_table_expanded_row_painter-library.html">cow_current_status_data_table_expanded_row_painter</a></li>
+    <li><a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/CowCurrentStatusDataTableExpandedRowPainter-class.html">CowCurrentStatusDataTableExpandedRowPainter</a></li>
+    <li class="self-crumb">paint method</li>
+  </ol>
+  <div class="self-name">paint</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-method">paint</span> method 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+<div>
+  <ol class="annotation-list">
+    <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
+  </ol>
+</div>
+
+<span class="returntype">void</span>
+<span class="name ">paint</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="paint-param-canvas"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a></span> <span class="parameter-name">canvas</span>, </span></li>
+<li><span class="parameter" id="paint-param-size"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Size-class.html">Size</a></span> <span class="parameter-name">size</span></span></li>
+</ol>)
+
+      <div class="features">override</div>
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Called whenever the object needs to paint. The given <a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a> has its
+coordinate space configured such that the origin is at the top left of the
+box. The area of the box is the size of the <code>size</code> argument.</p>
+<p>Paint operations should remain inside the given area. Graphical
+operations outside the bounds may be silently ignored, clipped, or not
+clipped. It may sometimes be difficult to guarantee that a certain
+operation is inside the bounds (e.g., drawing a rectangle whose size is
+determined by user inputs). In that case, consider calling
+<a href="https://api.flutter.dev/flutter/dart-ui/Canvas/clipRect.html">Canvas.clipRect</a> at the beginning of <a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/CowCurrentStatusDataTableExpandedRowPainter/paint.html">paint</a> so everything that follows
+will be guaranteed to only draw within the clipped area.</p>
+<p>Implementations should be wary of correctly pairing any calls to
+<a href="https://api.flutter.dev/flutter/dart-ui/Canvas/save.html">Canvas.save</a>/<a href="https://api.flutter.dev/flutter/dart-ui/Canvas/saveLayer.html">Canvas.saveLayer</a> and <a href="https://api.flutter.dev/flutter/dart-ui/Canvas/restore.html">Canvas.restore</a>, otherwise all
+subsequent painting on this canvas may be affected, with potentially
+hilarious but confusing results.</p>
+<p>To paint text on a <a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a>, use a <a href="https://api.flutter.dev/flutter/painting/TextPainter-class.html">TextPainter</a>.</p>
+<p>To paint an image on a <a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a>:</p>
+<ol>
+<li>
+<p>Obtain an <a href="https://api.flutter.dev/flutter/painting/ImageStream-class.html">ImageStream</a>, for example by calling <a href="https://api.flutter.dev/flutter/painting/ImageProvider/resolve.html">ImageProvider.resolve</a>
+on an <a href="https://api.flutter.dev/flutter/painting/AssetImage-class.html">AssetImage</a> or <a href="https://api.flutter.dev/flutter/painting/NetworkImage-class.html">NetworkImage</a> object.</p>
+</li>
+<li>
+<p>Whenever the <a href="https://api.flutter.dev/flutter/painting/ImageStream-class.html">ImageStream</a>'s underlying <a href="https://api.flutter.dev/flutter/painting/ImageInfo-class.html">ImageInfo</a> object changes
+(see <a href="https://api.flutter.dev/flutter/painting/ImageStream/addListener.html">ImageStream.addListener</a>), create a new instance of your custom
+paint delegate, giving it the new <a href="https://api.flutter.dev/flutter/painting/ImageInfo-class.html">ImageInfo</a> object.</p>
+</li>
+<li>
+<p>In your delegate's <a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/CowCurrentStatusDataTableExpandedRowPainter/paint.html">paint</a> method, call the <a href="https://api.flutter.dev/flutter/dart-ui/Canvas/drawImage.html">Canvas.drawImage</a>,
+<a href="https://api.flutter.dev/flutter/dart-ui/Canvas/drawImageRect.html">Canvas.drawImageRect</a>, or <a href="https://api.flutter.dev/flutter/dart-ui/Canvas/drawImageNine.html">Canvas.drawImageNine</a> methods to paint the
+<a href="https://api.flutter.dev/flutter/painting/ImageInfo/image.html">ImageInfo.image</a> object, applying the <a href="https://api.flutter.dev/flutter/painting/ImageInfo/scale.html">ImageInfo.scale</a> value to
+obtain the correct rendering size.</p>
+</li>
+</ol>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">@override
+void paint(Canvas canvas, Size size) {
+  var linePaint = Paint()
+    ..color = lineColor
+    ..strokeWidth = 2
+    ..style = PaintingStyle.stroke;
+  var backgroundPaint = Paint()
+    ..color = backgroundColor
+    ..strokeWidth = 0
+    ..style = PaintingStyle.fill;
+
+  final linePath = Path();
+  final backgroundPath = Path();
+
+  double totalColumnWidth = columns.fold(0, (value, element) {
+    return value + element.width;
+  });
+  var width = isFixed ? fixedColWidth : totalColumnWidth + 3 + 3 * 10 + 1 * 2;
+  var height = 36.0;
+  double startOffsetX = -7;
+  if (isFixed) startOffsetX = 7;
+  backgroundPath.moveTo(0, 0);
+  backgroundPath.lineTo(width, 0);
+  backgroundPath.lineTo(width, height);
+  backgroundPath.lineTo(0, height);
+  backgroundPath.lineTo(0, 0);
+  canvas.drawPath(backgroundPath, backgroundPaint);
+
+  linePath.moveTo(startOffsetX, -height);
+  if (isFixed) {
+    linePath.lineTo(startOffsetX + width + 3, -height);
+    linePath.lineTo(startOffsetX + width + 3, -1);
+    linePath.lineTo(startOffsetX, -1);
+  } else {
+    linePath.lineTo(startOffsetX + width - 2 * 2, -height);
+    linePath.lineTo(startOffsetX + width - 2 * 2, -1);
+    linePath.lineTo(startOffsetX, -1);
+  }
+  if (isFixed) linePath.lineTo(startOffsetX, -height - 1);
+  canvas.drawPath(linePath, linePaint);
+
+  if (!isFixed) {
+    &#47;&#47; double offsetX = columns[1].width;
+    double offsetX = columns[1].width;
+    final double fontSize = 14;
+    for (var i = 0; i &lt; columns.length; i++) {
+      if (i &lt;= 1) continue;
+
+      String text = (values[i] &#47; 60).round().toString();
+
+      String suffix = &quot;분&quot;;
+
+      &#47;&#47; if (i == 5) {
+      &#47;&#47;   text = values[i].round().toString();
+      &#47;&#47; } else if (i == 8) {
+      &#47;&#47;   text += &quot;&quot;;
+      &#47;&#47; } else if (i == 9 || i == 10) {
+      &#47;&#47;   text = &quot;&quot;;
+      &#47;&#47; } else
+
+      if (i == 5 || i == 8) {
+        &#47;&#47; 5=포유자극, 8=기침
+        text = values[i].round().toString();
+        suffix = &quot;회&quot;;
+      }
+
+      &#47;&#47; 활동량
+      if (i == 9) {
+        text = (values[i] * NumericConstants.activityScale).round().toString();
+        suffix = &quot;&quot;;
+      }
+
+      &#47;&#47; 10=소화기, 11=호흡기
+      if (i == 10 || i == 11) {
+        text = values[i] == -1 ? &quot;-&quot; : values[i].round().toString();
+        suffix = &quot;&quot;;
+      }
+
+      &#47;&#47; BCS
+      if (i == 12) {
+        if (values[i] == 0)
+          text = &quot;좋음&quot;;
+        else if (values[i] == 1)
+          text = &quot;보통&quot;;
+        else if (values[i] == 2)
+          text = &quot;나쁨&quot;;
+        else
+          text = &quot;-&quot;;
+        suffix = &quot;&quot;;
+      }
+
+      text += suffix;
+      &#47;&#47; String text = cowData.data.first.cowDataHour.first.digestive.value.toString();
+
+      TextSpan span = new TextSpan(text: text, style: TextStyle(color: Colors.black, fontSize: fontSize));
+      TextPainter tp = new TextPainter(text: span, textDirection: TextDirection.ltr, textAlign: TextAlign.center);
+      tp.layout(minWidth: columns[i].width);
+      tp.paint(canvas, new Offset(offsetX, height &#47; 2 - fontSize &#47; 2));
+      tp.paint(canvas, new Offset(offsetX, height &#47; 2 - fontSize &#47; 2));
+      offsetX += columns[i].width + 20;
+      &#47;&#47; offsetX += (i == 1 || i == 6) ? 1 : 3;
+    }
+  }
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">farmershands</a></li>
+  <li><a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/views_cow_current_status_cow_current_status_data_table_expanded_row_painter-library.html">cow_current_status_data_table_expanded_row_painter</a></li>
+  <li><a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/CowCurrentStatusDataTableExpandedRowPainter-class.html">CowCurrentStatusDataTableExpandedRowPainter</a></li>
+  <li class="self-crumb">paint method</li>
+</ol>
+
+
+    <h5>CowCurrentStatusDataTableExpandedRowPainter class</h5>
+    <ol>
+
+    <li class="section-title"><a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/CowCurrentStatusDataTableExpandedRowPainter-class.html#constructors">Constructors</a></li>
+    <li><a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/CowCurrentStatusDataTableExpandedRowPainter/CowCurrentStatusDataTableExpandedRowPainter.html">CowCurrentStatusDataTableExpandedRowPainter</a></li>
+
+
+    <li class="section-title">
+      <a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/CowCurrentStatusDataTableExpandedRowPainter-class.html#instance-properties">Properties</a>
+    </li>
+    <li><a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/CowCurrentStatusDataTableExpandedRowPainter/backgroundColor.html">backgroundColor</a></li>
+    <li><a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/CowCurrentStatusDataTableExpandedRowPainter/columns.html">columns</a></li>
+    <li><a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/CowCurrentStatusDataTableExpandedRowPainter/cowData.html">cowData</a></li>
+    <li><a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/CowCurrentStatusDataTableExpandedRowPainter/fixedColWidth.html">fixedColWidth</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li><a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/CowCurrentStatusDataTableExpandedRowPainter/isFixed.html">isFixed</a></li>
+    <li><a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/CowCurrentStatusDataTableExpandedRowPainter/lineColor.html">lineColor</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/semanticsBuilder.html">semanticsBuilder</a></li>
+    <li><a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/CowCurrentStatusDataTableExpandedRowPainter/values.html">values</a></li>
+
+    <li class="section-title"><a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/CowCurrentStatusDataTableExpandedRowPainter-class.html#instance-methods">Methods</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/addListener.html">addListener</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/hitTest.html">hitTest</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li><a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/CowCurrentStatusDataTableExpandedRowPainter/paint.html">paint</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/removeListener.html">removeListener</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/shouldRebuildSemantics.html">shouldRebuildSemantics</a></li>
+    <li><a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/CowCurrentStatusDataTableExpandedRowPainter/shouldRepaint.html">shouldRepaint</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/toString.html">toString</a></li>
+
+    <li class="section-title inherited"><a href="../../views_cow_current_status_cow_current_status_data_table_expanded_row_painter/CowCurrentStatusDataTableExpandedRowPainter-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    farmershands
+      1.4.0-dev6+78
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

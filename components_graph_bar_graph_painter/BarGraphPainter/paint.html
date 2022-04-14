@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the paint method from the BarGraphPainter class, for the Dart programming language.">
+  <title>paint method - BarGraphPainter class - bar_graph_painter library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">farmershands</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/components_graph_bar_graph_painter-library.html">bar_graph_painter</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter-class.html">BarGraphPainter</a></li>
+    <li class="self-crumb">paint method</li>
+  </ol>
+  <div class="self-name">paint</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-method">paint</span> method 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+<div>
+  <ol class="annotation-list">
+    <li>@<a href="https://api.flutter.dev/flutter/dart-core/override-constant.html">override</a></li>
+  </ol>
+</div>
+
+<span class="returntype">void</span>
+<span class="name ">paint</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="paint-param-canvas"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a></span> <span class="parameter-name">canvas</span>, </span></li>
+<li><span class="parameter" id="paint-param-size"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Size-class.html">Size</a></span> <span class="parameter-name">size</span></span></li>
+</ol>)
+
+      <div class="features">override</div>
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Called whenever the object needs to paint. The given <a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a> has its
+coordinate space configured such that the origin is at the top left of the
+box. The area of the box is the size of the <code>size</code> argument.</p>
+<p>Paint operations should remain inside the given area. Graphical
+operations outside the bounds may be silently ignored, clipped, or not
+clipped. It may sometimes be difficult to guarantee that a certain
+operation is inside the bounds (e.g., drawing a rectangle whose size is
+determined by user inputs). In that case, consider calling
+<a href="https://api.flutter.dev/flutter/dart-ui/Canvas/clipRect.html">Canvas.clipRect</a> at the beginning of <a href="../../components_graph_bar_graph_painter/BarGraphPainter/paint.html">paint</a> so everything that follows
+will be guaranteed to only draw within the clipped area.</p>
+<p>Implementations should be wary of correctly pairing any calls to
+<a href="https://api.flutter.dev/flutter/dart-ui/Canvas/save.html">Canvas.save</a>/<a href="https://api.flutter.dev/flutter/dart-ui/Canvas/saveLayer.html">Canvas.saveLayer</a> and <a href="https://api.flutter.dev/flutter/dart-ui/Canvas/restore.html">Canvas.restore</a>, otherwise all
+subsequent painting on this canvas may be affected, with potentially
+hilarious but confusing results.</p>
+<p>To paint text on a <a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a>, use a <a href="https://api.flutter.dev/flutter/painting/TextPainter-class.html">TextPainter</a>.</p>
+<p>To paint an image on a <a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a>:</p>
+<ol>
+<li>
+<p>Obtain an <a href="https://api.flutter.dev/flutter/painting/ImageStream-class.html">ImageStream</a>, for example by calling <a href="https://api.flutter.dev/flutter/painting/ImageProvider/resolve.html">ImageProvider.resolve</a>
+on an <a href="https://api.flutter.dev/flutter/painting/AssetImage-class.html">AssetImage</a> or <a href="https://api.flutter.dev/flutter/painting/NetworkImage-class.html">NetworkImage</a> object.</p>
+</li>
+<li>
+<p>Whenever the <a href="https://api.flutter.dev/flutter/painting/ImageStream-class.html">ImageStream</a>'s underlying <a href="https://api.flutter.dev/flutter/painting/ImageInfo-class.html">ImageInfo</a> object changes
+(see <a href="https://api.flutter.dev/flutter/painting/ImageStream/addListener.html">ImageStream.addListener</a>), create a new instance of your custom
+paint delegate, giving it the new <a href="https://api.flutter.dev/flutter/painting/ImageInfo-class.html">ImageInfo</a> object.</p>
+</li>
+<li>
+<p>In your delegate's <a href="../../components_graph_bar_graph_painter/BarGraphPainter/paint.html">paint</a> method, call the <a href="https://api.flutter.dev/flutter/dart-ui/Canvas/drawImage.html">Canvas.drawImage</a>,
+<a href="https://api.flutter.dev/flutter/dart-ui/Canvas/drawImageRect.html">Canvas.drawImageRect</a>, or <a href="https://api.flutter.dev/flutter/dart-ui/Canvas/drawImageNine.html">Canvas.drawImageNine</a> methods to paint the
+<a href="https://api.flutter.dev/flutter/painting/ImageInfo/image.html">ImageInfo.image</a> object, applying the <a href="https://api.flutter.dev/flutter/painting/ImageInfo/scale.html">ImageInfo.scale</a> value to
+obtain the correct rendering size.</p>
+</li>
+</ol>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">@override
+void paint(Canvas canvas, Size size) {
+  if (barDayItems == null) return;
+  horizontalLinePaint.strokeWidth = horizontalLineHeight;
+  yMaxVal = Helper().getMaxValueFromBarDayData(barDayDatas: barDayItems!);
+
+  maxBarHeight =
+      (size.height - xLabelHourSize - xLabelHourMargin - xLabelDaySize - xLabelDayMargin - xLabelBirthDaySize - xLabelBirthDayMargin - yTopMargin - horizontalLineHeight) &#47; (isBiDirectional ? 2 : 1);
+  baseOffsetY = isBiDirectional ? -maxBarHeight : 0;
+  ySectionHeight = maxBarHeight &#47; (yLabelCount - 1);
+  if (yMaxVal == 0) yMaxVal = 1;
+  barHeightRatio = (maxBarHeight &#47; yMaxVal);
+  var offsetDx = offset.dx;
+
+  if (!yLabelVisible) {
+    barStartOffsetX = 0;
+    yLabelSize = 0;
+    yLabelMargin = 0;
+    yLabelWidth = 0;
+  }
+
+  &#47;&#47; 낮, 밤 표시
+  for (var k = 0; k &lt; barDayItems!.length; k++) {
+    var barHourData = barDayItems![k].barHourData;
+    offsetDx = offset.dx + ((barWidth * hourCntInDay + barSpace * hourCntInDay) * k);
+
+    &#47;&#47; 밴드 하단
+    for (var i = 0; i &lt; barHourData.length; i++) {
+      if (barHourData[i] == null) continue;
+      if ((k == 0 &amp;&amp; i == 0 &amp;&amp; (barHourData[i]!.dateTime.hour &gt;= barDayItems![k].sunSetDateTime.hour || barHourData[i]!.dateTime.hour &lt; barDayItems![k].sunRiseDateTime.hour)) ||
+          barHourData[i]!.dateTime.hour == barDayItems![k].sunSetDateTime.hour) {
+        var width = (barWidth + barSpace) * (barDayItems![k].sunSetDateTime.hour - barDayItems![k].sunRiseDateTime.hour);
+        var _dx = offsetDx +
+            yLabelWidth +
+            yLabelMargin +
+            barStartOffsetX +
+            (barWidth + barSpace) * i +
+            (barWidth + barSpace) * ((barDayItems![k].sunSetDateTime.hour - barDayItems![k].sunRiseDateTime.hour) &#47; 2);
+        if (k == 0 &amp;&amp; i == 0) {
+          if (barHourData[i]!.dateTime.hour &gt;= barDayItems![k].sunSetDateTime.hour) {
+            _dx = offsetDx + yLabelWidth + yLabelMargin + barStartOffsetX + (barWidth + barSpace) * ((barDayItems![k].sunSetDateTime.hour).abs() &#47; 2);
+            width = (barWidth + barSpace) * (barHourData[i]!.dateTime.hour - barDayItems![k].sunSetDateTime.hour).abs();
+          } else if (barHourData[i]!.dateTime.hour &lt; barDayItems![k].sunRiseDateTime.hour) {
+            _dx = offsetDx + yLabelWidth + yLabelMargin + barStartOffsetX + (barWidth + barSpace) * ((barHourData[i]!.dateTime.hour - barDayItems![k].sunRiseDateTime.hour).abs() &#47; 2);
+            width = (barWidth + barSpace) * (barHourData[i]!.dateTime.hour - barDayItems![k].sunRiseDateTime.hour).abs();
+          }
+        }
+
+        if (isNightVisible) {
+          canvas.drawRect(
+            Rect.fromCenter(
+              center: Offset(
+                _dx,
+                (size.height - xLabelHourSize - xLabelHourMargin - xLabelDaySize - xLabelDayMargin) &#47; 2,
+              ),
+              width: width,
+              height: size.height - xLabelHourSize - xLabelHourMargin - xLabelDaySize - xLabelDayMargin,
+            ),
+            nightPaint,
+          );
+        }
+      }
+    }
+  }
+
+  &#47;&#47; x축 일별 순회
+  for (var k = 0; k &lt; barDayItems!.length; k++) {
+    Offset barCenter = Offset.zero;
+    double barHeight = size.height;
+    List&lt;BarHourData?&gt; barHourData = barDayItems![k].barHourData;
+
+    &#47;&#47; if (barDayItems?[k] == null)
+    &#47;&#47;   barHourData = [BarHourData(value: 0, valueLabel: &quot;0&quot;, realValue: 0, label: &quot;-&quot;, dateTime: DateTime.now())];
+    &#47;&#47; else
+    &#47;&#47;   barHourData = barDayItems![k].barHourData;
+
+    offsetDx = offset.dx + ((barWidth * hourCntInDay + barSpace * hourCntInDay) * k);
+    String labelDay = (hourCntInDay == 1) ? &quot;&quot; : intl.DateFormat(&#39;yyyy.MM.dd&#39;).format(barDayItems![k].dateTime);
+
+    &#47;&#47; 가로줄 그리기
+    if (yLabelVisible || horizontalLineVisible) drawYLabel(canvas, size, k);
+
+    &#47;&#47; xLabelDay 그리기
+    if (xLabelHourVisible) drawXLabelDay(canvas, size, Offset(offsetDx, 0), barDayItems![k].label, labelDay, k);
+
+    &#47;&#47; x축 - 시간 순회
+    for (var i = 0; i &lt; hourCntInDay; i++) {
+      if (barHourData[i] == null) continue;
+      barCenter = Offset.zero;
+      barHeight = size.height;
+      double barHeightBottom = size.height;
+
+      &#47;&#47; Bar 그리기
+      List&lt;dynamic&gt; result = drawBar(canvas, size, barHourData, offsetDx, i);
+      barCenter = result[0];
+      barHeight = result[1];
+      barHeightBottom = result[2];
+
+      &#47;&#47; xLabelValue 텍스트 그리기
+      if (xLabelValueVisible) drawXLabelValue(canvas, size, barHourData[i]!.valueLabel, barHourData[i]!.valueBottomLabel, barCenter, barHeight, barHeightBottom);
+
+      &#47;&#47; xLabelHour 그리기
+      if (xLabelHourVisible) drawXLabelHour(canvas, size, barCenter, barHourData[i]!.label, labelDay);
+
+      &#47;&#47; xLabelBirthDay 그리기
+      if (xLabelHourVisible)
+        drawXLabelBirthDay(
+          canvas,
+          size,
+          barCenter,
+          cow?.getDayAfterBirthStrFromDateTime(barHourData[i]!.dateTime) ?? &quot;-&quot;,
+          labelDay,
+        );
+    }
+  }
+
+  &#47;&#47; 정상범위 밴드 표시
+  if (isRangeVisible) {
+    drawRangePath(canvas, size, false);
+
+    if (isBiDirectional) {
+      drawRangePath(canvas, size, true);
+    }
+  }
+
+  &#47;&#47; 평균 선 그래프
+  if (isAvgLineVisible) {
+    drawAvgLine(canvas, size, false);
+    if (isBiDirectional) drawAvgLine(canvas, size, true);
+  }
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">farmershands</a></li>
+  <li><a href="../../components_graph_bar_graph_painter/components_graph_bar_graph_painter-library.html">bar_graph_painter</a></li>
+  <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter-class.html">BarGraphPainter</a></li>
+  <li class="self-crumb">paint method</li>
+</ol>
+
+
+    <h5>BarGraphPainter class</h5>
+    <ol>
+
+    <li class="section-title"><a href="../../components_graph_bar_graph_painter/BarGraphPainter-class.html#constructors">Constructors</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/BarGraphPainter.html">BarGraphPainter</a></li>
+
+
+    <li class="section-title">
+      <a href="../../components_graph_bar_graph_painter/BarGraphPainter-class.html#instance-properties">Properties</a>
+    </li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barDayItems.html">barDayItems</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barHeightRatio.html">barHeightRatio</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaint.html">barPaint</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaintDark.html">barPaintDark</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaintHighlight.html">barPaintHighlight</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaintLight.html">barPaintLight</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaintSit.html">barPaintSit</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaintSitHighlight.html">barPaintSitHighlight</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaintStand.html">barPaintStand</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaintStandHighlight.html">barPaintStandHighlight</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barSpace.html">barSpace</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barStartOffsetX.html">barStartOffsetX</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barWidth.html">barWidth</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/baseOffsetY.html">baseOffsetY</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/cow.html">cow</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/current.html">current</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/dotPaint1.html">dotPaint1</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/dotPaint2.html">dotPaint2</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/dotPaint3.html">dotPaint3</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/horizontalLineDashSpace.html">horizontalLineDashSpace</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/horizontalLineDashWidth.html">horizontalLineDashWidth</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/horizontalLineHeight.html">horizontalLineHeight</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/horizontalLinePaint.html">horizontalLinePaint</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/horizontalLineVisible.html">horizontalLineVisible</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/hourCntInDay.html">hourCntInDay</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/isAvgLineVisible.html">isAvgLineVisible</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/isBiDirectional.html">isBiDirectional</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/isGroupAvg.html">isGroupAvg</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/isNightVisible.html">isNightVisible</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/isRangeVisible.html">isRangeVisible</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/lineDotPaint.html">lineDotPaint</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/linePaint.html">linePaint</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/maxBarHeight.html">maxBarHeight</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/next.html">next</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/nightPaint.html">nightPaint</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/offset.html">offset</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/prev.html">prev</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/rangePaint.html">rangePaint</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/semanticsBuilder.html">semanticsBuilder</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/smoothness.html">smoothness</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/temp.html">temp</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/xLabelBirthDayMargin.html">xLabelBirthDayMargin</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/xLabelBirthDaySize.html">xLabelBirthDaySize</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/xLabelBirthDayVisible.html">xLabelBirthDayVisible</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/xLabelDayMargin.html">xLabelDayMargin</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/xLabelDaySize.html">xLabelDaySize</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/xLabelDayVisible.html">xLabelDayVisible</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/xLabelHourMargin.html">xLabelHourMargin</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/xLabelHourSize.html">xLabelHourSize</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/xLabelHourVisible.html">xLabelHourVisible</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/xLabelValueMargin.html">xLabelValueMargin</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/xLabelValueSize.html">xLabelValueSize</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/xLabelValueVisible.html">xLabelValueVisible</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/yLabelCount.html">yLabelCount</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/yLabelMargin.html">yLabelMargin</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/yLabelSize.html">yLabelSize</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/yLabelVisible.html">yLabelVisible</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/yLabelWidth.html">yLabelWidth</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/yMaxVal.html">yMaxVal</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/yMinVal.html">yMinVal</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/ySectionHeight.html">ySectionHeight</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/yTopMargin.html">yTopMargin</a></li>
+
+    <li class="section-title"><a href="../../components_graph_bar_graph_painter/BarGraphPainter-class.html#instance-methods">Methods</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/addListener.html">addListener</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/drawAvgLine.html">drawAvgLine</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/drawBar.html">drawBar</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/drawHorizontalLine.html">drawHorizontalLine</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/drawRangePath.html">drawRangePath</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/drawXLabelBirthDay.html">drawXLabelBirthDay</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/drawXLabelDay.html">drawXLabelDay</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/drawXLabelHour.html">drawXLabelHour</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/drawXLabelValue.html">drawXLabelValue</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/drawYLabel.html">drawYLabel</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/hitTest.html">hitTest</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/paint.html">paint</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/removeListener.html">removeListener</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/shouldRebuildSemantics.html">shouldRebuildSemantics</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/shouldRepaint.html">shouldRepaint</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/toString.html">toString</a></li>
+
+    <li class="section-title inherited"><a href="../../components_graph_bar_graph_painter/BarGraphPainter-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    farmershands
+      1.4.0-dev6+78
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

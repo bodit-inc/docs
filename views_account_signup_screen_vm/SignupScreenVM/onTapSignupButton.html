@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the onTapSignupButton method from the SignupScreenVM class, for the Dart programming language.">
+  <title>onTapSignupButton method - SignupScreenVM class - signup_screen_vm library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">farmershands</a></li>
+    <li><a href="../../views_account_signup_screen_vm/views_account_signup_screen_vm-library.html">signup_screen_vm</a></li>
+    <li><a href="../../views_account_signup_screen_vm/SignupScreenVM-class.html">SignupScreenVM</a></li>
+    <li class="self-crumb">onTapSignupButton method</li>
+  </ol>
+  <div class="self-name">onTapSignupButton</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-method">onTapSignupButton</span> method 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype">void</span>
+<span class="name ">onTapSignupButton</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="onTapSignupButton-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span></span></li>
+</ol>)
+
+      
+
+    </section>
+    
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">void onTapSignupButton(BuildContext context) async {
+  if (_isSubmitting) return;
+
+  _isSubmitting = true;
+
+  final username = usernameController.text.trim();
+  final email = emailController.text.trim();
+  final pass = passController.text.trim();
+  final repass = repassController.text.trim();
+  final name = nameController.text.trim();
+  String phone = phoneNumberController.text.trim();
+  final birth = birthController.text.trim();
+
+  EventService().eventBus.fire(PopupEvent(type: PopupType.loading, action: PopupAction.show));
+
+  String errTitle = &quot;&quot;;
+  String errContent = &quot;&quot;;
+  if (username.isEmpty) {
+    errTitle = &quot;아이디 누락&quot;;
+    errContent = &quot;아이디를 입력하세요.&quot;;
+  }
+  if (username.length &lt; 6) {
+    errTitle = &quot;아이디 길이&quot;;
+    errContent = &quot;아이디는 최소 6자 이상이어야 합니다.&quot;;
+  }
+  final regExpUsername = RegExp(r&#39;^[a-z][a-z0-9]{4,20}$&#39;);
+  if (!regExpUsername.hasMatch(username)) {
+    errTitle = &quot;아이디 오류&quot;;
+    errContent = &quot;아이디는 영문(소문자), 숫자만 가능하며 숫자로 시작할 수 없습니다. \n아이디는 최소 5자 이상이어야 합니다.&quot;;
+  }
+
+  &#47;&#47; if (email.isEmpty) {
+  &#47;&#47;   errTitle = &quot;이메일 누락&quot;;
+  &#47;&#47;   errContent = &quot;이메일을 입력하세요.&quot;;
+  &#47;&#47; }
+
+  if (pass.isEmpty) {
+    errTitle = &quot;비밀번호 누락&quot;;
+    errContent = &quot;비밀번호를 입력하세요.&quot;;
+  }
+  if (pass.length &lt; 8) {
+    errTitle = &quot;비밀번호 길이&quot;;
+    errContent = &quot;비밀번호는 최소 8자 이상이어야 합니다.&quot;;
+  }
+
+  if (repass.isEmpty) {
+    errTitle = &quot;비밀번호확인 누락&quot;;
+    errContent = &quot;비밀번호확인을 입력하세요.&quot;;
+  }
+  if (repass.length &lt; 8) {
+    errTitle = &quot;비밀번호 길이&quot;;
+    errContent = &quot;비밀번호 확인은 최소 8자 이상이어야 합니다.&quot;;
+  }
+
+  if (pass != repass) {
+    errTitle = &quot;비밀번호 불일치&quot;;
+    errContent = &quot;비밀번호와 확인 비밀번호가 일치하지 않습니다.&quot;;
+  }
+
+  if (name.isEmpty) {
+    errTitle = &quot;이름 누락&quot;;
+    errContent = &quot;이름을 입력하세요.&quot;;
+  }
+
+  if (phone.isEmpty) {
+    errTitle = &quot;올바른 핸드폰 번호&quot;;
+    errContent = &quot;올바른 핸드폰 번호를 입력하세요. 계정 인증에 꼭 필요합니다.&quot;;
+  }
+
+  if (Validators.phoneNumberValidator(phone)) {
+    phone = &quot;+82&quot; + phone.substring(1);
+    phone = phone.replaceAll(&quot;-&quot;, &quot;&quot;);
+  } else {
+    errTitle = &quot;올바른 핸드폰 번호&quot;;
+    errContent = &quot;올바른 핸드폰 번호를 입력하세요.&quot;;
+  }
+
+  &#47;&#47; if (birth.isEmpty) {
+  &#47;&#47;   errTitle = &quot;생년월일 누락&quot;;
+  &#47;&#47;   errContent = &quot;생년월일을 선택하세요.&quot;;
+  &#47;&#47; }
+
+  if (!(isAgreeTerm &amp;&amp; isAgreePrivateInfo)) {
+    errTitle = &quot;동의사항 체크&quot;;
+    errContent = &quot;약관, 개인정보 취급방침,  체크하셔야 서비스이용이 가능합니다.&quot;;
+  }
+
+  if (errTitle != &quot;&quot; || errContent != &quot;&quot;) {
+    EventService().eventBus.fire(
+          PopupEvent(
+            type: PopupType.alert,
+            action: PopupAction.show,
+            data: {&quot;title&quot;: errTitle, &quot;content&quot;: errContent},
+            onClose: () {
+              Navigator.of(context, rootNavigator: true).popUntil((route) =&gt; !route.settings.name!.startsWith(PopupScreen.routeName));
+            },
+          ),
+        );
+    _isSubmitting = false;
+    return;
+  }
+
+  final accountType = isCheckedOwner ? &#39;owner&#39; : &#39;worker&#39;;
+
+  try {
+    Map&lt;String, String&gt; userAttributes = {
+      &quot;birthdate&quot;: birth,
+      &quot;name&quot;: name,
+      &quot;phone_number&quot;: phone,
+      &#47;&#47; &quot;email&quot;: email,
+      &quot;custom:account_type&quot;: accountType,
+    };
+    print(pass);
+    SignUpResult res = await Amplify.Auth.signUp(
+      username: username,
+      password: pass,
+      options: CognitoSignUpOptions(userAttributes: userAttributes),
+    );
+
+    if (res.nextStep.signUpStep == &quot;CONFIRM_SIGN_UP_STEP&quot;) {
+      Navigator.of(context, rootNavigator: true).popUntil((route) =&gt; route.settings.name == SignupScreen.routeName);
+      Navigator.of(context, rootNavigator: true).pushNamed(PhoneAuthScreen.routeName, arguments: PhoneAuthScreenArguments(username: username));
+    } else {
+      EventService().eventBus.fire(
+            PopupEvent(
+              type: PopupType.alert,
+              action: PopupAction.show,
+              data: {
+                &quot;title&quot;: &quot;회원등록실패&quot;,
+                &quot;content&quot;: &quot;회원등록에 실패했습니다.&quot;,
+              },
+              onClose: () {
+                Navigator.of(context, rootNavigator: true).popUntil((route) =&gt; !route.settings.name!.startsWith(PopupScreen.routeName));
+              },
+            ),
+          );
+    }
+  } on AuthException catch (e) {
+    print(e.recoverySuggestion);
+    print(e.underlyingException);
+    print(e.message.toString());
+    print(&quot;Username already exists in the system&quot;);
+    if (e.message == &quot;Username already exists in the system.&quot;) {
+      try {
+        ResendSignUpCodeResult res = await Amplify.Auth.resendSignUpCode(username: username);
+      } on AuthException catch (e) {
+        print(&quot;AuthException&quot;);
+        EventService().eventBus.fire(
+              PopupEvent(
+                type: PopupType.alert,
+                action: PopupAction.show,
+                data: {&quot;title&quot;: &quot;오류&quot;, &quot;content&quot;: e.message},
+                onClose: () {
+                  Navigator.of(context, rootNavigator: true).popUntil((route) =&gt; !route.settings.name!.startsWith(PopupScreen.routeName));
+                },
+              ),
+            );
+        _isSubmitting = false;
+        return;
+      }
+
+      Navigator.of(context, rootNavigator: true).popUntil((route) =&gt; route.settings.name == SignupScreen.routeName);
+      Navigator.of(context, rootNavigator: true).pushNamed(PhoneAuthScreen.routeName, arguments: PhoneAuthScreenArguments(username: username));
+      _isSubmitting = false;
+      return;
+    }
+
+    EventService().eventBus.fire(
+          PopupEvent(
+            type: PopupType.alert,
+            action: PopupAction.show,
+            data: {&quot;title&quot;: &quot;오류&quot;, &quot;content&quot;: e.message},
+            onClose: () {
+              Navigator.of(context, rootNavigator: true).popUntil((route) =&gt; !route.settings.name!.startsWith(PopupScreen.routeName));
+            },
+          ),
+        );
+  }
+  _isSubmitting = false;
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">farmershands</a></li>
+  <li><a href="../../views_account_signup_screen_vm/views_account_signup_screen_vm-library.html">signup_screen_vm</a></li>
+  <li><a href="../../views_account_signup_screen_vm/SignupScreenVM-class.html">SignupScreenVM</a></li>
+  <li class="self-crumb">onTapSignupButton method</li>
+</ol>
+
+
+    <h5>SignupScreenVM class</h5>
+    <ol>
+
+    <li class="section-title"><a href="../../views_account_signup_screen_vm/SignupScreenVM-class.html#constructors">Constructors</a></li>
+    <li><a href="../../views_account_signup_screen_vm/SignupScreenVM/SignupScreenVM.html">SignupScreenVM</a></li>
+
+
+    <li class="section-title">
+      <a href="../../views_account_signup_screen_vm/SignupScreenVM-class.html#instance-properties">Properties</a>
+    </li>
+    <li><a href="../../views_account_signup_screen_vm/SignupScreenVM/birthController.html">birthController</a></li>
+    <li><a href="../../views_account_signup_screen_vm/SignupScreenVM/emailController.html">emailController</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li><a href="../../views_account_signup_screen_vm/SignupScreenVM/isAgreeMarketingInfo.html">isAgreeMarketingInfo</a></li>
+    <li><a href="../../views_account_signup_screen_vm/SignupScreenVM/isAgreePrivateInfo.html">isAgreePrivateInfo</a></li>
+    <li><a href="../../views_account_signup_screen_vm/SignupScreenVM/isAgreeTerm.html">isAgreeTerm</a></li>
+    <li><a href="../../views_account_signup_screen_vm/SignupScreenVM/isCheckedAgree.html">isCheckedAgree</a></li>
+    <li><a href="../../views_account_signup_screen_vm/SignupScreenVM/isCheckedOwner.html">isCheckedOwner</a></li>
+    <li><a href="../../views_account_signup_screen_vm/SignupScreenVM/nameController.html">nameController</a></li>
+    <li><a href="../../views_account_signup_screen_vm/SignupScreenVM/passController.html">passController</a></li>
+    <li><a href="../../views_account_signup_screen_vm/SignupScreenVM/phoneCodeController.html">phoneCodeController</a></li>
+    <li><a href="../../views_account_signup_screen_vm/SignupScreenVM/phoneNumberController.html">phoneNumberController</a></li>
+    <li><a href="../../views_account_signup_screen_vm/SignupScreenVM/repassController.html">repassController</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li><a href="../../views_account_signup_screen_vm/SignupScreenVM/selectBirthDate.html">selectBirthDate</a></li>
+    <li><a href="../../views_account_signup_screen_vm/SignupScreenVM/usernameController.html">usernameController</a></li>
+
+    <li class="section-title"><a href="../../views_account_signup_screen_vm/SignupScreenVM-class.html#instance-methods">Methods</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li><a href="../../views_account_signup_screen_vm/SignupScreenVM/onTapSignupButton.html">onTapSignupButton</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
+
+    <li class="section-title inherited"><a href="../../views_account_signup_screen_vm/SignupScreenVM-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    farmershands
+      1.3.12+61
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

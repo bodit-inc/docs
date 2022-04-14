@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the BarGraphPainter class from the bar_graph_painter library, for the Dart programming language.">
+  <title>BarGraphPainter class - bar_graph_painter library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">farmershands</a></li>
+    <li><a href="../components_graph_bar_graph_painter/components_graph_bar_graph_painter-library.html">bar_graph_painter</a></li>
+    <li class="self-crumb">BarGraphPainter class</li>
+  </ol>
+  <div class="self-name">BarGraphPainter</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-class">BarGraphPainter</span> class 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+ 
+</h1></div>
+
+    
+<section class="desc markdown">
+  <p>그래프 페인터
+yLabel은 bar_graph_ylabel_painter.dart에서 별도로 그립니다.</p>
+</section>
+
+
+    <section>
+      <dl class="dl-horizontal">
+        <dt>Inheritance</dt>
+        <dd><ul class="gt-separated dark clazz-relationships">
+          <li><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></li>
+          <li><a href="https://api.flutter.dev/flutter/foundation/Listenable-class.html">Listenable</a></li>
+          <li><a href="https://api.flutter.dev/flutter/rendering/CustomPainter-class.html">CustomPainter</a></li>
+          <li>BarGraphPainter</li>
+        </ul></dd>
+
+
+
+        <dt>Implementers</dt>
+        <dd><ul class="comma-separated clazz-relationships">
+          <li><a href="../components_graph_bar_graph_ylabel_painter/BarGraphYLabelPainter-class.html">BarGraphYLabelPainter</a></li>
+        </ul></dd>
+
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="constructors">
+      <h2>Constructors</h2>
+
+      <dl class="constructor-summary-list">
+        <dt id="BarGraphPainter" class="callable">
+          <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/BarGraphPainter.html">BarGraphPainter</a></span><span class="signature">(<span class="parameter" id="-param-barDayItems">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_bar_day_data/BarDayData-class.html">BarDayData</a></span>&gt;</span>?</span> <span class="parameter-name">barDayItems</span>, </span><span class="parameter" id="-param-isBiDirectional"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isBiDirectional</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-barWidth"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">barWidth</span> = <span class="default-value">20.0</span>, </span><span class="parameter" id="-param-hourCntInDay"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">hourCntInDay</span> = <span class="default-value">1</span>, </span><span class="parameter" id="-param-isGroupAvg"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isGroupAvg</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-yLabelVisible"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">yLabelVisible</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-horizontalLineVisible"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">horizontalLineVisible</span> = <span class="default-value">true</span>, </span><span class="parameter" id="-param-cow"><span class="type-annotation"><a href="../models_cow/Cow-class.html">Cow</a>?</span> <span class="parameter-name">cow</span>}</span>)</span>
+        </dt>
+        <dd>
+           
+        </dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="instance-properties">
+      <h2>Properties</h2>
+
+      <dl class="properties">
+        <dt id="barDayItems" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/barDayItems.html">barDayItems</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_bar_day_data/BarDayData-class.html">BarDayData</a></span>&gt;</span>?</span> 
+
+</dt>
+<dd>
+  그래프 데이터 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="barHeightRatio" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/barHeightRatio.html">barHeightRatio</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="barPaint" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/barPaint.html">barPaint</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Paint-class.html">Paint</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">final</div>
+
+</dd>
+
+        <dt id="barPaintDark" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/barPaintDark.html">barPaintDark</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Paint-class.html">Paint</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">final</div>
+
+</dd>
+
+        <dt id="barPaintHighlight" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/barPaintHighlight.html">barPaintHighlight</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Paint-class.html">Paint</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">final</div>
+
+</dd>
+
+        <dt id="barPaintLight" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/barPaintLight.html">barPaintLight</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Paint-class.html">Paint</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">final</div>
+
+</dd>
+
+        <dt id="barPaintSit" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/barPaintSit.html">barPaintSit</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Paint-class.html">Paint</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">final</div>
+
+</dd>
+
+        <dt id="barPaintSitHighlight" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/barPaintSitHighlight.html">barPaintSitHighlight</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Paint-class.html">Paint</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">final</div>
+
+</dd>
+
+        <dt id="barPaintStand" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/barPaintStand.html">barPaintStand</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Paint-class.html">Paint</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">final</div>
+
+</dd>
+
+        <dt id="barPaintStandHighlight" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/barPaintStandHighlight.html">barPaintStandHighlight</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Paint-class.html">Paint</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">final</div>
+
+</dd>
+
+        <dt id="barSpace" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/barSpace.html">barSpace</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  바 간 간격 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="barStartOffsetX" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/barStartOffsetX.html">barStartOffsetX</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  첫 바의 시작 오프셋 X 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="barWidth" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/barWidth.html">barWidth</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  바의 넓이 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="baseOffsetY" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/baseOffsetY.html">baseOffsetY</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="cow" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/cow.html">cow</a></span>
+  <span class="signature">&#8596; <a href="../models_cow/Cow-class.html">Cow</a>?</span> 
+
+</dt>
+<dd>
+  일령을 계산하기 위해 소정보를 담습니다. 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="current" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/current.html">current</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-ui/Offset-class.html">Offset</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="dotPaint1" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/dotPaint1.html">dotPaint1</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Paint-class.html">Paint</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">final</div>
+
+</dd>
+
+        <dt id="dotPaint2" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/dotPaint2.html">dotPaint2</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Paint-class.html">Paint</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">final</div>
+
+</dd>
+
+        <dt id="dotPaint3" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/dotPaint3.html">dotPaint3</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Paint-class.html">Paint</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">final</div>
+
+</dd>
+
+        <dt id="hashCode" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> 
+
+</dt>
+<dd class="inherited">
+  The hash code for this object. <a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">[...]</a>
+  <div class="features">read-only, inherited</div>
+
+</dd>
+
+        <dt id="horizontalLineDashSpace" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/horizontalLineDashSpace.html">horizontalLineDashSpace</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  가로선의 점선간격 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="horizontalLineDashWidth" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/horizontalLineDashWidth.html">horizontalLineDashWidth</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  가로선의 점선넓이 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="horizontalLineHeight" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/horizontalLineHeight.html">horizontalLineHeight</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  가로선의 높이 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="horizontalLinePaint" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/horizontalLinePaint.html">horizontalLinePaint</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-ui/Paint-class.html">Paint</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="horizontalLineVisible" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/horizontalLineVisible.html">horizontalLineVisible</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+  가로선을 보여줄것인지 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="hourCntInDay" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/hourCntInDay.html">hourCntInDay</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> 
+
+</dt>
+<dd>
+  하루에 몇시간이 존재하는지, 일별 그래프면 1개, 시간별 그래프면  24개 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="isAvgLineVisible" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/isAvgLineVisible.html">isAvgLineVisible</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="isBiDirectional" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/isBiDirectional.html">isBiDirectional</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+  앉기/서기 그래프의 경우 가운데 축을 기준으로 위아래로 표현합니다. 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="isGroupAvg" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/isGroupAvg.html">isGroupAvg</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+  쓰지않음 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="isNightVisible" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/isNightVisible.html">isNightVisible</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="isRangeVisible" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/isRangeVisible.html">isRangeVisible</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="lineDotPaint" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/lineDotPaint.html">lineDotPaint</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Paint-class.html">Paint</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">final</div>
+
+</dd>
+
+        <dt id="linePaint" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/linePaint.html">linePaint</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Paint-class.html">Paint</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">final</div>
+
+</dd>
+
+        <dt id="maxBarHeight" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/maxBarHeight.html">maxBarHeight</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="next" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/next.html">next</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-ui/Offset-class.html">Offset</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="nightPaint" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/nightPaint.html">nightPaint</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Paint-class.html">Paint</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">final</div>
+
+</dd>
+
+        <dt id="offset" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/offset.html">offset</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-ui/Offset-class.html">Offset</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="prev" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/prev.html">prev</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-ui/Offset-class.html">Offset</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="rangePaint" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/rangePaint.html">rangePaint</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-ui/Paint-class.html">Paint</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">final</div>
+
+</dd>
+
+        <dt id="runtimeType" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/Type-class.html">Type</a></span> 
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object. 
+  <div class="features">read-only, inherited</div>
+
+</dd>
+
+        <dt id="semanticsBuilder" class="property inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/semanticsBuilder.html">semanticsBuilder</a></span>
+  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/rendering/SemanticsBuilderCallback.html">SemanticsBuilderCallback</a>?</span> 
+
+</dt>
+<dd class="inherited">
+  Returns a function that builds semantic information for the picture drawn
+by this painter. <a href="https://api.flutter.dev/flutter/rendering/CustomPainter/semanticsBuilder.html">[...]</a>
+  <div class="features">read-only, inherited</div>
+
+</dd>
+
+        <dt id="smoothness" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/smoothness.html">smoothness</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="temp" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/temp.html">temp</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-ui/Offset-class.html">Offset</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="xLabelBirthDayMargin" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelBirthDayMargin.html">xLabelBirthDayMargin</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  x축 일령라벨 텍스트와 그래프간 간격 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="xLabelBirthDaySize" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelBirthDaySize.html">xLabelBirthDaySize</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  x축 일령라벨 텍스트의 사이즈 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="xLabelBirthDayVisible" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelBirthDayVisible.html">xLabelBirthDayVisible</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+  x축 일령라벨 텍스트를 보여줄것인지 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="xLabelDayMargin" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelDayMargin.html">xLabelDayMargin</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  x축 날짜라벨 텍스트와 그래프간 간격 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="xLabelDaySize" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelDaySize.html">xLabelDaySize</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  x축 날짜라벨 텍스트의 크기 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="xLabelDayVisible" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelDayVisible.html">xLabelDayVisible</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+  x축 날짜라벨 텍스트를 보여줄것인지 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="xLabelHourMargin" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelHourMargin.html">xLabelHourMargin</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  x축 시간라벨 텍스트와 그래프간 간격 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="xLabelHourSize" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelHourSize.html">xLabelHourSize</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  x축 시간라벨 텍스트의 크기 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="xLabelHourVisible" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelHourVisible.html">xLabelHourVisible</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+  x축 시간라벨 텍스트를 보여줄것인지 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="xLabelValueMargin" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelValueMargin.html">xLabelValueMargin</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  바와 값텍스트의 간격 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="xLabelValueSize" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelValueSize.html">xLabelValueSize</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  바 위에 표시되는 값텍스트의 사이즈 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="xLabelValueVisible" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelValueVisible.html">xLabelValueVisible</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+  값텍스트를 보여줄것인지 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="yLabelCount" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/yLabelCount.html">yLabelCount</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> 
+
+</dt>
+<dd>
+  y축 라벨의 개수 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="yLabelMargin" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/yLabelMargin.html">yLabelMargin</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  y축 라벨과 그래프간 간격 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="yLabelSize" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/yLabelSize.html">yLabelSize</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  y축 라벨의 크기 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="yLabelVisible" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/yLabelVisible.html">yLabelVisible</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> 
+
+</dt>
+<dd>
+  y축 라벨을 보여줄것인지 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="yLabelWidth" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/yLabelWidth.html">yLabelWidth</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  y축 라벨의 가로넓이 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="yMaxVal" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/yMaxVal.html">yMaxVal</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  y축 최대값, 그래프 값에 따라 동적으로 변경됩니다. 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="yMinVal" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/yMinVal.html">yMinVal</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  y축 최소값, 그래프 값에 따라 동적으로 변경됩니다. 
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="ySectionHeight" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/ySectionHeight.html">ySectionHeight</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">read / write</div>
+
+</dd>
+
+        <dt id="yTopMargin" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/yTopMargin.html">yTopMargin</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
+
+</dt>
+<dd>
+  y축 상단 여백 
+  <div class="features">read / write</div>
+
+</dd>
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="instance-methods">
+      <h2>Methods</h2>
+      <dl class="callables">
+        <dt id="addListener" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/addListener.html">addListener</a></span><span class="signature">(<wbr><span class="parameter" id="addListener-param-listener"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/VoidCallback.html">VoidCallback</a></span> <span class="parameter-name">listener</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Register a closure to be notified when it is time to repaint. <a href="https://api.flutter.dev/flutter/rendering/CustomPainter/addListener.html">[...]</a>
+  <div class="features">inherited</div>
+
+</dd>
+
+        <dt id="drawAvgLine" class="callable">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawAvgLine.html">drawAvgLine</a></span><span class="signature">(<wbr><span class="parameter" id="drawAvgLine-param-canvas"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a></span> <span class="parameter-name">canvas</span>, </span><span class="parameter" id="drawAvgLine-param-size"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Size-class.html">Size</a></span> <span class="parameter-name">size</span>, </span><span class="parameter" id="drawAvgLine-param-isBottom"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isBottom</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  평균선을 그립니다. 
+  
+
+</dd>
+
+        <dt id="drawBar" class="callable">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawBar.html">drawBar</a></span><span class="signature">(<wbr><span class="parameter" id="drawBar-param-canvas"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a></span> <span class="parameter-name">canvas</span>, </span><span class="parameter" id="drawBar-param-size"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Size-class.html">Size</a></span> <span class="parameter-name">size</span>, </span><span class="parameter" id="drawBar-param-barHourData"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_bar_hour_data/BarHourData-class.html">BarHourData</a>?</span>&gt;</span></span> <span class="parameter-name">barHourData</span>, </span><span class="parameter" id="drawBar-param-offsetDx"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">offsetDx</span>, </span><span class="parameter" id="drawBar-param-i"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">i</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  바를 그립니다. 
+  
+
+</dd>
+
+        <dt id="drawHorizontalLine" class="callable">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawHorizontalLine.html">drawHorizontalLine</a></span><span class="signature">(<wbr><span class="parameter" id="drawHorizontalLine-param-canvas"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a></span> <span class="parameter-name">canvas</span>, </span><span class="parameter" id="drawHorizontalLine-param-offsetDx"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">offsetDx</span>, </span><span class="parameter" id="drawHorizontalLine-param-yCenter"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">yCenter</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  가로선을 그립니다. 
+  
+
+</dd>
+
+        <dt id="drawRangePath" class="callable">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawRangePath.html">drawRangePath</a></span><span class="signature">(<wbr><span class="parameter" id="drawRangePath-param-canvas"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a></span> <span class="parameter-name">canvas</span>, </span><span class="parameter" id="drawRangePath-param-size"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Size-class.html">Size</a></span> <span class="parameter-name">size</span>, </span><span class="parameter" id="drawRangePath-param-isBottom"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isBottom</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  범위(밴드)를 표시하는 그래프를 그립니다. 
+  
+
+</dd>
+
+        <dt id="drawXLabelBirthDay" class="callable">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawXLabelBirthDay.html">drawXLabelBirthDay</a></span><span class="signature">(<wbr><span class="parameter" id="drawXLabelBirthDay-param-canvas"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a></span> <span class="parameter-name">canvas</span>, </span><span class="parameter" id="drawXLabelBirthDay-param-size"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Size-class.html">Size</a></span> <span class="parameter-name">size</span>, </span><span class="parameter" id="drawXLabelBirthDay-param-barCenter"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Offset-class.html">Offset</a></span> <span class="parameter-name">barCenter</span>, </span><span class="parameter" id="drawXLabelBirthDay-param-label"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">label</span>, </span><span class="parameter" id="drawXLabelBirthDay-param-dayLabel"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">dayLabel</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  x축 일령라벨을 그립니다. 
+  
+
+</dd>
+
+        <dt id="drawXLabelDay" class="callable">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawXLabelDay.html">drawXLabelDay</a></span><span class="signature">(<wbr><span class="parameter" id="drawXLabelDay-param-canvas"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a></span> <span class="parameter-name">canvas</span>, </span><span class="parameter" id="drawXLabelDay-param-size"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Size-class.html">Size</a></span> <span class="parameter-name">size</span>, </span><span class="parameter" id="drawXLabelDay-param-barCenter"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Offset-class.html">Offset</a></span> <span class="parameter-name">barCenter</span>, </span><span class="parameter" id="drawXLabelDay-param-label"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">label</span>, </span><span class="parameter" id="drawXLabelDay-param-dayLabel"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">dayLabel</span>, </span><span class="parameter" id="drawXLabelDay-param-k"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">k</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  x축 날짜라벨을 그립니다. 
+  
+
+</dd>
+
+        <dt id="drawXLabelHour" class="callable">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawXLabelHour.html">drawXLabelHour</a></span><span class="signature">(<wbr><span class="parameter" id="drawXLabelHour-param-canvas"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a></span> <span class="parameter-name">canvas</span>, </span><span class="parameter" id="drawXLabelHour-param-size"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Size-class.html">Size</a></span> <span class="parameter-name">size</span>, </span><span class="parameter" id="drawXLabelHour-param-barCenter"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Offset-class.html">Offset</a></span> <span class="parameter-name">barCenter</span>, </span><span class="parameter" id="drawXLabelHour-param-label"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">label</span>, </span><span class="parameter" id="drawXLabelHour-param-dayLabel"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">dayLabel</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  x축 시간라벨을 그립니다. 
+  
+
+</dd>
+
+        <dt id="drawXLabelValue" class="callable">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawXLabelValue.html">drawXLabelValue</a></span><span class="signature">(<wbr><span class="parameter" id="drawXLabelValue-param-canvas"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a></span> <span class="parameter-name">canvas</span>, </span><span class="parameter" id="drawXLabelValue-param-size"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Size-class.html">Size</a></span> <span class="parameter-name">size</span>, </span><span class="parameter" id="drawXLabelValue-param-valueLabel"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">valueLabel</span>, </span><span class="parameter" id="drawXLabelValue-param-valueBottomLabel"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">valueBottomLabel</span>, </span><span class="parameter" id="drawXLabelValue-param-barCenter"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Offset-class.html">Offset</a></span> <span class="parameter-name">barCenter</span>, </span><span class="parameter" id="drawXLabelValue-param-barHeight"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">barHeight</span>, </span><span class="parameter" id="drawXLabelValue-param-barHeightBottom"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">barHeightBottom</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  x축 라벨을 그립니다. 
+  
+
+</dd>
+
+        <dt id="drawYLabel" class="callable">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawYLabel.html">drawYLabel</a></span><span class="signature">(<wbr><span class="parameter" id="drawYLabel-param-canvas"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a></span> <span class="parameter-name">canvas</span>, </span><span class="parameter" id="drawYLabel-param-size"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Size-class.html">Size</a></span> <span class="parameter-name">size</span>, </span><span class="parameter" id="drawYLabel-param-k"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">k</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  y축 라벨을 그립니다. 
+  
+
+</dd>
+
+        <dt id="hitTest" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/hitTest.html">hitTest</a></span><span class="signature">(<wbr><span class="parameter" id="hitTest-param-position"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Offset-class.html">Offset</a></span> <span class="parameter-name">position</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a>?</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Called whenever a hit test is being performed on an object that is using
+this custom paint delegate. <a href="https://api.flutter.dev/flutter/rendering/CustomPainter/hitTest.html">[...]</a>
+  <div class="features">inherited</div>
+
+</dd>
+
+        <dt id="noSuchMethod" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a non-existent method or property is accessed. <a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">[...]</a>
+  <div class="features">inherited</div>
+
+</dd>
+
+        <dt id="paint" class="callable">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/paint.html">paint</a></span><span class="signature">(<wbr><span class="parameter" id="paint-param-canvas"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a></span> <span class="parameter-name">canvas</span>, </span><span class="parameter" id="paint-param-size"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Size-class.html">Size</a></span> <span class="parameter-name">size</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Called whenever the object needs to paint. The given <a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a> has its
+coordinate space configured such that the origin is at the top left of the
+box. The area of the box is the size of the <code>size</code> argument. <a href="../components_graph_bar_graph_painter/BarGraphPainter/paint.html">[...]</a>
+  <div class="features">override</div>
+
+</dd>
+
+        <dt id="removeListener" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/removeListener.html">removeListener</a></span><span class="signature">(<wbr><span class="parameter" id="removeListener-param-listener"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/VoidCallback.html">VoidCallback</a></span> <span class="parameter-name">listener</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Remove a previously registered closure from the list of closures that the
+object notifies when it is time to repaint. <a href="https://api.flutter.dev/flutter/rendering/CustomPainter/removeListener.html">[...]</a>
+  <div class="features">inherited</div>
+
+</dd>
+
+        <dt id="shouldRebuildSemantics" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/shouldRebuildSemantics.html">shouldRebuildSemantics</a></span><span class="signature">(<wbr><span class="parameter" id="shouldRebuildSemantics-param-oldDelegate"><span>covariant</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter-class.html">CustomPainter</a></span> <span class="parameter-name">oldDelegate</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Called whenever a new instance of the custom painter delegate class is
+provided to the <a href="https://api.flutter.dev/flutter/rendering/RenderCustomPaint-class.html">RenderCustomPaint</a> object, or any time that a new
+<a href="https://api.flutter.dev/flutter/widgets/CustomPaint-class.html">CustomPaint</a> object is created with a new instance of the custom painter
+delegate class (which amounts to the same thing, because the latter is
+implemented in terms of the former). <a href="https://api.flutter.dev/flutter/rendering/CustomPainter/shouldRebuildSemantics.html">[...]</a>
+  <div class="features">inherited</div>
+
+</dd>
+
+        <dt id="shouldRepaint" class="callable">
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/shouldRepaint.html">shouldRepaint</a></span><span class="signature">(<wbr><span class="parameter" id="shouldRepaint-param-oldDelegate"><span>covariant</span> <span class="type-annotation"><a href="../components_graph_bar_graph_painter/BarGraphPainter-class.html">BarGraphPainter</a></span> <span class="parameter-name">oldDelegate</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Called whenever a new instance of the custom painter delegate class is
+provided to the <a href="https://api.flutter.dev/flutter/rendering/RenderCustomPaint-class.html">RenderCustomPaint</a> object, or any time that a new
+<a href="https://api.flutter.dev/flutter/widgets/CustomPaint-class.html">CustomPaint</a> object is created with a new instance of the custom painter
+delegate class (which amounts to the same thing, because the latter is
+implemented in terms of the former). <a href="../components_graph_bar_graph_painter/BarGraphPainter/shouldRepaint.html">[...]</a>
+  <div class="features">override</div>
+
+</dd>
+
+        <dt id="toString" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object. <a href="https://api.flutter.dev/flutter/rendering/CustomPainter/toString.html">[...]</a>
+  <div class="features">inherited</div>
+
+</dd>
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor inherited" id="operators">
+      <h2>Operators</h2>
+      <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+  <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator. <a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">[...]</a>
+  <div class="features">inherited</div>
+
+</dd>
+
+      </dl>
+    </section>
+
+
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../index.html">farmershands</a></li>
+  <li><a href="../components_graph_bar_graph_painter/components_graph_bar_graph_painter-library.html">bar_graph_painter</a></li>
+  <li class="self-crumb">BarGraphPainter class</li>
+</ol>
+
+
+    <h5>bar_graph_painter library</h5>
+    <ol>
+  <li class="section-title"><a href="../components_graph_bar_graph_painter/components_graph_bar_graph_painter-library.html#classes">Classes</a></li>
+  <li><a href="../components_graph_bar_graph_painter/BarGraphPainter-class.html">BarGraphPainter</a></li>
+
+
+
+
+
+
+
+
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+    <ol>
+
+    <li class="section-title"><a href="../components_graph_bar_graph_painter/BarGraphPainter-class.html#constructors">Constructors</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/BarGraphPainter.html">BarGraphPainter</a></li>
+
+
+    <li class="section-title">
+      <a href="../components_graph_bar_graph_painter/BarGraphPainter-class.html#instance-properties">Properties</a>
+    </li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/barDayItems.html">barDayItems</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/barHeightRatio.html">barHeightRatio</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/barPaint.html">barPaint</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/barPaintDark.html">barPaintDark</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/barPaintHighlight.html">barPaintHighlight</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/barPaintLight.html">barPaintLight</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/barPaintSit.html">barPaintSit</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/barPaintSitHighlight.html">barPaintSitHighlight</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/barPaintStand.html">barPaintStand</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/barPaintStandHighlight.html">barPaintStandHighlight</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/barSpace.html">barSpace</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/barStartOffsetX.html">barStartOffsetX</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/barWidth.html">barWidth</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/baseOffsetY.html">baseOffsetY</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/cow.html">cow</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/current.html">current</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/dotPaint1.html">dotPaint1</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/dotPaint2.html">dotPaint2</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/dotPaint3.html">dotPaint3</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/horizontalLineDashSpace.html">horizontalLineDashSpace</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/horizontalLineDashWidth.html">horizontalLineDashWidth</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/horizontalLineHeight.html">horizontalLineHeight</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/horizontalLinePaint.html">horizontalLinePaint</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/horizontalLineVisible.html">horizontalLineVisible</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/hourCntInDay.html">hourCntInDay</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/isAvgLineVisible.html">isAvgLineVisible</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/isBiDirectional.html">isBiDirectional</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/isGroupAvg.html">isGroupAvg</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/isNightVisible.html">isNightVisible</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/isRangeVisible.html">isRangeVisible</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/lineDotPaint.html">lineDotPaint</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/linePaint.html">linePaint</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/maxBarHeight.html">maxBarHeight</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/next.html">next</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/nightPaint.html">nightPaint</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/offset.html">offset</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/prev.html">prev</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/rangePaint.html">rangePaint</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/semanticsBuilder.html">semanticsBuilder</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/smoothness.html">smoothness</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/temp.html">temp</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelBirthDayMargin.html">xLabelBirthDayMargin</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelBirthDaySize.html">xLabelBirthDaySize</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelBirthDayVisible.html">xLabelBirthDayVisible</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelDayMargin.html">xLabelDayMargin</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelDaySize.html">xLabelDaySize</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelDayVisible.html">xLabelDayVisible</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelHourMargin.html">xLabelHourMargin</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelHourSize.html">xLabelHourSize</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelHourVisible.html">xLabelHourVisible</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelValueMargin.html">xLabelValueMargin</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelValueSize.html">xLabelValueSize</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/xLabelValueVisible.html">xLabelValueVisible</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/yLabelCount.html">yLabelCount</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/yLabelMargin.html">yLabelMargin</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/yLabelSize.html">yLabelSize</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/yLabelVisible.html">yLabelVisible</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/yLabelWidth.html">yLabelWidth</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/yMaxVal.html">yMaxVal</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/yMinVal.html">yMinVal</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/ySectionHeight.html">ySectionHeight</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/yTopMargin.html">yTopMargin</a></li>
+
+    <li class="section-title"><a href="../components_graph_bar_graph_painter/BarGraphPainter-class.html#instance-methods">Methods</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/addListener.html">addListener</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawAvgLine.html">drawAvgLine</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawBar.html">drawBar</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawHorizontalLine.html">drawHorizontalLine</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawRangePath.html">drawRangePath</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawXLabelBirthDay.html">drawXLabelBirthDay</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawXLabelDay.html">drawXLabelDay</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawXLabelHour.html">drawXLabelHour</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawXLabelValue.html">drawXLabelValue</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawYLabel.html">drawYLabel</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/hitTest.html">hitTest</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/paint.html">paint</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/removeListener.html">removeListener</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/shouldRebuildSemantics.html">shouldRebuildSemantics</a></li>
+    <li><a href="../components_graph_bar_graph_painter/BarGraphPainter/shouldRepaint.html">shouldRepaint</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/rendering/CustomPainter/toString.html">toString</a></li>
+
+    <li class="section-title inherited"><a href="../components_graph_bar_graph_painter/BarGraphPainter-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    farmershands
+      1.4.0-dev6+78
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+
