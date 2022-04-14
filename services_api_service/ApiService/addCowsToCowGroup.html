@@ -53,8 +53,7 @@
       
 
 <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../models_cow/Cow-class.html">Cow</a></span>&gt;</span>?</span>&gt;</span></span>
-<span class="name ">addCowsToCowGroup</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="addCowsToCowGroup-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span>, </span></li>
-<li><span class="parameter" id="addCowsToCowGroup-param-selectedCows"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../models_cow/Cow-class.html">Cow</a></span>&gt;</span></span> <span class="parameter-name">selectedCows</span>, </span></li>
+<span class="name ">addCowsToCowGroup</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="addCowsToCowGroup-param-selectedCows"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../models_cow/Cow-class.html">Cow</a></span>&gt;</span></span> <span class="parameter-name">selectedCows</span>, </span></li>
 <li><span class="parameter" id="addCowsToCowGroup-param-targetCowGroup"><span class="type-annotation"><a href="../../models_cow_group/CowGroup-class.html">CowGroup</a></span> <span class="parameter-name">targetCowGroup</span></span></li>
 </ol>)
 
@@ -62,17 +61,24 @@
 
     </section>
     
+<section class="desc markdown">
+  <p>selectedCows 파라메터에 있는 소들을 targetCowGroup에 추가합니다.</p>
+</section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;Cow&gt;?&gt; addCowsToCowGroup(BuildContext context, List&lt;Cow&gt; selectedCows, CowGroup targetCowGroup) async {
-  LogManager().addLog(&quot;addCowsToCowGroup&quot;, screen: runtimeType.toString());
-  &#47;&#47; CowState cowState = Provider.of&lt;CowState&gt;(context);
+  <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;Cow&gt;?&gt; addCowsToCowGroup(
+  &#47;&#47;&#47; 그룹에 추가할 소 개체의 리스트입니다.
+  List&lt;Cow&gt; selectedCows,
 
+  &#47;&#47;&#47; 추가할 그룹입니다.
+  CowGroup targetCowGroup,
+) async {
+  LogManager().addLog(&quot;addCowsToCowGroup&quot;, screen: runtimeType.toString());
   try {
-    RestOptions options = RestOptions(
+    await reqPOST(
       path: &#39;&#47;api&#47;cow_groups&#47;cows&#39;,
       queryParameters: {
         &quot;cow_ids&quot;: &quot;[${selectedCows.map((e) =&gt; &quot;\&quot;${e.id}\&quot;&quot;).toList().join(&quot;,&quot;)}]&quot;,
@@ -80,10 +86,7 @@
       },
       body: Uint8List.fromList([]),
     );
-    RestOperation restOperation = Amplify.API.post(restOptions: options);
-    await restOperation.response;
     await fetchCows();
-    &#47;&#47; cowState.updateCows(selectedCows);
     return selectedCows;
   } catch (e) {
     LogManager().addLog(&#39;addCowsToCowGroup call failed: $e&#39;, screen: runtimeType.toString());
@@ -126,7 +129,6 @@
     <li><a href="../../services_api_service/ApiService/cowState.html">cowState</a></li>
     <li><a href="../../services_api_service/ApiService/demographic.html">demographic</a></li>
     <li><a href="../../services_api_service/ApiService/deviceId.html">deviceId</a></li>
-    <li><a href="../../services_api_service/ApiService/endPoint.html">endPoint</a></li>
     <li><a href="../../services_api_service/ApiService/farmState.html">farmState</a></li>
     <li><a href="../../services_api_service/ApiService/gatewayState.html">gatewayState</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
@@ -159,7 +161,6 @@
     <li><a href="../../services_api_service/ApiService/fetchDiseaseObservations.html">fetchDiseaseObservations</a></li>
     <li><a href="../../services_api_service/ApiService/fetchFarms.html">fetchFarms</a></li>
     <li><a href="../../services_api_service/ApiService/fetchGateways.html">fetchGateways</a></li>
-    <li><a href="../../services_api_service/ApiService/fetchGraphData.html">fetchGraphData</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReports.html">fetchReports</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReportTitles.html">fetchReportTitles</a></li>
     <li><a href="../../services_api_service/ApiService/fetchSensors.html">fetchSensors</a></li>

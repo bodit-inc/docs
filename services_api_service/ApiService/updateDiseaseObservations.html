@@ -53,37 +53,31 @@
       
 
 <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../models_disease_observation/DiseaseObservation-class.html">DiseaseObservation</a>?</span>&gt;</span></span>
-<span class="name ">updateDiseaseObservations</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="updateDiseaseObservations-param-diseaseObservation">{<span>required</span> <span class="type-annotation"><a href="../../models_disease_observation/DiseaseObservation-class.html">DiseaseObservation</a></span> <span class="parameter-name">diseaseObservation</span>, </span></li>
-<li><span class="parameter" id="updateDiseaseObservations-param-queryParameters"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">queryParameters</span> = <span class="default-value">const {}</span>}</span></li>
+<span class="name ">updateDiseaseObservations</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="updateDiseaseObservations-param-diseaseObservation">{<span>required</span> <span class="type-annotation"><a href="../../models_disease_observation/DiseaseObservation-class.html">DiseaseObservation</a></span> <span class="parameter-name">diseaseObservation</span>}</span></li>
 </ol>)
 
       
 
     </section>
     
+<section class="desc markdown">
+  <p>질병관찰 데이터를 업데이트합니다.</p>
+</section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;DiseaseObservation?&gt; updateDiseaseObservations({required DiseaseObservation diseaseObservation, Map&lt;String, String&gt; queryParameters = const {}}) async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;DiseaseObservation?&gt; updateDiseaseObservations({required DiseaseObservation diseaseObservation}) async {
   LogManager().addLog(&quot;updateDiseaseObservations&quot;, screen: runtimeType.toString());
   try {
-    final RestOptions options = RestOptions(
+    await reqPUT(
       path: &#39;&#47;api&#47;disease_observations&#47;${diseaseObservation.id}&#39;,
-      body: Uint8List.fromList(
-        &#47;&#47; &#39;{&quot;farm_id&quot;: &quot;Farm-100000&quot;,&quot;cow_id&quot;: &quot;Cow-10000010&quot;,&quot;dehydration&quot;: 1,&quot;feces&quot;: 1,&quot;respi_and_cough&quot;: 1,&quot;snot&quot;: 1,&quot;eye&quot;: 1,&quot;appearance&quot;: 1,&quot;ear&quot;: 1,&quot;temperature&quot;: 36.5,&quot;sensor_position&quot;: 1,&quot;bcs&quot;: &quot;G&quot;,&quot;memo&quot;: &quot;수정됨&quot;}&#39;
-        &#47;&#47; &#39;{&quot;farm_id&quot;: &quot;Farm-100000&quot;,&quot;cow_id&quot;: &quot;Cow-10000010&quot;,&quot;dehydration&quot;: 1,&quot;feces&quot;: 1,&quot;respi_and_cough&quot;: 1,&quot;snot&quot;: 1,&quot;eye&quot;: 1,&quot;appearance&quot;: 1,&quot;ear&quot;: 1,&quot;temperature&quot;: 36.5,&quot;sensor_position&quot;: 1,&quot;bcs&quot;: &quot;G&quot;,&quot;memo&quot;: &quot;editted&quot;}&#39;
-        &#47;&#47; json.encode(diseaseObservation.toJson()).codeUnits),
-        Utf8Encoder().convert(json.encode(diseaseObservation.toJson())),
-      ),
+      body: Uint8List.fromList(Utf8Encoder().convert(json.encode(diseaseObservation.toJson()))),
       queryParameters: {
-        ...queryParameters,
         &quot;farm_id&quot;: farmState.currentFarm!.id,
       },
     );
-    final RestOperation restOperation = Amplify.API.put(restOptions: options);
-    await restOperation.response;
     return diseaseObservation;
   } catch (e) {
     LogManager().addLog(&#39;updateDiseaseObservations call failed: $e&#39;, screen: runtimeType.toString());
@@ -126,7 +120,6 @@
     <li><a href="../../services_api_service/ApiService/cowState.html">cowState</a></li>
     <li><a href="../../services_api_service/ApiService/demographic.html">demographic</a></li>
     <li><a href="../../services_api_service/ApiService/deviceId.html">deviceId</a></li>
-    <li><a href="../../services_api_service/ApiService/endPoint.html">endPoint</a></li>
     <li><a href="../../services_api_service/ApiService/farmState.html">farmState</a></li>
     <li><a href="../../services_api_service/ApiService/gatewayState.html">gatewayState</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
@@ -159,7 +152,6 @@
     <li><a href="../../services_api_service/ApiService/fetchDiseaseObservations.html">fetchDiseaseObservations</a></li>
     <li><a href="../../services_api_service/ApiService/fetchFarms.html">fetchFarms</a></li>
     <li><a href="../../services_api_service/ApiService/fetchGateways.html">fetchGateways</a></li>
-    <li><a href="../../services_api_service/ApiService/fetchGraphData.html">fetchGraphData</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReports.html">fetchReports</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReportTitles.html">fetchReportTitles</a></li>
     <li><a href="../../services_api_service/ApiService/fetchSensors.html">fetchSensors</a></li>

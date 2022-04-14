@@ -64,17 +64,34 @@
     </section>
     
 <section class="desc markdown">
-  <p>소 상태</p>
+  <p>일령별 소 상태를 가져옵니다.</p>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;CowStatus&gt; fetchCowsCntByStatus({required DateTime targetAt, required int dayAfterBirthStart, required int dayAfterBirthEnd, bool joinCowData = false}) async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;CowStatus&gt; fetchCowsCntByStatus({
+  &#47;&#47;&#47; 상태를 가져올 타겟 날짜입니다
+  required DateTime targetAt,
+
+  &#47;&#47;&#47; 시작 일령 값 입니다.
+  &#47;&#47;&#47; 예를 들어 1일령 이상 15일령 이하 개체들의 개체상태를 가져오고 싶다면
+  &#47;&#47;&#47; 1일령이 시작 일령 값이고 15일령이 끝 일령 값입니다.
+  required int dayAfterBirthStart,
+
+  &#47;&#47;&#47; 끝 일령 값 입니다.
+  required int dayAfterBirthEnd,
+
+  &#47;&#47;&#47; 소데이터와 Join을 할것인지(true) 하지않을것(false)인지를 나타내는 파라메터입니다.
+  &#47;&#47;&#47; Join을 하게되면 targetAt 날짜에 소데이터가 없는 개체들의 상태는 카운팅하지 않습니다.
+  &#47;&#47;&#47; 홈화면에서는 이 값이 false이고
+  &#47;&#47;&#47; 개체현황 화면에서는 이 값이 true입니다.
+  bool joinCowData = false,
+}) async {
   LogManager().addLog(&quot;fetchCowsCntByStatus&quot;, screen: runtimeType.toString());
   try {
-    final RestOptions options = RestOptions(
+    final Map&lt;String, dynamic&gt; body = await reqGET(
       path: &#39;&#47;api&#47;cows&#47;count_by_status&#39;,
       queryParameters: {
         &quot;farm_id&quot;: farmState.currentFarm!.id,
@@ -84,16 +101,11 @@
         &quot;join_cow_data&quot;: joinCowData.toString(),
       },
     );
-    final RestOperation restOperation = Amplify.API.get(restOptions: options);
-    final RestResponse restResponse = await restOperation.response;
-    final Map&lt;String, dynamic&gt; body = jsonDecode(restResponse.body);
-    print(body.toString());
     CowStatus cowStatus = CowStatus.fromJson(body);
     return cowStatus;
   } catch (e) {
     LogManager().addLog(&#39;fetchCowsCntByStatus call failed: $e&#39;, screen: runtimeType.toString());
     rethrow;
-    &#47;&#47; return null;
   }
 }</code></pre>
 </section>
@@ -132,7 +144,6 @@
     <li><a href="../../services_api_service/ApiService/cowState.html">cowState</a></li>
     <li><a href="../../services_api_service/ApiService/demographic.html">demographic</a></li>
     <li><a href="../../services_api_service/ApiService/deviceId.html">deviceId</a></li>
-    <li><a href="../../services_api_service/ApiService/endPoint.html">endPoint</a></li>
     <li><a href="../../services_api_service/ApiService/farmState.html">farmState</a></li>
     <li><a href="../../services_api_service/ApiService/gatewayState.html">gatewayState</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
@@ -165,7 +176,6 @@
     <li><a href="../../services_api_service/ApiService/fetchDiseaseObservations.html">fetchDiseaseObservations</a></li>
     <li><a href="../../services_api_service/ApiService/fetchFarms.html">fetchFarms</a></li>
     <li><a href="../../services_api_service/ApiService/fetchGateways.html">fetchGateways</a></li>
-    <li><a href="../../services_api_service/ApiService/fetchGraphData.html">fetchGraphData</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReports.html">fetchReports</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReportTitles.html">fetchReportTitles</a></li>
     <li><a href="../../services_api_service/ApiService/fetchSensors.html">fetchSensors</a></li>

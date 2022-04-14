@@ -87,7 +87,7 @@
   diseaseObservation.memo = memoController.text.trim();
 
   if (inputMode == InputModeType.create) {
-    await ApiService().createDiseaseObservations(diseaseObservation: diseaseObservation, queryParameters: {});
+    await ApiService().createDiseaseObservations(diseaseObservation: diseaseObservation);
     EventService().eventBus.fire(
           PopupEvent(
             type: PopupType.alert,
@@ -99,7 +99,7 @@
           ),
         );
   } else {
-    await ApiService().updateDiseaseObservations(diseaseObservation: diseaseObservation, queryParameters: {});
+    await ApiService().updateDiseaseObservations(diseaseObservation: diseaseObservation);
     EventService().eventBus.fire(
       PopupEvent(
             type: PopupType.alert,

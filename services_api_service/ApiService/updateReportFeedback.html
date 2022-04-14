@@ -61,7 +61,7 @@
     </section>
     
 <section class="desc markdown">
-  <p>리포트 카드 피드백</p>
+  <p>리포트 카드 피드백을 업데이트합니다.</p>
 </section>
 
 
@@ -72,15 +72,11 @@
   LogManager().addLog(&quot;updateReportFeedback&quot;);
   try {
     if (_.feedback == null) return;
-
-    RestOptions options = RestOptions(
+    await reqPUT(
       path: &#39;&#47;api&#47;reports&#47;${_.id}&#47;updateFeedback&#39;,
       queryParameters: {&quot;feedback&quot;: _.feedback!.index.toString()},
       body: Uint8List.fromList([]),
     );
-    RestOperation restOperation = Amplify.API.put(restOptions: options);
-    await restOperation.response;
-    &#47;&#47; RestBody body = RestBody.fromJson(jsonDecode(response.body));
   } catch (e) {
     LogManager().addLog(&#39;updateReportFeedback call failed: $e&#39;);
   }
@@ -121,7 +117,6 @@
     <li><a href="../../services_api_service/ApiService/cowState.html">cowState</a></li>
     <li><a href="../../services_api_service/ApiService/demographic.html">demographic</a></li>
     <li><a href="../../services_api_service/ApiService/deviceId.html">deviceId</a></li>
-    <li><a href="../../services_api_service/ApiService/endPoint.html">endPoint</a></li>
     <li><a href="../../services_api_service/ApiService/farmState.html">farmState</a></li>
     <li><a href="../../services_api_service/ApiService/gatewayState.html">gatewayState</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
@@ -154,7 +149,6 @@
     <li><a href="../../services_api_service/ApiService/fetchDiseaseObservations.html">fetchDiseaseObservations</a></li>
     <li><a href="../../services_api_service/ApiService/fetchFarms.html">fetchFarms</a></li>
     <li><a href="../../services_api_service/ApiService/fetchGateways.html">fetchGateways</a></li>
-    <li><a href="../../services_api_service/ApiService/fetchGraphData.html">fetchGraphData</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReports.html">fetchReports</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReportTitles.html">fetchReportTitles</a></li>
     <li><a href="../../services_api_service/ApiService/fetchSensors.html">fetchSensors</a></li>

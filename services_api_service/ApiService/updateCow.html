@@ -60,6 +60,9 @@
 
     </section>
     
+<section class="desc markdown">
+  <p>소 정보를 업데이트합니다.</p>
+</section>
 
 
     
@@ -69,14 +72,11 @@
   LogManager().addLog(&quot;updateCow&quot;, screen: runtimeType.toString());
 
   try {
-    RestOptions options = RestOptions(
+    final Map&lt;String, dynamic&gt; body = await reqPUT(
       path: &#39;&#47;api&#47;cows&#47;${_.id}&#39;,
       queryParameters: {},
       body: Utf8Encoder().convert(json.encode(_.toJson())),
     );
-    RestOperation restOperation = Amplify.API.put(restOptions: options);
-    RestResponse restResponse = await restOperation.response;
-    final Map&lt;String, dynamic&gt; body = jsonDecode(restResponse.body);
     LogManager().addLog(body.toString(), screen: runtimeType.toString());
     return _;
   } catch (e) {
@@ -120,7 +120,6 @@
     <li><a href="../../services_api_service/ApiService/cowState.html">cowState</a></li>
     <li><a href="../../services_api_service/ApiService/demographic.html">demographic</a></li>
     <li><a href="../../services_api_service/ApiService/deviceId.html">deviceId</a></li>
-    <li><a href="../../services_api_service/ApiService/endPoint.html">endPoint</a></li>
     <li><a href="../../services_api_service/ApiService/farmState.html">farmState</a></li>
     <li><a href="../../services_api_service/ApiService/gatewayState.html">gatewayState</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
@@ -153,7 +152,6 @@
     <li><a href="../../services_api_service/ApiService/fetchDiseaseObservations.html">fetchDiseaseObservations</a></li>
     <li><a href="../../services_api_service/ApiService/fetchFarms.html">fetchFarms</a></li>
     <li><a href="../../services_api_service/ApiService/fetchGateways.html">fetchGateways</a></li>
-    <li><a href="../../services_api_service/ApiService/fetchGraphData.html">fetchGraphData</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReports.html">fetchReports</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReportTitles.html">fetchReportTitles</a></li>
     <li><a href="../../services_api_service/ApiService/fetchSensors.html">fetchSensors</a></li>

@@ -68,11 +68,22 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;Cow&gt;?&gt; moveOrCopyCowsToCowGroup(List&lt;Cow&gt; _, CowGroup? fromCowGroup, CowGroup? toCowGroup, String action) async {
-  LogManager().addLog(&quot;updateCow&quot;, screen: runtimeType.toString());
+  <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;Cow&gt;?&gt; moveOrCopyCowsToCowGroup(
+  &#47;&#47;&#47; 그룹에 추가할 소 개체의 리스트입니다.
+  List&lt;Cow&gt; _,
 
+  &#47;&#47;&#47; 기존에 속한 소의 그룹입니다.
+  CowGroup? fromCowGroup,
+
+  &#47;&#47;&#47; 새로 이동 또는 복사할 타겟 그룹입니다.
+  CowGroup? toCowGroup,
+
+  &#47;&#47;&#47; 이동이면 &quot;move&quot;, 복사면 &quot;copy&quot; 입니다.
+  String action,
+) async {
+  LogManager().addLog(&quot;updateCow&quot;, screen: runtimeType.toString());
   try {
-    RestOptions options = RestOptions(
+    await reqPUT(
       path: &#39;&#47;api&#47;cow_groups&#47;cows&#39;,
       queryParameters: {
         &quot;cow_ids&quot;: &quot;[${_.map((e) =&gt; &quot;\&quot;${e.id}\&quot;&quot;).toList().join(&quot;,&quot;)}]&quot;,
@@ -82,8 +93,6 @@
       },
       body: Uint8List.fromList([]),
     );
-    RestOperation restOperation = Amplify.API.put(restOptions: options);
-    await restOperation.response;
     await fetchCows();
     return _;
   } catch (e) {
@@ -127,7 +136,6 @@
     <li><a href="../../services_api_service/ApiService/cowState.html">cowState</a></li>
     <li><a href="../../services_api_service/ApiService/demographic.html">demographic</a></li>
     <li><a href="../../services_api_service/ApiService/deviceId.html">deviceId</a></li>
-    <li><a href="../../services_api_service/ApiService/endPoint.html">endPoint</a></li>
     <li><a href="../../services_api_service/ApiService/farmState.html">farmState</a></li>
     <li><a href="../../services_api_service/ApiService/gatewayState.html">gatewayState</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
@@ -160,7 +168,6 @@
     <li><a href="../../services_api_service/ApiService/fetchDiseaseObservations.html">fetchDiseaseObservations</a></li>
     <li><a href="../../services_api_service/ApiService/fetchFarms.html">fetchFarms</a></li>
     <li><a href="../../services_api_service/ApiService/fetchGateways.html">fetchGateways</a></li>
-    <li><a href="../../services_api_service/ApiService/fetchGraphData.html">fetchGraphData</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReports.html">fetchReports</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReportTitles.html">fetchReportTitles</a></li>
     <li><a href="../../services_api_service/ApiService/fetchSensors.html">fetchSensors</a></li>

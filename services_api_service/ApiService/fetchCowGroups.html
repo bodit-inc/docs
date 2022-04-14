@@ -60,7 +60,7 @@
     </section>
     
 <section class="desc markdown">
-  <p>그룹</p>
+  <p>소 그룹을 가져옵니다.</p>
 </section>
 
 
@@ -69,8 +69,6 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;CowGroup&gt;&gt; fetchCowGroups() async {
   LogManager().addLog(&quot;fetchCowGroups&quot;, screen: runtimeType.toString());
-  cowGroupState = Provider.of&lt;CowGroupState&gt;(context, listen: false);
-
   try {
     List&lt;dynamic&gt; body = await reqGET(path: &#39;&#47;api&#47;cow_groups&#39;, queryParameters: {
       &quot;farm_id&quot;: farmState.currentFarm!.id,
@@ -119,7 +117,6 @@
     <li><a href="../../services_api_service/ApiService/cowState.html">cowState</a></li>
     <li><a href="../../services_api_service/ApiService/demographic.html">demographic</a></li>
     <li><a href="../../services_api_service/ApiService/deviceId.html">deviceId</a></li>
-    <li><a href="../../services_api_service/ApiService/endPoint.html">endPoint</a></li>
     <li><a href="../../services_api_service/ApiService/farmState.html">farmState</a></li>
     <li><a href="../../services_api_service/ApiService/gatewayState.html">gatewayState</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
@@ -152,7 +149,6 @@
     <li><a href="../../services_api_service/ApiService/fetchDiseaseObservations.html">fetchDiseaseObservations</a></li>
     <li><a href="../../services_api_service/ApiService/fetchFarms.html">fetchFarms</a></li>
     <li><a href="../../services_api_service/ApiService/fetchGateways.html">fetchGateways</a></li>
-    <li><a href="../../services_api_service/ApiService/fetchGraphData.html">fetchGraphData</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReports.html">fetchReports</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReportTitles.html">fetchReportTitles</a></li>
     <li><a href="../../services_api_service/ApiService/fetchSensors.html">fetchSensors</a></li>

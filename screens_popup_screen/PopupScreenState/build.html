@@ -177,9 +177,6 @@ Widget build(BuildContext context) {
     case PopupType.gateway:
       popup = GatewayPopup(key: popupKey, data: widget.data, onClose: widget.onClose);
       break;
-    &#47;&#47; case PopupType.exitApp:
-    &#47;&#47;   popup = ExitAppPopup(key: popupKey, data: widget.data, onClose: widget.onClose);
-    &#47;&#47;   break;
     case PopupType.createNewCow:
       popup = CreateNewCowPopup(key: popupKey, onTapYes: widget.onTapYes, data: widget.data, onClose: widget.onClose);
       break;

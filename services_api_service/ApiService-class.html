@@ -51,7 +51,7 @@
 
     
 <section class="desc markdown">
-  <p>API 요청 서비스</p>
+  <p>모든 API 요청은 이 클래스에서 정의됩니다.</p>
 </section>
 
 
@@ -80,7 +80,7 @@
 
 </dt>
 <dd>
-   
+  초성 
   <div class="features">final</div>
 
 </dd>
@@ -113,7 +113,7 @@
 
 </dt>
 <dd>
-   
+  프로바이더에 접근할 필요가 있을때 매번 Provider.of(...)로 접근하기 번거로우므로 변수로 할당해놓습니다. 
   <div class="features">read / write</div>
 
 </dd>
@@ -124,7 +124,8 @@
 
 </dt>
 <dd>
-   
+  핀포인트 알림 토큰을 등록할때 부가적으로 들어가는 정보를 저장해놓습니다.
+<a href="../services_api_service/ApiService/fetchDemographic.html">fetchDemographic</a>을 참고하세요. 
   <div class="features">read / write</div>
 
 </dd>
@@ -135,19 +136,8 @@
 
 </dt>
 <dd>
-   
+  device id를 저장합니다. 
   <div class="features">read / write</div>
-
-</dd>
-
-        <dt id="endPoint" class="property">
-  <span class="name"><a href="../services_api_service/ApiService/endPoint.html">endPoint</a></span>
-  <span class="signature">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> 
-
-</dt>
-<dd>
-   
-  <div class="features">final</div>
 
 </dd>
 
@@ -201,7 +191,7 @@
 
 </dt>
 <dd>
-   
+  종성 
   <div class="features">final</div>
 
 </dd>
@@ -212,7 +202,7 @@
 
 </dt>
 <dd>
-   
+  중성 
   <div class="features">final</div>
 
 </dd>
@@ -223,7 +213,7 @@
 
 </dt>
 <dd>
-   
+  패키징된 앱의 정보를 저장합니다. 
   <div class="features">read / write</div>
 
 </dd>
@@ -234,7 +224,7 @@
 
 </dt>
 <dd>
-   
+  스토어에 출시된 앱의 빌드번호를 저장합니다. 
   <div class="features">read / write</div>
 
 </dd>
@@ -245,7 +235,7 @@
 
 </dt>
 <dd>
-   
+  스토어에 출시된 앱의 버전 텍스트를 저장합니다. 
   <div class="features">read / write</div>
 
 </dd>
@@ -267,7 +257,8 @@
 
 </dt>
 <dd>
-   
+  리포트 카드의 타이틀을 fetch하여 저장해놓습니다.
+카드를 보여줄때 이 값을 report_title_id와 맵핑하여 출력합니다. 
   <div class="features">read / write</div>
 
 </dd>
@@ -289,7 +280,7 @@
 
 </dt>
 <dd>
-   
+  화면 가로, 세로 길이또한 매번 가져오기 번거로우므로 저장해놓습니다. 
   <div class="features">read / write</div>
 
 </dd>
@@ -300,7 +291,7 @@
 
 </dt>
 <dd>
-   
+  화면 가로, 세로 길이또한 매번 가져오기 번거로우므로 저장해놓습니다. 
   <div class="features">read / write</div>
 
 </dd>
@@ -334,14 +325,14 @@
       <h2>Methods</h2>
       <dl class="callables">
         <dt id="addCowsToCowGroup" class="callable">
-  <span class="name"><a href="../services_api_service/ApiService/addCowsToCowGroup.html">addCowsToCowGroup</a></span><span class="signature">(<wbr><span class="parameter" id="addCowsToCowGroup-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span>, </span><span class="parameter" id="addCowsToCowGroup-param-selectedCows"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_cow/Cow-class.html">Cow</a></span>&gt;</span></span> <span class="parameter-name">selectedCows</span>, </span><span class="parameter" id="addCowsToCowGroup-param-targetCowGroup"><span class="type-annotation"><a href="../models_cow_group/CowGroup-class.html">CowGroup</a></span> <span class="parameter-name">targetCowGroup</span></span>)
+  <span class="name"><a href="../services_api_service/ApiService/addCowsToCowGroup.html">addCowsToCowGroup</a></span><span class="signature">(<wbr><span class="parameter" id="addCowsToCowGroup-param-selectedCows"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_cow/Cow-class.html">Cow</a></span>&gt;</span></span> <span class="parameter-name">selectedCows</span>, </span><span class="parameter" id="addCowsToCowGroup-param-targetCowGroup"><span class="type-annotation"><a href="../models_cow_group/CowGroup-class.html">CowGroup</a></span> <span class="parameter-name">targetCowGroup</span></span>)
     <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_cow/Cow-class.html">Cow</a></span>&gt;</span>?</span>&gt;</span></span>
   </span>
   
 
 </dt>
 <dd>
-   
+  selectedCows 파라메터에 있는 소들을 targetCowGroup에 추가합니다. 
   
 
 </dd>
@@ -354,7 +345,7 @@
 
 </dt>
 <dd>
-   
+  소를 신규로 등록합니다. 
   
 
 </dd>
@@ -367,33 +358,33 @@
 
 </dt>
 <dd>
-   
+  소 그룹을 생성합니다. 
   
 
 </dd>
 
         <dt id="createDiseaseObservations" class="callable">
-  <span class="name"><a href="../services_api_service/ApiService/createDiseaseObservations.html">createDiseaseObservations</a></span><span class="signature">(<wbr><span class="parameter" id="createDiseaseObservations-param-diseaseObservation">{<span>required</span> <span class="type-annotation"><a href="../models_disease_observation/DiseaseObservation-class.html">DiseaseObservation</a></span> <span class="parameter-name">diseaseObservation</span>, </span><span class="parameter" id="createDiseaseObservations-param-queryParameters"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">queryParameters</span> = <span class="default-value">const {}</span>}</span>)
+  <span class="name"><a href="../services_api_service/ApiService/createDiseaseObservations.html">createDiseaseObservations</a></span><span class="signature">(<wbr><span class="parameter" id="createDiseaseObservations-param-diseaseObservation">{<span>required</span> <span class="type-annotation"><a href="../models_disease_observation/DiseaseObservation-class.html">DiseaseObservation</a></span> <span class="parameter-name">diseaseObservation</span>}</span>)
     <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_disease_observation/DiseaseObservation-class.html">DiseaseObservation</a>?</span>&gt;</span></span>
   </span>
   
 
 </dt>
 <dd>
-   
+  질병관찰을 새로 생성합니다. 
   
 
 </dd>
 
         <dt id="deleteDiseaseObservations" class="callable">
-  <span class="name"><a href="../services_api_service/ApiService/deleteDiseaseObservations.html">deleteDiseaseObservations</a></span><span class="signature">(<wbr><span class="parameter" id="deleteDiseaseObservations-param-diseaseObservation">{<span>required</span> <span class="type-annotation"><a href="../models_disease_observation/DiseaseObservation-class.html">DiseaseObservation</a></span> <span class="parameter-name">diseaseObservation</span>, </span><span class="parameter" id="deleteDiseaseObservations-param-queryParameters"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">queryParameters</span> = <span class="default-value">const {}</span>}</span>)
+  <span class="name"><a href="../services_api_service/ApiService/deleteDiseaseObservations.html">deleteDiseaseObservations</a></span><span class="signature">(<wbr><span class="parameter" id="deleteDiseaseObservations-param-diseaseObservation">{<span>required</span> <span class="type-annotation"><a href="../models_disease_observation/DiseaseObservation-class.html">DiseaseObservation</a></span> <span class="parameter-name">diseaseObservation</span>}</span>)
     <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_disease_observation/DiseaseObservation-class.html">DiseaseObservation</a>?</span>&gt;</span></span>
   </span>
   
 
 </dt>
 <dd>
-   
+  질병관찰 데이터를 삭제합니다. 
   
 
 </dd>
@@ -419,7 +410,7 @@
 
 </dt>
 <dd>
-  소 데이터 
+  소 데이터를 가져옵니다. <a href="../services_api_service/ApiService/fetchCowData.html">[...]</a>
   
 
 </dd>
@@ -432,7 +423,7 @@
 
 </dt>
 <dd>
-  그룹 
+  소 그룹을 가져옵니다. 
   
 
 </dd>
@@ -445,7 +436,8 @@
 
 </dt>
 <dd>
-  소 
+  소 목록을 가져옵니다. targetAt 값을 주게되면 해당 날짜에 발행된 리포트카드와 join시켜 소 상태(CowStatus)값(발행된 리포트 카드가 있으면)도 같이 가져옵니다.
+targetAt값이 없으면 모든 소 개체의 상태값은 null입니다. 
   
 
 </dd>
@@ -458,7 +450,7 @@
 
 </dt>
 <dd>
-  소 상태 
+  일령별 소 상태를 가져옵니다. 
   
 
 </dd>
@@ -471,20 +463,20 @@
 
 </dt>
 <dd>
-   
+  토큰 등록시 필요한 부가정보를 가져옵니다. 
   
 
 </dd>
 
         <dt id="fetchDiseaseObservations" class="callable">
-  <span class="name"><a href="../services_api_service/ApiService/fetchDiseaseObservations.html">fetchDiseaseObservations</a></span><span class="signature">(<wbr><span class="parameter" id="fetchDiseaseObservations-param-queryParameters">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">queryParameters</span> = <span class="default-value">const {}</span>}</span>)
+  <span class="name"><a href="../services_api_service/ApiService/fetchDiseaseObservations.html">fetchDiseaseObservations</a></span><span class="signature">(<wbr>)
     <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_disease_observation/DiseaseObservation-class.html">DiseaseObservation</a></span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
 </dt>
 <dd>
-  질병관찰 
+  질병관찰 리스트를 가져옵니다. 
   
 
 </dd>
@@ -497,7 +489,7 @@
 
 </dt>
 <dd>
-  농장 
+  로그인된 사용자가 속해있는 농장 리스트를 가져옵니다. 
   
 
 </dd>
@@ -510,20 +502,7 @@
 
 </dt>
 <dd>
-  게이트웨이 
-  
-
-</dd>
-
-        <dt id="fetchGraphData" class="callable">
-  <span class="name"><a href="../services_api_service/ApiService/fetchGraphData.html">fetchGraphData</a></span><span class="signature">(<wbr><span class="parameter" id="fetchGraphData-param-graphViewType">{<span>required</span> <span class="type-annotation"><a href="../components_graph_graph_view_type/GraphViewType.html">GraphViewType</a></span> <span class="parameter-name">graphViewType</span>, </span><span class="parameter" id="fetchGraphData-param-dateTime"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/DateTime-class.html">DateTime</a></span> <span class="parameter-name">dateTime</span>, </span><span class="parameter" id="fetchGraphData-param-actionType"><span>required</span> <span class="type-annotation"><a href="../types_action_type/ActionType.html">ActionType</a></span> <span class="parameter-name">actionType</span>, </span><span class="parameter" id="fetchGraphData-param-cows"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_cow/Cow-class.html">Cow</a></span>&gt;</span></span> <span class="parameter-name">cows</span>}</span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_bar_day_data/BarDayData-class.html">BarDayData</a></span>&gt;</span></span>&gt;</span></span>
-  </span>
-  
-
-</dt>
-<dd>
-   
+  게이트웨이 리스트를 가져옵니다. 
   
 
 </dd>
@@ -536,7 +515,7 @@
 
 </dt>
 <dd>
-  리포트 
+  리포트 그룹에 따라 리포트 카드 리스트를 가져옵니다. 
   
 
 </dd>
@@ -549,7 +528,7 @@
 
 </dt>
 <dd>
-  리포트 타이틀 
+  리포트타이틀을 모두 가져옵니다. 
   
 
 </dd>
@@ -562,7 +541,7 @@
 
 </dt>
 <dd>
-  센서 
+  센서 목록을 가져옵니다. 
   
 
 </dd>
@@ -575,7 +554,7 @@
 
 </dt>
 <dd>
-   
+  읽지않은 리포트 카드 갯수를 가져옵니다. 
   
 
 </dd>
@@ -601,7 +580,7 @@
 
 </dt>
 <dd>
-   
+  DeviceId를 가져옵니다. 
   
 
 </dd>
@@ -614,7 +593,7 @@
 
 </dt>
 <dd>
-  한글인지를 판별합니다. 
+  입력받은 String이 한글인지를 판별합니다. 
   
 
 </dd>
@@ -653,7 +632,8 @@
 
 </dt>
 <dd>
-   
+  알림 토큰을 등록합니다.
+토큰 등록시 UI 렌더링 지연을 피하기 위해 await을 쓰지 않습니다. 
   
 
 </dd>
@@ -666,7 +646,10 @@
 
 </dt>
 <dd>
-   
+  소를 삭제합니다.
+실제로 DB에서 삭제되는건 아니고 state를 removed로 변경합니다.
+따라서 프론트에서는 state를 보고 이 소가 삭제되었는지를 판단해야할 수 도 있습니다.
+백엔드에서 처리해야할 수 도 있고요. 
   
 
 </dd>
@@ -679,7 +662,7 @@
 
 </dt>
 <dd>
-   
+  소 그룹을 삭제합니다. 
   
 
 </dd>
@@ -698,53 +681,54 @@
 </dd>
 
         <dt id="reqDELETE" class="callable">
-  <span class="name"><a href="../services_api_service/ApiService/reqDELETE.html">reqDELETE</a></span><span class="signature">(<wbr>)
-    <span class="returntype parameter">&#8594; void</span>
+  <span class="name"><a href="../services_api_service/ApiService/reqDELETE.html">reqDELETE</a></span><span class="signature">(<wbr><span class="parameter" id="reqDELETE-param-path">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, </span><span class="parameter" id="reqDELETE-param-queryParameters"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">queryParameters</span>, </span><span class="parameter" id="reqDELETE-param-body"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-typed_data/Uint8List-class.html">Uint8List</a>?</span> <span class="parameter-name">body</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a></span>
   </span>
   
 
 </dt>
 <dd>
-   
+  DELETE 요청입니다. 
   
 
 </dd>
 
         <dt id="reqGET" class="callable">
-  <span class="name"><a href="../services_api_service/ApiService/reqGET.html">reqGET</a></span><span class="signature">(<wbr><span class="parameter" id="reqGET-param-path">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, </span><span class="parameter" id="reqGET-param-queryParameters"><span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">queryParameters</span>}</span>)
-    <span class="returntype parameter">&#8594; dynamic</span>
+  <span class="name"><a href="../services_api_service/ApiService/reqGET.html">reqGET</a></span><span class="signature">(<wbr><span class="parameter" id="reqGET-param-path">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, </span><span class="parameter" id="reqGET-param-queryParameters"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">queryParameters</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a></span>
   </span>
   
 
 </dt>
 <dd>
-   
+  중복 코드를 제거하기 위해 따로 메소드를 뺐습니다.
+GET 요청입니다. 
   
 
 </dd>
 
         <dt id="reqPOST" class="callable">
-  <span class="name"><a href="../services_api_service/ApiService/reqPOST.html">reqPOST</a></span><span class="signature">(<wbr>)
-    <span class="returntype parameter">&#8594; void</span>
+  <span class="name"><a href="../services_api_service/ApiService/reqPOST.html">reqPOST</a></span><span class="signature">(<wbr><span class="parameter" id="reqPOST-param-path">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, </span><span class="parameter" id="reqPOST-param-queryParameters"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">queryParameters</span>, </span><span class="parameter" id="reqPOST-param-body"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-typed_data/Uint8List-class.html">Uint8List</a>?</span> <span class="parameter-name">body</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a></span>
   </span>
   
 
 </dt>
 <dd>
-   
+  POST 요청입니다. 
   
 
 </dd>
 
         <dt id="reqPUT" class="callable">
-  <span class="name"><a href="../services_api_service/ApiService/reqPUT.html">reqPUT</a></span><span class="signature">(<wbr>)
-    <span class="returntype parameter">&#8594; void</span>
+  <span class="name"><a href="../services_api_service/ApiService/reqPUT.html">reqPUT</a></span><span class="signature">(<wbr><span class="parameter" id="reqPUT-param-path">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">path</span>, </span><span class="parameter" id="reqPUT-param-queryParameters"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">queryParameters</span>, </span><span class="parameter" id="reqPUT-param-body"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-typed_data/Uint8List-class.html">Uint8List</a>?</span> <span class="parameter-name">body</span>}</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a></span>
   </span>
   
 
 </dt>
 <dd>
-   
+  PUT 요청입니다. 
   
 
 </dd>
@@ -770,7 +754,7 @@
 
 </dt>
 <dd>
-   
+  로그인을 시도합니다. 
   
 
 </dd>
@@ -783,7 +767,7 @@
 
 </dt>
 <dd>
-   
+  로그아웃을 시도합니다. 
   
 
 </dd>
@@ -810,7 +794,7 @@
 
 </dt>
 <dd>
-   
+  리포트 카드 핀 고정 여부를 토글링합니다. 
   
 
 </dd>
@@ -836,7 +820,8 @@
 
 </dt>
 <dd>
-   
+  알림 토큰을 삭제합니다.
+토큰 삭제시에도 마찬가지로 UI 렌더링 지연을 피하기 위해 await을 쓰지 않습니다. 
   
 
 </dd>
@@ -849,7 +834,7 @@
 
 </dt>
 <dd>
-   
+  소 정보를 업데이트합니다. 
   
 
 </dd>
@@ -862,7 +847,7 @@
 
 </dt>
 <dd>
-   
+  소 그룹의 정보를 변경합니다. (현재는 이름만 변경합니다) 
   
 
 </dd>
@@ -875,20 +860,20 @@
 
 </dt>
 <dd>
-   
+  소 그룹의 순서를 변경합니다. 
   
 
 </dd>
 
         <dt id="updateDiseaseObservations" class="callable">
-  <span class="name"><a href="../services_api_service/ApiService/updateDiseaseObservations.html">updateDiseaseObservations</a></span><span class="signature">(<wbr><span class="parameter" id="updateDiseaseObservations-param-diseaseObservation">{<span>required</span> <span class="type-annotation"><a href="../models_disease_observation/DiseaseObservation-class.html">DiseaseObservation</a></span> <span class="parameter-name">diseaseObservation</span>, </span><span class="parameter" id="updateDiseaseObservations-param-queryParameters"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">queryParameters</span> = <span class="default-value">const {}</span>}</span>)
+  <span class="name"><a href="../services_api_service/ApiService/updateDiseaseObservations.html">updateDiseaseObservations</a></span><span class="signature">(<wbr><span class="parameter" id="updateDiseaseObservations-param-diseaseObservation">{<span>required</span> <span class="type-annotation"><a href="../models_disease_observation/DiseaseObservation-class.html">DiseaseObservation</a></span> <span class="parameter-name">diseaseObservation</span>}</span>)
     <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_disease_observation/DiseaseObservation-class.html">DiseaseObservation</a>?</span>&gt;</span></span>
   </span>
   
 
 </dt>
 <dd>
-   
+  질병관찰 데이터를 업데이트합니다. 
   
 
 </dd>
@@ -901,7 +886,7 @@
 
 </dt>
 <dd>
-  리포트 카드 피드백 
+  리포트 카드 피드백을 업데이트합니다. 
   
 
 </dd>
@@ -914,7 +899,7 @@
 
 </dt>
 <dd>
-  리포트 카드 메모 
+  리포트 카드 메모를 업데이트합니다. 
   
 
 </dd>
@@ -1005,7 +990,6 @@
     <li><a href="../services_api_service/ApiService/cowState.html">cowState</a></li>
     <li><a href="../services_api_service/ApiService/demographic.html">demographic</a></li>
     <li><a href="../services_api_service/ApiService/deviceId.html">deviceId</a></li>
-    <li><a href="../services_api_service/ApiService/endPoint.html">endPoint</a></li>
     <li><a href="../services_api_service/ApiService/farmState.html">farmState</a></li>
     <li><a href="../services_api_service/ApiService/gatewayState.html">gatewayState</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
@@ -1038,7 +1022,6 @@
     <li><a href="../services_api_service/ApiService/fetchDiseaseObservations.html">fetchDiseaseObservations</a></li>
     <li><a href="../services_api_service/ApiService/fetchFarms.html">fetchFarms</a></li>
     <li><a href="../services_api_service/ApiService/fetchGateways.html">fetchGateways</a></li>
-    <li><a href="../services_api_service/ApiService/fetchGraphData.html">fetchGraphData</a></li>
     <li><a href="../services_api_service/ApiService/fetchReports.html">fetchReports</a></li>
     <li><a href="../services_api_service/ApiService/fetchReportTitles.html">fetchReportTitles</a></li>
     <li><a href="../services_api_service/ApiService/fetchSensors.html">fetchSensors</a></li>

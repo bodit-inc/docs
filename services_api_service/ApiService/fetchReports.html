@@ -62,18 +62,23 @@
     </section>
     
 <section class="desc markdown">
-  <p>리포트</p>
+  <p>리포트 그룹에 따라 리포트 카드 리스트를 가져옵니다.</p>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;Report&gt;&gt; fetchReports({required ReportGroup reportGroup, Cow? cow}) async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;Report&gt;&gt; fetchReports({
+  &#47;&#47;&#47; 가져올 리포트 그룹입니다.
+  required ReportGroup reportGroup,
+
+  &#47;&#47;&#47; 이 파라메터를 주게되면 해당 소의 리포트 카드만 가져오게 됩니다. 이력정보 화면에서 이 파라메터를 줍니다.
+  Cow? cow,
+}) async {
   LogManager().addLog(&quot;fetchReports&quot;, screen: runtimeType.toString());
   try {
-    print(farmState.currentFarm!.id);
-    final RestOptions options = RestOptions(
+    final List&lt;dynamic&gt; body = await reqGET(
       path: &#39;&#47;api&#47;reports&#39;,
       queryParameters: {
         &quot;farm_id&quot;: farmState.currentFarm!.id,
@@ -82,9 +87,6 @@
         &quot;cow_id&quot;: cow != null ? cow.id.toString() : &#39;&#39;,
       },
     );
-    final RestOperation restOperation = Amplify.API.get(restOptions: options);
-    final RestResponse restResponse = await restOperation.response;
-    final List&lt;dynamic&gt; body = jsonDecode(restResponse.body);
     final List&lt;Report&gt; reports = body.map((element) =&gt; Report.fromJson(element)).toList();
     return reports;
   } catch (e) {
@@ -128,7 +130,6 @@
     <li><a href="../../services_api_service/ApiService/cowState.html">cowState</a></li>
     <li><a href="../../services_api_service/ApiService/demographic.html">demographic</a></li>
     <li><a href="../../services_api_service/ApiService/deviceId.html">deviceId</a></li>
-    <li><a href="../../services_api_service/ApiService/endPoint.html">endPoint</a></li>
     <li><a href="../../services_api_service/ApiService/farmState.html">farmState</a></li>
     <li><a href="../../services_api_service/ApiService/gatewayState.html">gatewayState</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
@@ -161,7 +162,6 @@
     <li><a href="../../services_api_service/ApiService/fetchDiseaseObservations.html">fetchDiseaseObservations</a></li>
     <li><a href="../../services_api_service/ApiService/fetchFarms.html">fetchFarms</a></li>
     <li><a href="../../services_api_service/ApiService/fetchGateways.html">fetchGateways</a></li>
-    <li><a href="../../services_api_service/ApiService/fetchGraphData.html">fetchGraphData</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReports.html">fetchReports</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReportTitles.html">fetchReportTitles</a></li>
     <li><a href="../../services_api_service/ApiService/fetchSensors.html">fetchSensors</a></li>

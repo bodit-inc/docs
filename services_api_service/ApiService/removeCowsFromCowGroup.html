@@ -70,15 +70,13 @@
   LogManager().addLog(&quot;removeCow&quot;, screen: runtimeType.toString());
 
   try {
-    RestOptions options = RestOptions(
+    await reqDELETE(
       path: &#39;&#47;api&#47;cow_groups&#47;cows&#39;,
       queryParameters: {
         &quot;cow_ids&quot;: &quot;[${_.map((e) =&gt; &quot;\&quot;${e.id}\&quot;&quot;).toList().join(&quot;,&quot;)}]&quot;,
         &quot;cow_group_id&quot;: cowGroup.id.toString(),
       },
     );
-    RestOperation restOperation = Amplify.API.delete(restOptions: options);
-    await restOperation.response;
     await fetchCows();
     return _;
   } catch (e) {
@@ -122,7 +120,6 @@
     <li><a href="../../services_api_service/ApiService/cowState.html">cowState</a></li>
     <li><a href="../../services_api_service/ApiService/demographic.html">demographic</a></li>
     <li><a href="../../services_api_service/ApiService/deviceId.html">deviceId</a></li>
-    <li><a href="../../services_api_service/ApiService/endPoint.html">endPoint</a></li>
     <li><a href="../../services_api_service/ApiService/farmState.html">farmState</a></li>
     <li><a href="../../services_api_service/ApiService/gatewayState.html">gatewayState</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
@@ -155,7 +152,6 @@
     <li><a href="../../services_api_service/ApiService/fetchDiseaseObservations.html">fetchDiseaseObservations</a></li>
     <li><a href="../../services_api_service/ApiService/fetchFarms.html">fetchFarms</a></li>
     <li><a href="../../services_api_service/ApiService/fetchGateways.html">fetchGateways</a></li>
-    <li><a href="../../services_api_service/ApiService/fetchGraphData.html">fetchGraphData</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReports.html">fetchReports</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReportTitles.html">fetchReportTitles</a></li>
     <li><a href="../../services_api_service/ApiService/fetchSensors.html">fetchSensors</a></li>

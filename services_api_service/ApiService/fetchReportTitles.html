@@ -60,7 +60,7 @@
     </section>
     
 <section class="desc markdown">
-  <p>리포트 타이틀</p>
+  <p>리포트타이틀을 모두 가져옵니다.</p>
 </section>
 
 
@@ -70,13 +70,7 @@
   <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; fetchReportTitles() async {
   LogManager().addLog(&quot;fetchReports&quot;, screen: runtimeType.toString());
   try {
-    final RestOptions options = RestOptions(
-      path: &#39;&#47;api&#47;reports&#47;titles&#39;,
-      queryParameters: {},
-    );
-    final RestOperation restOperation = Amplify.API.get(restOptions: options);
-    final RestResponse restResponse = await restOperation.response;
-    final List&lt;dynamic&gt; body = jsonDecode(restResponse.body);
+    final List&lt;dynamic&gt; body = await reqGET(path: &#39;&#47;api&#47;reports&#47;titles&#39;);
     final List&lt;ReportTitle&gt; reportTitles = body.map((element) =&gt; ReportTitle.fromJson(element)).toList();
     this.reportTitles = reportTitles;
   } catch (e) {
@@ -119,7 +113,6 @@
     <li><a href="../../services_api_service/ApiService/cowState.html">cowState</a></li>
     <li><a href="../../services_api_service/ApiService/demographic.html">demographic</a></li>
     <li><a href="../../services_api_service/ApiService/deviceId.html">deviceId</a></li>
-    <li><a href="../../services_api_service/ApiService/endPoint.html">endPoint</a></li>
     <li><a href="../../services_api_service/ApiService/farmState.html">farmState</a></li>
     <li><a href="../../services_api_service/ApiService/gatewayState.html">gatewayState</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
@@ -152,7 +145,6 @@
     <li><a href="../../services_api_service/ApiService/fetchDiseaseObservations.html">fetchDiseaseObservations</a></li>
     <li><a href="../../services_api_service/ApiService/fetchFarms.html">fetchFarms</a></li>
     <li><a href="../../services_api_service/ApiService/fetchGateways.html">fetchGateways</a></li>
-    <li><a href="../../services_api_service/ApiService/fetchGraphData.html">fetchGraphData</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReports.html">fetchReports</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReportTitles.html">fetchReportTitles</a></li>
     <li><a href="../../services_api_service/ApiService/fetchSensors.html">fetchSensors</a></li>

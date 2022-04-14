@@ -61,26 +61,26 @@
     </section>
     
 <section class="desc markdown">
-  <p>소</p>
+  <p>소 목록을 가져옵니다. targetAt 값을 주게되면 해당 날짜에 발행된 리포트카드와 join시켜 소 상태(CowStatus)값(발행된 리포트 카드가 있으면)도 같이 가져옵니다.
+targetAt값이 없으면 모든 소 개체의 상태값은 null입니다.</p>
 </section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;Cow&gt;?&gt; fetchCows({DateTime? targetAt}) async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;Cow&gt;?&gt; fetchCows({
+  DateTime? targetAt,
+}) async {
   LogManager().addLog(&quot;fetchCows&quot;, screen: runtimeType.toString());
   try {
-    final RestOptions options = RestOptions(
+    final List&lt;dynamic&gt; body = await reqGET(
       path: &#39;&#47;api&#47;cows&#39;,
       queryParameters: {
         &quot;farm_id&quot;: farmState.currentFarm!.id,
         &quot;target_at&quot;: DateFormat(StringConstants.timeYMDDashFormat).format(targetAt ?? DateTime.fromMillisecondsSinceEpoch(0)),
       },
     );
-    final RestOperation restOperation = Amplify.API.get(restOptions: options);
-    final RestResponse restResponse = await restOperation.response;
-    final List&lt;dynamic&gt; body = jsonDecode(restResponse.body);
     final List&lt;Cow&gt; cows = body.map((element) =&gt; Cow.fromJson(element)).toList();
     cowState.cows = cows;
     return cows;
@@ -125,7 +125,6 @@
     <li><a href="../../services_api_service/ApiService/cowState.html">cowState</a></li>
     <li><a href="../../services_api_service/ApiService/demographic.html">demographic</a></li>
     <li><a href="../../services_api_service/ApiService/deviceId.html">deviceId</a></li>
-    <li><a href="../../services_api_service/ApiService/endPoint.html">endPoint</a></li>
     <li><a href="../../services_api_service/ApiService/farmState.html">farmState</a></li>
     <li><a href="../../services_api_service/ApiService/gatewayState.html">gatewayState</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
@@ -158,7 +157,6 @@
     <li><a href="../../services_api_service/ApiService/fetchDiseaseObservations.html">fetchDiseaseObservations</a></li>
     <li><a href="../../services_api_service/ApiService/fetchFarms.html">fetchFarms</a></li>
     <li><a href="../../services_api_service/ApiService/fetchGateways.html">fetchGateways</a></li>
-    <li><a href="../../services_api_service/ApiService/fetchGraphData.html">fetchGraphData</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReports.html">fetchReports</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReportTitles.html">fetchReportTitles</a></li>
     <li><a href="../../services_api_service/ApiService/fetchSensors.html">fetchSensors</a></li>

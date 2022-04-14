@@ -59,6 +59,10 @@
 
     </section>
     
+<section class="desc markdown">
+  <p>알림 토큰을 등록합니다.
+토큰 등록시 UI 렌더링 지연을 피하기 위해 await을 쓰지 않습니다.</p>
+</section>
 
 
     
@@ -69,13 +73,11 @@
     LogManager().addLog(&quot;알림 토큰 등록 호출&quot;, screen: runtimeType.toString());
     String? token = await FirebaseMessaging.instance.getToken();
     String deviceId = await getDeviceId();
-    RestOptions options = RestOptions(
+    reqPUT(
       path: &#39;&#47;api&#47;engagement&#47;endpoint&#47;$deviceId&#39;,
       queryParameters: {},
       body: Uint8List.fromList(Utf8Encoder().convert(json.encode({&quot;deviceToken&quot;: token, &quot;demographic&quot;: demographic}))),
-    );
-    RestOperation restOperation = Amplify.API.put(restOptions: options);
-    restOperation.response.then((value) {
+    ).then((value) {
       LogManager().addLog(&quot;알림 토큰 등록 성공 $token&quot;, screen: runtimeType.toString());
     });
   } catch (e) {
@@ -119,7 +121,6 @@
     <li><a href="../../services_api_service/ApiService/cowState.html">cowState</a></li>
     <li><a href="../../services_api_service/ApiService/demographic.html">demographic</a></li>
     <li><a href="../../services_api_service/ApiService/deviceId.html">deviceId</a></li>
-    <li><a href="../../services_api_service/ApiService/endPoint.html">endPoint</a></li>
     <li><a href="../../services_api_service/ApiService/farmState.html">farmState</a></li>
     <li><a href="../../services_api_service/ApiService/gatewayState.html">gatewayState</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
@@ -152,7 +153,6 @@
     <li><a href="../../services_api_service/ApiService/fetchDiseaseObservations.html">fetchDiseaseObservations</a></li>
     <li><a href="../../services_api_service/ApiService/fetchFarms.html">fetchFarms</a></li>
     <li><a href="../../services_api_service/ApiService/fetchGateways.html">fetchGateways</a></li>
-    <li><a href="../../services_api_service/ApiService/fetchGraphData.html">fetchGraphData</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReports.html">fetchReports</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReportTitles.html">fetchReportTitles</a></li>
     <li><a href="../../services_api_service/ApiService/fetchSensors.html">fetchSensors</a></li>

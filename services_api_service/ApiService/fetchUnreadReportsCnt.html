@@ -59,6 +59,9 @@
 
     </section>
     
+<section class="desc markdown">
+  <p>읽지않은 리포트 카드 갯수를 가져옵니다.</p>
+</section>
 
 
     
@@ -67,15 +70,12 @@
   <pre class="language-dart"><code class="language-dart">Future&lt;Map&lt;String, int&gt;?&gt; fetchUnreadReportsCnt() async {
   LogManager().addLog(&quot;fetchUnreadReportsCnt&quot;, screen: runtimeType.toString());
   try {
-    final RestOptions options = RestOptions(
+    final dynamic body = await reqGET(
       path: &#39;&#47;api&#47;reports&#47;${farmState.currentFarm!.id}&#47;count&#39;,
       queryParameters: {
         &quot;cow_group_id&quot;: cowGroupState.currentCowGroup != null ? cowGroupState.currentCowGroup!.id.toString() : &#39;&#39;,
       },
     );
-    final RestOperation restOperation = Amplify.API.get(restOptions: options);
-    final RestResponse restResponse = await restOperation.response;
-    final dynamic body = jsonDecode(restResponse.body);
     Map&lt;String, int&gt;? result = Map&lt;String, int&gt;.from(body);
     reportState.unreadReportsCnt = result;
     return result;
@@ -120,7 +120,6 @@
     <li><a href="../../services_api_service/ApiService/cowState.html">cowState</a></li>
     <li><a href="../../services_api_service/ApiService/demographic.html">demographic</a></li>
     <li><a href="../../services_api_service/ApiService/deviceId.html">deviceId</a></li>
-    <li><a href="../../services_api_service/ApiService/endPoint.html">endPoint</a></li>
     <li><a href="../../services_api_service/ApiService/farmState.html">farmState</a></li>
     <li><a href="../../services_api_service/ApiService/gatewayState.html">gatewayState</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
@@ -153,7 +152,6 @@
     <li><a href="../../services_api_service/ApiService/fetchDiseaseObservations.html">fetchDiseaseObservations</a></li>
     <li><a href="../../services_api_service/ApiService/fetchFarms.html">fetchFarms</a></li>
     <li><a href="../../services_api_service/ApiService/fetchGateways.html">fetchGateways</a></li>
-    <li><a href="../../services_api_service/ApiService/fetchGraphData.html">fetchGraphData</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReports.html">fetchReports</a></li>
     <li><a href="../../services_api_service/ApiService/fetchReportTitles.html">fetchReportTitles</a></li>
     <li><a href="../../services_api_service/ApiService/fetchSensors.html">fetchSensors</a></li>

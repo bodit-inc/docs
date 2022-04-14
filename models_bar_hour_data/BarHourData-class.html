@@ -50,6 +50,12 @@
 </h1></div>
 
     
+<section class="desc markdown">
+  <p>소데이터 그래프에서 사용되는 모델입니다.
+BarDayData 안에 BarHourData가 배열로 들어가 있습니다.
+보통 CowData 모델을 그래프에서 사용하기위해 BarDayData, BarHourData로 변환하는 과정을 거칩니다.
+<a href="../utils_helper/Helper/convertCowDataToGraphData.html">Helper.convertCowDataToGraphData</a> 를 참고해주세요.</p>
+</section>
 
 
 
@@ -76,7 +82,7 @@
 
 </dt>
 <dd>
-   
+  날짜값인데 보통 시간값을 가져옵니다. 
   <div class="features">final</div>
 
 </dd>
@@ -164,7 +170,7 @@
 
 </dt>
 <dd>
-   
+  true이면 그래프에서 빨간색으로 표시됩니다. 
   <div class="features">final</div>
 
 </dd>
@@ -175,7 +181,7 @@
 
 </dt>
 <dd>
-   
+  값(value)을 나타내는 텍스트 라벨입니다. 
   <div class="features">final</div>
 
 </dd>
@@ -186,7 +192,7 @@
 
 </dt>
 <dd>
-   
+  데이터의 원본 값입니다. 
   <div class="features">final</div>
 
 </dd>
@@ -263,7 +269,7 @@
 
 </dt>
 <dd>
-   
+  전체평균, 그룹평균 관련 변수들입니다. 초기에 만들었던 변수들로 이제 해당 기능이 없으므로 필요하지 않습니다. 
   <div class="features">final</div>
 
 </dd>
@@ -285,7 +291,7 @@
 
 </dt>
 <dd>
-   
+  값 
   <div class="features">final</div>
 
 </dd>
@@ -296,7 +302,8 @@
 
 </dt>
 <dd>
-   
+  앉기, 서기 그래프에서는 가운데축을 기준으로 위아래로 표현하고 있습니다.
+value가 서기 값이라면 valueBottom은 앉기 값입니다. 
   <div class="features">final</div>
 
 </dd>
@@ -318,7 +325,7 @@
 
 </dt>
 <dd>
-   
+  값 라벨입니다. 
   <div class="features">final</div>
 
 </dd>
