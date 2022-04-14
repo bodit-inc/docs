@@ -60,7 +60,7 @@
     </section>
     
 <section class="desc markdown">
-  <p>로그인 후, 농장변경시에 이 메소드를 호출하여
+  <p>로그인 후와, 농장변경시에는 이 메소드를 호출하여
 splashScreen을 처음부터 다시 런칭하는 효과를 얻습니다.</p>
 </section>
 
@@ -84,8 +84,9 @@ splashScreen을 처음부터 다시 런칭하는 효과를 얻습니다.</p>
         await _configureAmplify();
       } on AmplifyException catch (e) {
         LogManager().addLog(e.toString(), screen: runtimeType.toString());
-        &#47;&#47; 아래 예외는 중복실행 등으로 발생할 수 있고 로직 진행에 문제가 없기때문에
-        &#47;&#47; 사용자 인증오류 등 다른 오류일때만 rethrow
+        &#47;&#47;&#47; [AmplifyAlreadyConfiguredException] 예외는 여러 상황에서 발생할 수 있는 예외입니다.
+        &#47;&#47;&#47; 해당 예외가 발생하더라도 로직 진행에는 문제가 없기 때문에
+        &#47;&#47;&#47; 사용자 인증 오류 등 다른 오류일때만 rethrow합니다.
         if (!(e is AmplifyAlreadyConfiguredException)) rethrow;
       } catch (e) {
         LogManager().addLog(e.toString(), screen: runtimeType.toString());

@@ -51,7 +51,7 @@
 
     
 <section class="desc markdown">
-  <p>Navigator 추적 히스토리</p>
+  <p>Root Navigator의 Pop, Push, Replace 등을 추적하는 내비게이터 옵저버입니다.</p>
 </section>
 
 
@@ -95,7 +95,7 @@
 
 </dt>
 <dd>
-   
+  현재(마지막) 라우트정보를 반환합니다. 
   <div class="features">read-only</div>
 
 </dd>
@@ -117,7 +117,7 @@
 
 </dt>
 <dd>
-   
+  히스토리를 담습니다. 
   <div class="features">read / write</div>
 
 </dd>
@@ -128,7 +128,7 @@
 
 </dt>
 <dd>
-   
+  싱글톤 인스턴스 아이디 
   <div class="features">read / write</div>
 
 </dd>
@@ -139,18 +139,7 @@
 
 </dt>
 <dd>
-   
-  <div class="features">final</div>
-
-</dd>
-
-        <dt id="logManager" class="property">
-  <span class="name"><a href="../utils_navigator_history/NavigatorHistory/logManager.html">logManager</a></span>
-  <span class="signature">&#8594; <a href="../utils_log_manager/LogManager-class.html">LogManager</a></span> 
-
-</dt>
-<dd>
-   
+  최대 내비게이터 스택 개수를 제한합니다. 
   <div class="features">final</div>
 
 </dd>
@@ -359,7 +348,6 @@
     <li><a href="../utils_navigator_history/NavigatorHistory/history.html">history</a></li>
     <li><a href="../utils_navigator_history/NavigatorHistory/instanceId.html">instanceId</a></li>
     <li><a href="../utils_navigator_history/NavigatorHistory/limit.html">limit</a></li>
-    <li><a href="../utils_navigator_history/NavigatorHistory/logManager.html">logManager</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/widgets/NavigatorObserver/navigator.html">navigator</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
 

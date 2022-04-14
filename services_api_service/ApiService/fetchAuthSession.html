@@ -59,6 +59,9 @@
 
     </section>
     
+<section class="desc markdown">
+  <p>Cognito 인증세션을 fetch합니다.</p>
+</section>
 
 
     
@@ -74,6 +77,8 @@
   LogManager().addLog(&quot;awsSecretKey: ${session.credentials?.awsSecretKey}&quot;, screen: runtimeType.toString());
   LogManager().addLog(&quot;sessionToken: ${session.credentials?.sessionToken}&quot;, screen: runtimeType.toString());
 
+  &#47;&#47;&#47; CloudWatch에 로그를 남기기위해서는 aws키가 필요합니다. aws키는 로그인이 되어있지 않은 상태에서도 받아올 수 있습니다.
+  &#47;&#47;&#47;
   userState.currentUser = User(
     id: &quot;null&quot;,
     username: &quot;null&quot;,

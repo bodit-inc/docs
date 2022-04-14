@@ -66,11 +66,7 @@
     </section>
     
 <section class="desc markdown">
-  <p>Called when the system puts the app in the background or returns
-the app to the foreground.</p>
-<p>An example of implementing this method is provided in the class-level
-documentation for the <a href="https://api.flutter.dev/flutter/widgets/WidgetsBindingObserver-class.html">WidgetsBindingObserver</a> class.</p>
-<p>This method exposes notifications from <a href="https://api.flutter.dev/flutter/services/SystemChannels/lifecycle-constant.html">SystemChannels.lifecycle</a>.</p>
+  <p><a href="https://api.flutter.dev/flutter/dart-ui/AppLifecycleState.html">AppLifecycleState</a>를 참고하세요.</p>
 </section>
 
 
@@ -84,6 +80,7 @@ void didChangeAppLifecycleState(AppLifecycleState state) {
     case AppLifecycleState.resumed:
       LogManager().addLog(&quot;app in resumed&quot;, screen: runtimeType.toString());
       break;
+
     case AppLifecycleState.inactive:
       LogManager().addLog(&quot;app in inactive&quot;, screen: runtimeType.toString());
       LogManager().uploadLog();

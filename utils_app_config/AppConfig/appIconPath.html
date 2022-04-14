@@ -69,21 +69,17 @@
 
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">return &#39;파머스핸즈(DEV)&#39;;
-    }
+  <pre class="language-dart"><code class="language-dart">static String get appIconPath {
+  switch (appFlavor) {
+    case Flavor.PROD:
+      return &#39;assets&#47;icons&#47;app&#47;app_icon_1024.png&#39;;
+    case Flavor.TEST:
+      return &#39;assets&#47;icons&#47;app&#47;app_icon_test_1024.png&#39;;
+    case Flavor.DEV:
+    default:
+      return &#39;assets&#47;icons&#47;app&#47;app_icon_dev_1024.png&#39;;
   }
-
-  &#47;&#47;&#47; 초록색 앱 아이콘의 경로입니다.
-  &#47;&#47;&#47; 로그인 화면에서 사용하고있습니다.
-  static String get appIconPath {
-    switch (appFlavor) {
-      case Flavor.PROD:
-return &#39;assets&#47;icons&#47;app&#47;app_icon_1024.png&#39;;
-      case Flavor.TEST:
-return &#39;assets&#47;icons&#47;app&#47;app_icon_test_1024.png&#39;;
-      case Flavor.DEV:
-      default:
-return &#39;assets&#47;icons&#47;</code></pre>
+}</code></pre>
 </section>
 
 </section>

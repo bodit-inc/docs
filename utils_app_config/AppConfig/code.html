@@ -69,20 +69,17 @@
 
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">return &#39;assets&#47;icons&#47;app&#47;app_icon_white_dev_1024.png&#39;;
-    }
+  <pre class="language-dart"><code class="language-dart">static String get code {
+  switch (appFlavor) {
+    case Flavor.PROD:
+      return &#39;prod&#39;;
+    case Flavor.TEST:
+      return &#39;test&#39;;
+    case Flavor.DEV:
+    default:
+      return &#39;dev&#39;;
   }
-
-  &#47;&#47;&#47; 환경별 영문 텍스트입니다.
-  &#47;&#47;&#47; 환경설정 화면 -&gt; 소프트웨어 업데이트 화면에서 표시할때 사용합니다.
-  static String get code {
-    switch (appFlavor) {
-      case Flavor.PROD:
-return &#39;prod&#39;;
-      case Flavor.TEST:
-return &#39;test&#39;;
-      case Flavor.DEV:
-      def</code></pre>
+}</code></pre>
 </section>
 
 </section>

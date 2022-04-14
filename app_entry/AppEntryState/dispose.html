@@ -99,6 +99,7 @@ method, as in <code>super.dispose()</code>.</p>
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 void dispose() {
+  &#47;&#47;&#47; Observing을 해제합니다.
   WidgetsBinding.instance!.removeObserver(this);
   super.dispose();
 }</code></pre>

@@ -51,7 +51,9 @@
 
     
 <section class="desc markdown">
-  <p>앱 정보를 담은 클래스입니다.</p>
+  <p>앱 정보를 담은 클래스입니다.
+See also:
+<a href="../main/main-library.html">main</a></p>
 </section>
 
 
@@ -171,11 +173,12 @@
 
 </dt>
 <dd>
-  main_<code>env</code>.dart에서 어떤 Flavor로 실행되었는지 명시해주어야 합니다.
+  main_<em>env</em>.dart에서 어떤 Flavor로 실행되었는지 명시해주어야 합니다.
+현재는 각 진입파일별로 할당해주고 있습니다.
 main_dev.dart =&gt; Flavor.DEV
 main_test.dart =&gt; Flavor.TEST
 main.dart  =&gt; Flavor.PROD
-main() 함수를 참고하세요. 
+각 파일별 main() 함수를 참고하세요. 
   <div class="features">read / write</div>
 
 </dd>

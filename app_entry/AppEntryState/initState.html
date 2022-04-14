@@ -98,6 +98,8 @@ method, as in <code>super.initState()</code>.</p>
   <pre class="language-dart"><code class="language-dart">@override
 initState() {
   super.initState();
+
+  &#47;&#47;&#47; didChangeAppLifecycleState 이벤트를 받기위해서 AppEntry() 위젯을 Observing합니다.
   WidgetsBinding.instance!.addObserver(this);
   setupInteractedMessage();
 }</code></pre>

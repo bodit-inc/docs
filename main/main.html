@@ -57,23 +57,36 @@
 
     </section>
     
+<section class="desc markdown">
+  <p>안드로이드만 해당합니다. iOS는 휴대폰 자체적으로 알림을 받습니다.
+앱이 종료되었을때 알림 이벤트를 수신하기위해 추가한 코드인데 flutterfire 버전이 변경되면서 이 코드가 없어도 알림을 수신하게 됩니다.</p>
+</section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;void&gt; main() async {
+  <pre class="language-dart"><code class="language-dart">&#47;&#47; Future&lt;void&gt; _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+&#47;&#47;   LogManager().addLog(&quot;${Flavor.PROD.name}) receive push message on backround: ${message.data}&quot;);
+&#47;&#47;   await Firebase.initializeApp();
+&#47;&#47;   NotificationService().firebaseMessagingBackgroundHandler(message);
+&#47;&#47; }
+
+Future&lt;void&gt; main() async {
+  &#47;&#47;&#47; 상용 환경으로 할당합니다.
   AppConfig.appFlavor = Flavor.PROD;
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
+  &#47;&#47;&#47; _firebaseMessagingBackgroundHandler 주석을 참고하세요.
   &#47;&#47; try {
   &#47;&#47;   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   &#47;&#47; } catch (e) {
   &#47;&#47;   LogManager().addLog(e.toString());
   &#47;&#47; }
 
-  &#47;&#47;&#47; foreground(앱 실행중일때) 알림 표시
+  &#47;&#47;&#47; 앱이 실행중이고 앱 화면을 보고있을때에 알림이 오는 이벤트를 리스닝합니다.
+  &#47;&#47;&#47; 이 이벤트는 안드로이드에서만 실행됩니다. iOS에서는 fire되지 않습니다.
   FirebaseMessaging.onMessage.listen((RemoteMessage message) {
     LogManager().addLog(&quot;receive push message on foreground: ${message.data}&quot;);
     NotificationService().firebaseMessagingForegroundHandler(message);
@@ -81,8 +94,9 @@
 
   runApp(
     MultiProvider(
+      &#47;&#47;&#47; 프로바이더들을 정의합니다. 가독성과 관리의 용이함을 위해 아래와같이 분류합니다.
       providers: [
-        &#47;&#47;&#47; Data Stores
+        &#47;&#47;&#47; 데이터들을 저장하는 프로바이더들은 이곳에 정의합니다.
         ChangeNotifierProvider(create: (_) =&gt; FarmState()),
         ChangeNotifierProvider(create: (_) =&gt; SensorState()),
         ChangeNotifierProvider(create: (_) =&gt; GatewayState()),
@@ -91,7 +105,7 @@
         ChangeNotifierProvider(create: (_) =&gt; CowGroupState()),
         ChangeNotifierProvider(create: (_) =&gt; UserState()),
 
-        &#47;&#47;&#47; ViewModels
+        &#47;&#47;&#47; 뷰모델 프로바이더들은 이곳에 정의합니다.
         ChangeNotifierProvider(create: (_) =&gt; FarmLoadingScreenVM()),
         ChangeNotifierProvider(create: (_) =&gt; CowCurrentStatusScreenVM()),
         ChangeNotifierProvider(create: (_) =&gt; HomeScreenVM()),
@@ -102,10 +116,11 @@
         ChangeNotifierProvider(create: (_) =&gt; DiseaseObservationCreateScreenVM()),
         ChangeNotifierProvider(create: (_) =&gt; DiseaseObservationListScreenVM()),
 
-        &#47;&#47;&#47; Etc..
+        &#47;&#47;&#47; 그 외 기타 프로바이더들은 이곳에 정의합니다.
         ChangeNotifierProvider(create: (_) =&gt; AppState()),
         ChangeNotifierProvider(create: (_) =&gt; ScrollState()),
       ],
+      &#47;&#47;&#47; AppEntry는 최상위 위젯입니다.
       child: AppEntry(),
     ),
   );
