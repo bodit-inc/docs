@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="generator" content="made with love by dartdoc 5.0.1">
+  <meta name="description" content="farmershands API docs, for the Dart programming language.">
+  <title>farmershands - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href=""
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li class="self-crumb">farmershands package</li>
+  </ol>
+  <div class="self-name">farmershands</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="-">파머스핸즈 앱</h1>
+<p>송아지 질병관찰 앱</p>
+<h1 id="">목차</h1>
+<ul>
+<li><a href="#디렉토리-구조">디렉토리 구조</a></li>
+<li><a href="#모델-업데이트">모델 업데이트</a></li>
+<li><a href="#Git">Git</a></li>
+<li><a href="#개발-환경">개발 환경</a></li>
+<li><a href="#배포">배포</a></li>
+</ul>
+<h1 id="--2">디렉토리 구조</h1>
+<pre class="language-dart"><code>project
+│   pubspec.yaml
+│   package.json
+│   deploy.sh
+│   flutter_launcher_icons-envDev.yaml
+│   flutter_launcher_icons-envProd.yaml
+│   flutter_launcher_icons-envTest.yaml
+│
+└───amplify
+│   │   team-provider-info.json
+│   └───backend
+│       └───api
+│           └───FarmersHandsClientAPI
+│       └───auth
+│       └───function
+│           └───farmershandsuserappc02bf2d8
+│               │   tsconfig.json
+│               │
+│               └───src
+│               └───ts-src
+│                   └───routes
+│                       │   app.ts
+│                       │   index.ts
+│                       │   utils.ts
+│                       │   package.json
+│                       │
+│                       └───api
+│                           │   cow_data.ts
+│                           │   cow_group.ts
+│                           │   cows.ts
+│                           │   disease_observations.ts
+│                           │   engagement.ts
+│                           │   farms.ts
+│                           │   index.ts
+│                           │   reports.ts
+│                           │   user.ts
+│
+└───android
+│   │   build.gradle
+│   │   key.properties
+│   │   local.properties
+│   │   
+│   └───app
+│       │   build.gradle
+│       │   google-services.json
+│       │   key.jks
+│       │   
+│       └───src
+│           │   
+│           └───main
+│               │   AndroidManifest.xml
+│
+└───assets
+│   └───icons
+│   └───images
+│   └───vectors
+│
+└───google_fonts
+│
+│   
+└───ios
+│   │   Runner.xcodeproj
+│   │   Runner.xcworkspace
+│   │
+│   └───Flutter
+│   │
+│   └───Runner
+│   
+└───lib
+    │   app_entry.dart
+    │   main.dart
+    │   main_dev.dart
+    │   main_test.dart
+    │   notifications.dart
+    │
+    └───components
+    │
+    └───events
+    │
+    └───extensions
+    │
+    └───interfaces
+    │
+    └───models
+    │
+    └───screen_arguments
+    │
+    └───screens
+    │
+    └───services
+    │
+    └───stores
+    │
+    └───types
+    │
+    └───utils
+    │
+    └───views
+</code></pre>
+<h1 id="--3">개발 환경</h1>
+<pre class="language-shell"><code class="language-shell"># git 브랜치 변경
+$ git checkout &lt;develop | test | prod&gt;
+
+# amplify 환경 변경 
+$ amplify env checkout &lt;dev | test | prod&gt; 
+</code></pre>
+<h1 id="--4">모델 업데이트</h1>
+<p>모델을 수정하였을 경우 프로젝트 root 경로에서 아래 명령어를 실행하여 <code>&lt;model&gt;.g.dart</code> 파일을 생성 또는 업데이트 해줍니다.</p>
+<pre class="language-shell"><code class="language-shell">$ flutter pub run build_runner build --delete-conflicting-outputs
+</code></pre>
+<h1 id="git">Git</h1>
+<h1 id="-2">배포</h1>
+<p><code>deploy.sh</code> 파일을 실행시킵니다.</p>
+<pre class="language-shell"><code class="language-shell">$ &lt;PROJECT_ROOT&gt;/deploy.sh
+</code></pre>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+        </dl>
+      </section>
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li class="self-crumb">farmershands package</li>
+</ol>
+
+
+    <h5 class="hidden-xs"><span class="package-name">farmershands</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Libraries</li>
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+
+</main>
+
+<footer>
+  <span class="no-break">
+    farmershands
+      1.4.0-dev6+78
+  </span>
+
+  
+</footer>
+
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+
