@@ -50,6 +50,9 @@
 </h1></div>
 
     
+<section class="desc markdown">
+  <p>앱 정보를 담은 클래스입니다.</p>
+</section>
 
 
 
@@ -156,7 +159,8 @@
 
 </dt>
 <dd>
-   
+  앱 타이틀입니다. AppEntry.dart의 MaterialApp()의 title로 주고 있지만
+앱 화면에서 표시되지는 않습니다. 
   <div class="features">read-only</div>
 
 </dd>
@@ -167,7 +171,11 @@
 
 </dt>
 <dd>
-   
+  main_<code>env</code>.dart에서 어떤 Flavor로 실행되었는지 명시해주어야 합니다.
+main_dev.dart =&gt; Flavor.DEV
+main_test.dart =&gt; Flavor.TEST
+main.dart  =&gt; Flavor.PROD
+main() 함수를 참고하세요. 
   <div class="features">read / write</div>
 
 </dd>
@@ -178,7 +186,8 @@
 
 </dt>
 <dd>
-   
+  초록색 앱 아이콘의 경로입니다.
+로그인 화면에서 사용하고있습니다. 
   <div class="features">read-only</div>
 
 </dd>
@@ -189,7 +198,8 @@
 
 </dt>
 <dd>
-   
+  흰색 앱 아이콘의 경로입니다.
+스플래시 화면에서 사용하고 있습니다. 
   <div class="features">read-only</div>
 
 </dd>
@@ -200,7 +210,8 @@
 
 </dt>
 <dd>
-   
+  환경별 영문 텍스트입니다.
+환경설정 화면 -&gt; 소프트웨어 업데이트 화면에서 표시할때 사용합니다. 
   <div class="features">read-only</div>
 
 </dd>

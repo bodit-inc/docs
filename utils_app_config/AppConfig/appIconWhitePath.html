@@ -61,21 +61,29 @@
 </section>
 
 
+<section class="desc markdown">
+  <p>흰색 앱 아이콘의 경로입니다.
+스플래시 화면에서 사용하고 있습니다.</p>
+</section>
 
 
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">static String get appIconWhitePath {
-  switch (appFlavor) {
-    case Flavor.PROD:
-      return &#39;assets&#47;icons&#47;app&#47;app_icon_white_1024.png&#39;;
-    case Flavor.TEST:
-      return &#39;assets&#47;icons&#47;app&#47;app_icon_white_test_1024.png&#39;;
-    case Flavor.DEV:
-    default:
-      return &#39;assets&#47;icons&#47;app&#47;app_icon_white_dev_1024.png&#39;;
+  <pre class="language-dart"><code class="language-dart">return &#39;assets&#47;icons&#47;app&#47;app_icon_dev_1024.png&#39;;
+    }
   }
-}</code></pre>
+
+  &#47;&#47;&#47; 흰색 앱 아이콘의 경로입니다.
+  &#47;&#47;&#47; 스플래시 화면에서 사용하고 있습니다.
+  static String get appIconWhitePath {
+    switch (appFlavor) {
+      case Flavor.PROD:
+return &#39;assets&#47;icons&#47;app&#47;app_icon_white_1024.png&#39;;
+      case Flavor.TEST:
+return &#39;assets&#47;icons&#47;app&#47;app_icon_white_test_1024.png&#39;;
+      case Flavor.DEV:
+      default:
+return &#39;assets&#47;icons&#47;app&#47;ap</code></pre>
 </section>
 
 </section>

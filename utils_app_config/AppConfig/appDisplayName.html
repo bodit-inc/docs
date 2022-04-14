@@ -61,21 +61,26 @@
 </section>
 
 
+<section class="desc markdown">
+  <p>앱 타이틀입니다. AppEntry.dart의 MaterialApp()의 title로 주고 있지만
+앱 화면에서 표시되지는 않습니다.</p>
+</section>
 
 
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">static String get appDisplayName {
+  <pre class="language-dart"><code class="language-dart">static Flavor appFlavor = Flavor.PROD;
+
+&#47;&#47;&#47; 앱 타이틀입니다. AppEntry.dart의 MaterialApp()의 title로 주고 있지만
+&#47;&#47;&#47; 앱 화면에서 표시되지는 않습니다.
+static String get appDisplayName {
   switch (appFlavor) {
     case Flavor.PROD:
       return &#39;파머스핸즈&#39;;
     case Flavor.TEST:
       return &#39;파머스핸즈(TEST)&#39;;
     case Flavor.DEV:
-    default:
-      return &#39;파머스핸즈(DEV)&#39;;
-  }
-}</code></pre>
+    default:</code></pre>
 </section>
 
 </section>
