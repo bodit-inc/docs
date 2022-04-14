@@ -227,7 +227,7 @@ Widget build(BuildContext context) {
               settings: settings,
             );
 
-          &#47;&#47;&#47; 메인 탭 스크린
+        &#47;&#47;&#47; 메인 탭 스크린
           case MainScreen.routeName:
             return PageRouteBuilder(
               pageBuilder: (BuildContext context, _, __) {
@@ -251,7 +251,7 @@ Widget build(BuildContext context) {
           case SettingsScreen.routeName:
             return MaterialPageRoute(builder: (context) =&gt; SettingsScreen(), settings: settings);
 
-          &#47;&#47;&#47; 화면
+        &#47;&#47;&#47; 화면
           case ReportScreen.routeName:
             final args = settings.arguments as ReportScreenArguments;
             return MaterialPageRoute(builder: (context) =&gt; ReportScreen(reportGroup: args.reportGroup, cow: args.cow), settings: settings);
@@ -292,7 +292,7 @@ Widget build(BuildContext context) {
             final args = settings.arguments as WebviewScreenArguments;
             return MaterialPageRoute(builder: (context) =&gt; WebviewScreen(initialUrl: args.initialUrl), settings: settings);
 
-          &#47;&#47;&#47; 기타
+        &#47;&#47;&#47; 기타
           case PopupScreen.routeName:
             final args = settings.arguments as PopupScreenArguments;
             return PageRouteBuilder(
@@ -358,7 +358,7 @@ Widget build(BuildContext context) {
               settings: settings,
             );
 
-          &#47;&#47;&#47; 기본
+        &#47;&#47;&#47; 기본
           default:
             return MaterialPageRoute(builder: (context) =&gt; EmptyScreen(), settings: settings);
         }

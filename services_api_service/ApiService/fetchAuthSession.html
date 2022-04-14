@@ -73,12 +73,20 @@
     options: CognitoSessionOptions(getAWSCredentials: true),
   ) as CognitoAuthSession;
 
+  LogManager().initCloudWatch(
+    awsAccessKey: userState.currentUser?.awsAccessKey,
+    awsSecretKey: userState.currentUser?.awsSecretKey,
+    awsSessionToken: userState.currentUser?.awsSessionToken,
+  );
+
   LogManager().addLog(&quot;awsAccessKey: ${session.credentials?.awsAccessKey}&quot;, screen: runtimeType.toString());
   LogManager().addLog(&quot;awsSecretKey: ${session.credentials?.awsSecretKey}&quot;, screen: runtimeType.toString());
   LogManager().addLog(&quot;sessionToken: ${session.credentials?.sessionToken}&quot;, screen: runtimeType.toString());
 
-  &#47;&#47;&#47; CloudWatch에 로그를 남기기위해서는 aws키가 필요합니다. aws키는 로그인이 되어있지 않은 상태에서도 받아올 수 있습니다.
-  &#47;&#47;&#47;
+  &#47;&#47;&#47; CloudWatch에 로그를 남기기 위해서는 aws키가 필요합니다. aws키는 로그인이 되어있지 않은 상태에서도 받아올 수 있습니다.
+  &#47;&#47;&#47; id, username, name은 [getCurrentUser]에서 받아올 수 있으므로, getCurrentUser 이전에 출력된 로그도 cloudwatch에 남기기 위해 먼저 aws 키만 할당해놓습니다.
+  &#47;&#47;&#47; 이 상태에서의 cloudwatch에서 남기는 로그들이 저장되는 로그 그룹명은 null&#47;null&#47;null ... 과 같은 형태로 표시되게 됩니다.
+  &#47;&#47;&#47; 개선이 필요하긴 합니다.
   userState.currentUser = User(
     id: &quot;null&quot;,
     username: &quot;null&quot;,

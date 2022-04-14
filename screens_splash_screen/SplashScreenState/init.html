@@ -84,6 +84,7 @@ splashScreen을 처음부터 다시 런칭하는 효과를 얻습니다.</p>
         await _configureAmplify();
       } on AmplifyException catch (e) {
         LogManager().addLog(e.toString(), screen: runtimeType.toString());
+
         &#47;&#47;&#47; [AmplifyAlreadyConfiguredException] 예외는 여러 상황에서 발생할 수 있는 예외입니다.
         &#47;&#47;&#47; 해당 예외가 발생하더라도 로직 진행에는 문제가 없기 때문에
         &#47;&#47;&#47; 사용자 인증 오류 등 다른 오류일때만 rethrow합니다.
@@ -95,20 +96,15 @@ splashScreen을 처음부터 다시 런칭하는 효과를 얻습니다.</p>
       ApiService().userState = Provider.of&lt;UserState&gt;(context, listen: false);
       await ApiService().fetchAuthSession();
       User? user = await ApiService().getCurrentUser();
-      LogManager().initCloudWatch(
-        awsAccessKey: user.awsAccessKey,
-        awsSecretKey: user.awsSecretKey,
-        awsSessionToken: user.awsSessionToken,
-      );
       LogManager().addLog(&quot;_configureAmplify() 성공&quot;, screen: runtimeType.toString());
     } on AmplifyException catch (e) {
       LogManager().addLog(&quot;AmplifyException 발생&quot;, screen: runtimeType.toString());
       LogManager().addLog(e.message, screen: runtimeType.toString());
 
-      &#47;&#47; SessionExpiredException은 처음 한번만 예외를 발생시키고
-      &#47;&#47; 그 뒤로는 flutter 상에서는 오류를 던지지 않는것으로 추정.
-      &#47;&#47; Android 네이티브에서만 Warn 메시지가 출력됨
-      &#47;&#47; farm_loading에서 처리하던 로그아웃을 여기서 바로 처리
+      &#47;&#47;&#47; SessionExpiredException은 처음 한번만 예외를 발생시키고
+      &#47;&#47;&#47; 그 뒤로는 flutter 상에서는 오류를 던지지 않는것으로 추정됩니다.
+      &#47;&#47;&#47; Android 네이티브 코드에서만 에러메시지가 출력되고 예외를 던지지 않는 것 같아
+      &#47;&#47;&#47; [FarmLoadingScreen]에서 처리하던 로그아웃을 여기서 바로 처리하도록 합니다.
       if (e is SessionExpiredException) {
         disableLaunch = true;
         await ApiService().signOut();

@@ -77,7 +77,7 @@
     );
     RestOperation restOperation = Amplify.API.delete(restOptions: options);
     await restOperation.response;
-    if (_ == cowGroupState.currentCowGroup) cowGroupState.currentCowGroup = null;
+    if (_ == cowGroupState.currentCowGroup) cowGroupState.changeCurrentGroup(null);
     await fetchCows();
     return _;
   } catch (e) {
