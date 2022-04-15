@@ -56,6 +56,22 @@
 
         </section>
         
+<section class="desc markdown">
+  <p>카드 데이터입니다.
+신규 UI에서는 액션별로 지속일자와 ReportTitleId가 있고 새로운 카드 요구사항이 어떻게 바뀔지 모르기 때문에
+앞으로 card_data에 json으로 데이터를 넣을려고 하는게 좋겠다는 생각입니다.
+신규 UI의 경우(v1) 포맷은 다음과 같이 되어있습니다.
+{
+"data": {
+"actions": <code>
+      {"action": "ruminant", "continued_days": 1, "report_title_id": 1002},
+      {"action": "lactation", "continued_days": 2, "report_title_id": 1003}
+      ...
+    </code>
+  },
+  "version": 1
+}</p>
+</section>
 
         
 <section class="summary source-code" id="source">
@@ -106,7 +122,6 @@ Map&lt;String, dynamic&gt;? cardData;
     <li><a href="../../models_report/Report/group.html">group</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
     <li><a href="../../models_report/Report/id.html">id</a></li>
-    <li><a href="../../models_report/Report/isChecked.html">isChecked</a></li>
     <li><a href="../../models_report/Report/isPinned.html">isPinned</a></li>
     <li><a href="../../models_report/Report/level.html">level</a></li>
     <li><a href="../../models_report/Report/memo.html">memo</a></li>
@@ -115,7 +130,6 @@ Map&lt;String, dynamic&gt;? cardData;
     <li><a href="../../models_report/Report/selfDiagnosis.html">selfDiagnosis</a></li>
     <li><a href="../../models_report/Report/sensor.html">sensor</a></li>
     <li><a href="../../models_report/Report/targetAt.html">targetAt</a></li>
-    <li><a href="../../models_report/Report/title.html">title</a></li>
     <li><a href="../../models_report/Report/type.html">type</a></li>
 
     <li class="section-title"><a href="../../models_report/Report-class.html#instance-methods">Methods</a></li>

@@ -73,13 +73,8 @@
       body: Uint8List.fromList([]),
     );
     RestOperation restOperation = Amplify.API.post(restOptions: options);
-    RestResponse response = await restOperation.response;
-    RestBody body = RestBody.fromJson(jsonDecode(response.body));
-    if (body.meta[&quot;httpStatusCode&quot;] == 200) {
-      return true;
-    } else {
-      return false;
-    }
+    await restOperation.response;
+    return true;
   } catch (e) {
     LogManager().addLog(&#39;check_farm call failed: $e&#39;, screen: runtimeType.toString());
     return false;
