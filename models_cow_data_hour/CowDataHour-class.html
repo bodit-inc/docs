@@ -47,9 +47,14 @@
 <h1><span class="kind-class">CowDataHour</span> class 
     <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
  
+    <span class="category models cp-4 linked" title="This is part of the Models Topic."><a href="../topics/Models-topic.html">Models</a></span>
 </h1></div>
 
     
+<section class="desc markdown">
+  <p>시간별 소 데이터입니다.
+각 <a href="../types_action_type/ActionType.html">ActionType</a>별 데이터가 <a href="../models_cow_data_value/CowDataValue-class.html">CowDataValue</a>객체로 들어있습니다.</p>
+</section>
 
 
     <section>
@@ -129,7 +134,7 @@
 
 </dt>
 <dd>
-   
+  이 데이터의 날짜입니다. 
   <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;datetime&#39;, fromJson: dateTimeFromJson, toJson: dateTimeToJson), read / write</div>
 
 </dd>
@@ -195,7 +200,8 @@
 
 </dt>
 <dd>
-   
+  시각 값 입니다. 시간단위가 1이면 0, 1, 2, ... , 22, 23으로 들어갈것이고
+시간단위가 24면 0이 들어있습니다. 
   <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;hour&#39;), read / write</div>
 
 </dd>
@@ -206,7 +212,7 @@
 
 </dt>
 <dd>
-   
+  <a href="../types_action_type/ActionType.html">ActionType</a>별 데이터입니다. 
   <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;lactation&#39;), read / write</div>
 
 </dd>

@@ -47,6 +47,7 @@
 <h1><span class="kind-class">Cow</span> class 
     <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
  
+    <span class="category models cp-4 linked" title="This is part of the Models Topic."><a href="../topics/Models-topic.html">Models</a></span>
 </h1></div>
 
     
@@ -99,7 +100,7 @@
 
 </dt>
 <dd>
-   
+  출생일자 
   <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;birth&#39;, fromJson: dateTimeFromJson, toJson: dateTimeToJson), read / write</div>
 
 </dd>
@@ -110,7 +111,7 @@
 
 </dt>
 <dd>
-   
+  생시체중 
   <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;birth_weight&#39;), read / write</div>
 
 </dd>
@@ -121,7 +122,7 @@
 
 </dt>
 <dd>
-   
+  개체의 상태<a href="../types_cow_status_type/CowStatusType.html">CowStatusType</a>(양호, 주의, 심각, 경계)를 나타냅니다. 
   <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;cowStatus&#39;, fromJson: cowStatusTypeFromIndex, toJson: cowStatusTypeToIndex), read / write</div>
 
 </dd>
@@ -143,7 +144,7 @@
 
 </dt>
 <dd>
-   
+  농장 아이디 (FARM-100000, ...) 
   <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;farm_id&#39;), read / write</div>
 
 </dd>
@@ -154,7 +155,7 @@
 
 </dt>
 <dd>
-   
+  개체가 속한 소 그룹의 리스트 
   <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;groups&#39;, fromJson: groupsFromJson, toJson: groupsToJson), read / write</div>
 
 </dd>
@@ -176,7 +177,7 @@
 
 </dt>
 <dd>
-   
+  소 아이디 (COW-10000000, ...) 
   <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;id&#39;), read / write</div>
 
 </dd>
@@ -187,7 +188,7 @@
 
 </dt>
 <dd>
-   
+  개체설정화면이나 팝업에 있는 리스트뷰에서 개체가 선택되었는지 여부를 나타냅니다. 
   <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(ignore: true), read / write</div>
 
 </dd>
@@ -198,7 +199,7 @@
 
 </dt>
 <dd>
-   
+  개체관리번호 
   <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;management_number&#39;), read / write</div>
 
 </dd>
@@ -209,7 +210,7 @@
 
 </dt>
 <dd>
-   
+  메모 
   <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;memo&#39;), read / write</div>
 
 </dd>
@@ -220,7 +221,7 @@
 
 </dt>
 <dd>
-   
+  명호 
   <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;name&#39;), read / write</div>
 
 </dd>
@@ -242,7 +243,7 @@
 
 </dt>
 <dd>
-   
+  센서 
   <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;sensor_id&#39;, fromJson: sensorFromJson, toJson: sensorToJson), read / write</div>
 
 </dd>
@@ -253,7 +254,7 @@
 
 </dt>
 <dd>
-   
+  성별 
   <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;sex&#39;), read / write</div>
 
 </dd>
@@ -275,7 +276,7 @@
 
 </dt>
 <dd>
-   
+  상태 ("removed", "dead", ...) 현재 "removed"만 사용되고 그 이외에 정해진 값은 없습니다. 필요하신대로 맞게 넣고 api 함수에서도 대응하여 사용하시면 되겠습니다. 
   <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;state&#39;), read / write</div>
 
 </dd>
@@ -286,7 +287,7 @@
 
 </dt>
 <dd>
-   
+  개체이력번호 
   <div class="features">@<a href="https://pub.dev/documentation/json_annotation/4.4.0/json_annotation/JsonKey-class.html">JsonKey</a>(name: &#39;trace_number&#39;), read / write</div>
 
 </dd>
@@ -305,7 +306,7 @@
 
 </dt>
 <dd>
-  선택된 날짜 기준 일령 
+  선택된 날짜를 기준으로 일령 계산하고 int로 반환합니다. 
   
 
 </dd>
@@ -318,7 +319,7 @@
 
 </dt>
 <dd>
-  선택된 날짜 기준 일령 
+  선택된 날짜를 기준으로 일령 계산하고 String으로 반환합니다. 
   
 
 </dd>
