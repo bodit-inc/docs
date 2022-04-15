@@ -74,18 +74,18 @@
   final rangePath = Path();
 
   &#47;&#47; 밴드 상단
-  for (var k = 0; k &lt; barDayItems!.length; k++) {
-    final List&lt;BarHourData?&gt; barHourData = barDayItems![k].barHourData;
+  for (var k = 0; k &lt; barItemsDay!.length; k++) {
+    final List&lt;BarDataHour?&gt; barDataHour = barItemsDay![k].barDataHour;
     double offsetDx = offset.dx + ((barWidth * hourCntInDay + barSpace * hourCntInDay) * k);
 
-    for (var i = 0; i &lt; barHourData.length; i++) {
-      if (barHourData[i] == null) continue;
+    for (var i = 0; i &lt; barDataHour.length; i++) {
+      if (barDataHour[i] == null) continue;
       double barHeight, rangeTopValue;
 
       if (isBottom) {
-        rangeTopValue = isGroupAvg ? barHourData[i]!.groupRangeTopValueBottom : barHourData[i]!.totalRangeTopValueBottom;
+        rangeTopValue = isGroupAvg ? barDataHour[i]!.groupRangeTopValueBottom : barDataHour[i]!.totalRangeTopValueBottom;
       } else {
-        rangeTopValue = isGroupAvg ? barHourData[i]!.groupRangeTopValue : barHourData[i]!.totalRangeTopValue;
+        rangeTopValue = isGroupAvg ? barDataHour[i]!.groupRangeTopValue : barDataHour[i]!.totalRangeTopValue;
       }
       barHeight = rangeTopValue * barHeightRatio;
 
@@ -97,10 +97,10 @@
       if (k == 0 &amp;&amp; i == 0) {
         rangePath.moveTo(current.dx, current.dy);
       } else {
-        if ((hourCntInDay != 1 &amp;&amp; i == barHourData.length - 1) || (hourCntInDay == 1 &amp;&amp; k == barDayItems!.length - 1)) {
+        if ((hourCntInDay != 1 &amp;&amp; i == barDataHour.length - 1) || (hourCntInDay == 1 &amp;&amp; k == barItemsDay!.length - 1)) {
           next = current;
         } else {
-          BarHourData nextData = hourCntInDay == 1 ? barHourData[0]! : barHourData[i + 1]!;
+          BarDataHour nextData = hourCntInDay == 1 ? barDataHour[0]! : barDataHour[i + 1]!;
           barHeight = (isGroupAvg ? nextData.groupRangeTopValue : nextData.totalRangeTopValue) * barHeightRatio;
           next = Offset(
             offsetDx + barStartOffsetX + yLabelWidth + yLabelMargin + (barWidth &#47; 2) + (barWidth + barSpace) * (i + 1),
@@ -119,17 +119,17 @@
   }
 
   &#47;&#47; 밴드 하단
-  for (var k = barDayItems!.length - 1; k &gt;= 0; k--) {
-    final barHourData = barDayItems![k].barHourData;
+  for (var k = barItemsDay!.length - 1; k &gt;= 0; k--) {
+    final barDataHour = barItemsDay![k].barDataHour;
     var offsetDx = offset.dx + ((barWidth * hourCntInDay + barSpace * hourCntInDay) * k);
 
-    for (var i = barHourData.length - 1; i &gt;= 0; i--) {
-      if (barHourData[i] == null) continue;
+    for (var i = barDataHour.length - 1; i &gt;= 0; i--) {
+      if (barDataHour[i] == null) continue;
       var barHeight;
       if (isBottom) {
-        barHeight = (isGroupAvg ? barHourData[i]!.groupRangeBottomValueBottom : barHourData[i]!.totalRangeBottomValueBottom) * barHeightRatio;
+        barHeight = (isGroupAvg ? barDataHour[i]!.groupRangeBottomValueBottom : barDataHour[i]!.totalRangeBottomValueBottom) * barHeightRatio;
       } else {
-        barHeight = (isGroupAvg ? barHourData[i]!.groupRangeBottomValue : barHourData[i]!.totalRangeBottomValue) * barHeightRatio;
+        barHeight = (isGroupAvg ? barDataHour[i]!.groupRangeBottomValue : barDataHour[i]!.totalRangeBottomValue) * barHeightRatio;
       }
 
       current = Offset(
@@ -137,15 +137,15 @@
         baseOffsetY + size.height - xLabelDaySize - xLabelDayMargin - xLabelHourSize - xLabelHourMargin - horizontalLineHeight + (isBottom ? barHeight : -barHeight),
       );
 
-      if (i == barHourData.length - 1) {
+      if (i == barDataHour.length - 1) {
         rangePath.lineTo(current.dx, current.dy);
       } else {
         if ((hourCntInDay != 1 &amp;&amp; i == 0) || (hourCntInDay == 1 &amp;&amp; k == 0)) {
           next = current;
         } else {
           &#47;&#47; TODO 보완필요
-          if (barHourData[i] == null) continue;
-          BarHourData nextData = hourCntInDay == 1 ? barHourData[0]! : barHourData[i - 1]!;
+          if (barDataHour[i] == null) continue;
+          BarDataHour nextData = hourCntInDay == 1 ? barDataHour[0]! : barDataHour[i - 1]!;
 
           double barHeight = (isGroupAvg ? nextData.groupRangeBottomValue : nextData.totalRangeBottomValue) * barHeightRatio;
           next = Offset(
@@ -201,8 +201,8 @@
     <li class="section-title">
       <a href="../../components_graph_bar_graph_painter/BarGraphPainter-class.html#instance-properties">Properties</a>
     </li>
-    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barDayItems.html">barDayItems</a></li>
     <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barHeightRatio.html">barHeightRatio</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barItemsDay.html">barItemsDay</a></li>
     <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaint.html">barPaint</a></li>
     <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaintDark.html">barPaintDark</a></li>
     <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaintHighlight.html">barPaintHighlight</a></li>

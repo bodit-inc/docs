@@ -109,7 +109,7 @@ obtain the correct rendering size.</p>
   <pre class="language-dart"><code class="language-dart">@override
 void paint(Canvas canvas, Size size) {
   horizontalLinePaint.strokeWidth = horizontalLineHeight;
-  yMaxVal = Helper().getMaxValueFromBarDayData(barDayDatas: barDayItems!);
+  yMaxVal = Helper().getMaxValueFromBarDataDay(barDatasDay: barItemsDay!);
 
   maxBarHeight =
       (size.height - xLabelDaySize - xLabelDayMargin - xLabelHourSize - xLabelHourMargin - xLabelBirthDaySize - xLabelBirthDayMargin - yTopMargin - horizontalLineHeight) &#47; (isBiDirectional ? 2 : 1);
@@ -157,8 +157,8 @@ void paint(Canvas canvas, Size size) {
     <li class="section-title">
       <a href="../../components_graph_bar_graph_ylabel_painter/BarGraphYLabelPainter-class.html#instance-properties">Properties</a>
     </li>
-    <li><a href="../../components_graph_bar_graph_ylabel_painter/BarGraphYLabelPainter/barDayItems.html">barDayItems</a></li>
     <li class="inherited"><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barHeightRatio.html">barHeightRatio</a></li>
+    <li><a href="../../components_graph_bar_graph_ylabel_painter/BarGraphYLabelPainter/barItemsDay.html">barItemsDay</a></li>
     <li class="inherited"><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaint.html">barPaint</a></li>
     <li class="inherited"><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaintDark.html">barPaintDark</a></li>
     <li class="inherited"><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaintHighlight.html">barPaintHighlight</a></li>

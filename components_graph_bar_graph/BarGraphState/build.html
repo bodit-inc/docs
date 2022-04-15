@@ -162,9 +162,9 @@ prints green, as expected.</p>
 Widget build(BuildContext context) {
   int barCnt = 0;
 
-  if (widget.barDayItems != null &amp;&amp; widget.barDayItems!.length &gt; 0) {
-    widget.barDayItems!.forEach((BarDayData barDayData) {
-      barDayData.barHourData.forEach((BarHourData? barHourData) {
+  if (widget.barItemsDay != null &amp;&amp; widget.barItemsDay!.length &gt; 0) {
+    widget.barItemsDay!.forEach((BarDataDay barDataDay) {
+      barDataDay.barDataHour.forEach((BarDataHour? barDataHour) {
         barCnt++;
       });
     });
@@ -222,14 +222,14 @@ Widget build(BuildContext context) {
           children: [
             Row(
               children: [
-                if (widget.barDayItems != null &amp;&amp; widget.barDayItems!.length &gt; 0)
+                if (widget.barItemsDay != null &amp;&amp; widget.barItemsDay!.length &gt; 0)
                   Container(
                     width: 40,
                     height: widget.size.height,
                     child: CustomPaint(
                       size: widget.size,
                       painter: BarGraphYLabelPainter(
-                        barDayItems: widget.barDayItems!,
+                        barItemsDay: widget.barItemsDay!,
                         isBiDirectional: widget.isBiDirectional,
                       ),
                     ),
@@ -240,19 +240,19 @@ Widget build(BuildContext context) {
                       return SingleChildScrollView(
                         controller: scrollController,
                         scrollDirection: Axis.horizontal,
-                        child: widget.barDayItems != null
+                        child: widget.barItemsDay != null
                             ? Container(
                                 alignment: Alignment.center,
                                 child: ConstrainedBox(
                                   constraints: BoxConstraints(
-                                    minWidth: widget.barDayItems!.length &gt; 0 ? barCnt * 36 : constraint.maxWidth,
+                                    minWidth: widget.barItemsDay!.length &gt; 0 ? barCnt * 36 : constraint.maxWidth,
                                   ),
-                                  child: widget.barDayItems!.length &gt; 0
+                                  child: widget.barItemsDay!.length &gt; 0
                                       ? CustomPaint(
                                           key: _paintKey,
                                           size: widget.size,
                                           painter: BarGraphPainter(
-                                            barDayItems: widget.barDayItems,
+                                            barItemsDay: widget.barItemsDay,
                                             isBiDirectional: widget.isBiDirectional,
                                             hourCntInDay: widget.selectedViewType.hourCntInDay,
                                             isGroupAvg: widget.selectedAvgType == GraphAvgType.GROUP,
@@ -270,7 +270,7 @@ Widget build(BuildContext context) {
               ],
             ),
             if (widget.hideGraph) Container(margin: EdgeInsets.only(left: 40), height: widget.size.height, color: Colors.white),
-            if (widget.barDayItems == null || widget.isLoading)
+            if (widget.barItemsDay == null || widget.isLoading)
               Container(
                 height: widget.size.height,
                 child: Center(child: Container(width: 36, height: 36, child: CircularProgressIndicator(color: CustomColors.emerald))),

@@ -52,7 +52,7 @@
     <section class="multi-line-signature">
       
 
-<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../models_bar_day_data/BarDayData-class.html">BarDayData</a></span>&gt;</span>?</span>&gt;</span></span>
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../models_bar_day_data/BarDataDay-class.html">BarDataDay</a></span>&gt;</span>?</span>&gt;</span></span>
 <span class="name ">fetchGraphData</span>(<wbr>)
 
       
@@ -64,7 +64,7 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;BarDayData&gt;?&gt; fetchGraphData() async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;List&lt;BarDataDay&gt;?&gt; fetchGraphData() async {
   currentStartAt = selectedDateTime.subtract(Duration(days: _selectedGraphViewType.subDays));
   currentEndAt = selectedDateTime;
   List&lt;CowData&gt;? cowData = await ApiService().fetchCowData(queryParameters: {
@@ -73,14 +73,14 @@
     &quot;end_at&quot;: DateFormat(StringConstants.timeYMDDashFormat).format(selectedDateTime),
     &quot;hour_unit&quot;: _selectedGraphViewType.hourUnit.toString(),
   });
-  barDayItems = Helper().convertCowDataToGraphData(
+  barItemsDay = Helper().convertCowDataToGraphData(
     cowData: cowData,
     targetDateTime: selectedDateTime,
     continuedDays: report.continuedDays == null ? 0 : report.continuedDays!,
     graphViewType: _selectedGraphViewType,
     actionType: selectedAction,
   );
-  return barDayItems;
+  return barItemsDay;
 }</code></pre>
 </section>
 
@@ -112,7 +112,7 @@
     <li class="section-title">
       <a href="../../view_models_report_card_view_vm/ReportCardViewVM-class.html#instance-properties">Properties</a>
     </li>
-    <li><a href="../../view_models_report_card_view_vm/ReportCardViewVM/barDayItems.html">barDayItems</a></li>
+    <li><a href="../../view_models_report_card_view_vm/ReportCardViewVM/barItemsDay.html">barItemsDay</a></li>
     <li><a href="../../view_models_report_card_view_vm/ReportCardViewVM/bottomString.html">bottomString</a></li>
     <li><a href="../../view_models_report_card_view_vm/ReportCardViewVM/currentEndAt.html">currentEndAt</a></li>
     <li><a href="../../view_models_report_card_view_vm/ReportCardViewVM/currentStartAt.html">currentStartAt</a></li>

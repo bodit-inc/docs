@@ -80,7 +80,7 @@
               defaultValue: widget.reportCardViewVM.report.actions?.first.name ?? &quot;&quot;,
               onSelected: (e) async {
                 widget.reportCardViewVM.selectedAction = ActionType.values.firstWhere((element) =&gt; element.name == e);
-                widget.reportCardViewVM.barDayItems = null;
+                widget.reportCardViewVM.barItemsDay = null;
                 LogManager().addLog(&quot;${widget.reportCardViewVM.selectedAction?.name} 선택&quot;, action: LogConstants.menuTap);
                 await widget.reportCardViewVM.fetchGraphData();
                 widget.reportCardViewVM.hideGraph = true;
@@ -106,7 +106,7 @@
                     child: BarGraph(
                       key: barGraphKey,
                       cow: widget.reportCardViewVM.report.cow,
-                      barDayItems: widget.reportCardViewVM.barDayItems,
+                      barItemsDay: widget.reportCardViewVM.barItemsDay,
                       size: Size(270, 240),
                       isLoading: widget.reportCardViewVM.isLoading,
                       hideGraph: widget.reportCardViewVM.hideGraph,
@@ -116,7 +116,7 @@
                       selectedViewType: widget.reportCardViewVM.selectedGraphViewType,
                       onSelectViewType: (String e) async {
                         widget.reportCardViewVM.selectedGraphViewType = GraphViewType.values.firstWhere((element) =&gt; element.name == e);
-                        widget.reportCardViewVM.barDayItems = null;
+                        widget.reportCardViewVM.barItemsDay = null;
                         setState(() {});
                         await widget.reportCardViewVM.fetchGraphData();
                         await scrollToEnd();

@@ -52,7 +52,7 @@
     <section class="multi-line-signature">
       
 
-<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../models_bar_day_data/BarDayData-class.html">BarDayData</a></span>&gt;</span></span>
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../models_bar_day_data/BarDataDay-class.html">BarDataDay</a></span>&gt;</span></span>
 <span class="name ">convertCowDataToGraphData</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="convertCowDataToGraphData-param-cowData">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../models_cow_data/CowData-class.html">CowData</a></span>&gt;</span>?</span> <span class="parameter-name">cowData</span>, </span></li>
 <li><span class="parameter" id="convertCowDataToGraphData-param-targetDateTime"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/DateTime-class.html">DateTime</a>?</span> <span class="parameter-name">targetDateTime</span>, </span></li>
 <li><span class="parameter" id="convertCowDataToGraphData-param-continuedDays"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">continuedDays</span> = <span class="default-value">0</span>, </span></li>
@@ -72,7 +72,7 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">List&lt;BarDayData&gt; convertCowDataToGraphData({
+  <pre class="language-dart"><code class="language-dart">List&lt;BarDataDay&gt; convertCowDataToGraphData({
   required List&lt;CowData&gt;? cowData,
   DateTime? targetDateTime,
   int continuedDays = 0,
@@ -81,11 +81,11 @@
 }) {
   if (targetDateTime != null) targetDateTime = DateTime(targetDateTime.year, targetDateTime.month, targetDateTime.day);
   List&lt;CowDataDay&gt; cowDataDays = cowData != null &amp;&amp; cowData.length &gt; 0 ? cowData.first.data : [];
-  List&lt;BarDayData&gt; barDayDatas = [];
+  List&lt;BarDataDay&gt; barDatasDay = [];
   for (CowDataDay cowDataDay in cowDataDays) {
     DateTime date = cowDataDay.date!;
     String xLabelDate = DateFormat(&quot;MM&#47;dd&quot;).format(date);
-    List&lt;BarHourData?&gt; barHourDatas = List.filled(graphViewType.hourCntInDay, null);
+    List&lt;BarDataHour?&gt; barDatasHour = List.filled(graphViewType.hourCntInDay, null);
     bool isHighlighted = false;
     for (CowDataHour cowDataHour in cowDataDay.cowDataHour) {
       double value = 0, realValue = 0, valueBottom = 0, realValueBottom = 0;
@@ -159,7 +159,7 @@
       valueLabel = &quot;${realValue.roundToDouble().toInt()}$suffix&quot;;
       valueBottomLabel = &quot;${realValueBottom.roundToDouble().toInt()}$suffix&quot;;
 
-      barHourDatas[cowDataHour.hour] = BarHourData(
+      barDatasHour[cowDataHour.hour] = BarDataHour(
         value: value,
         valueLabel: valueLabel,
         valueBottomLabel: valueBottomLabel,
@@ -171,16 +171,16 @@
         isHighlighted: isHighlighted,
       );
     }
-    BarDayData barDayData = BarDayData(
-      barHourData: barHourDatas,
+    BarDataDay barDataDay = BarDataDay(
+      barDataHour: barDatasHour,
       dateTime: date,
       sunRiseDateTime: DateTime.now(),
       sunSetDateTime: DateTime.now(),
       label: DateFormat(StringConstants.timeYMDDotFormat).format(date),
     );
-    barDayDatas.add(barDayData);
+    barDatasDay.add(barDataDay);
   }
-  return barDayDatas;
+  return barDatasDay;
 }</code></pre>
 </section>
 
@@ -222,7 +222,7 @@
     <li class="section-title"><a href="../../utils_helper/Helper-class.html#instance-methods">Methods</a></li>
     <li><a href="../../utils_helper/Helper/convertCowDataToGraphData.html">convertCowDataToGraphData</a></li>
     <li><a href="../../utils_helper/Helper/convertDateTimeToMidnight.html">convertDateTimeToMidnight</a></li>
-    <li><a href="../../utils_helper/Helper/getMaxValueFromBarDayData.html">getMaxValueFromBarDayData</a></li>
+    <li><a href="../../utils_helper/Helper/getMaxValueFromBarDataDay.html">getMaxValueFromBarDataDay</a></li>
     <li><a href="../../utils_helper/Helper/getMaxValueFromCowData.html">getMaxValueFromCowData</a></li>
     <li><a href="../../utils_helper/Helper/isCowDataHighlighted.html">isCowDataHighlighted</a></li>
     <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>

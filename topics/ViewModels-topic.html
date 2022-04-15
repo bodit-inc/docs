@@ -45,7 +45,11 @@
   <h1><span class="kind-category">ViewModels</span> Topic</h1>
   
 <section class="desc markdown">
-  <h1 id=""></h1>
+  <h1 id="viewmodels">ViewModels</h1>
+<p>뷰모델을 정의하는 폴더입니다. 프로바이더로 정의된 뷰모델도 있고 그렇지 않은 뷰모델도 있습니다.
+주로 내비게이터상에서 중복되는 화면이 depth에 따라 쌓이는 화면들같은 경우(개체상세)에는 
+프로바이더를 사용하여 구현하지않고 뷰모델에서 -&gt; 뷰,스크린의 setState()를 호출하는 <code>forceRender</code> 콜백함수로 구현합니다.
+프로바이더는 싱글톤이어서 화면이 중첩되면 이전 화면들에 그려지는 데이터도 모든 화면에서 공유하기 때문입니다.</p>
 </section>
 
 
@@ -420,9 +424,9 @@
       <li><a href="../components_group_list_view/components_group_list_view-library.html">group_list_view</a></li>
       <li><a href="../components_group_menu_view/components_group_menu_view-library.html">group_menu_view</a></li>
       <li><a href="../views_farm_loading_header_text_view/views_farm_loading_header_text_view-library.html">header_text_view</a></li>
+      <li><a href="../views_cow_current_status_header_view/views_cow_current_status_header_view-library.html">header_view</a></li>
       <li><a href="../views_cow_settings_header_view/views_cow_settings_header_view-library.html">header_view</a></li>
       <li><a href="../views_cow_detail_header_view/views_cow_detail_header_view-library.html">header_view</a></li>
-      <li><a href="../views_cow_current_status_header_view/views_cow_current_status_header_view-library.html">header_view</a></li>
       <li><a href="../views_report_report_card_health_doubt_report_card/views_report_report_card_health_doubt_report_card-library.html">health_doubt_report_card</a></li>
       <li><a href="../screens_report_screen_subscreens_health_doubt_subscreen/screens_report_screen_subscreens_health_doubt_subscreen-library.html">health_doubt_subscreen</a></li>
       <li><a href="../utils_helper/utils_helper-library.html">helper</a></li>

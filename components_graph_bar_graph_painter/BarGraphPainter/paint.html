@@ -108,9 +108,9 @@ obtain the correct rendering size.</p>
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">@override
 void paint(Canvas canvas, Size size) {
-  if (barDayItems == null) return;
+  if (barItemsDay == null) return;
   horizontalLinePaint.strokeWidth = horizontalLineHeight;
-  yMaxVal = Helper().getMaxValueFromBarDayData(barDayDatas: barDayItems!);
+  yMaxVal = Helper().getMaxValueFromBarDataDay(barDatasDay: barItemsDay!);
 
   maxBarHeight =
       (size.height - xLabelHourSize - xLabelHourMargin - xLabelDaySize - xLabelDayMargin - xLabelBirthDaySize - xLabelBirthDayMargin - yTopMargin - horizontalLineHeight) &#47; (isBiDirectional ? 2 : 1);
@@ -128,29 +128,29 @@ void paint(Canvas canvas, Size size) {
   }
 
   &#47;&#47; 낮, 밤 표시
-  for (var k = 0; k &lt; barDayItems!.length; k++) {
-    var barHourData = barDayItems![k].barHourData;
+  for (var k = 0; k &lt; barItemsDay!.length; k++) {
+    var barDataHour = barItemsDay![k].barDataHour;
     offsetDx = offset.dx + ((barWidth * hourCntInDay + barSpace * hourCntInDay) * k);
 
     &#47;&#47; 밴드 하단
-    for (var i = 0; i &lt; barHourData.length; i++) {
-      if (barHourData[i] == null) continue;
-      if ((k == 0 &amp;&amp; i == 0 &amp;&amp; (barHourData[i]!.dateTime.hour &gt;= barDayItems![k].sunSetDateTime.hour || barHourData[i]!.dateTime.hour &lt; barDayItems![k].sunRiseDateTime.hour)) ||
-          barHourData[i]!.dateTime.hour == barDayItems![k].sunSetDateTime.hour) {
-        var width = (barWidth + barSpace) * (barDayItems![k].sunSetDateTime.hour - barDayItems![k].sunRiseDateTime.hour);
+    for (var i = 0; i &lt; barDataHour.length; i++) {
+      if (barDataHour[i] == null) continue;
+      if ((k == 0 &amp;&amp; i == 0 &amp;&amp; (barDataHour[i]!.dateTime.hour &gt;= barItemsDay![k].sunSetDateTime.hour || barDataHour[i]!.dateTime.hour &lt; barItemsDay![k].sunRiseDateTime.hour)) ||
+          barDataHour[i]!.dateTime.hour == barItemsDay![k].sunSetDateTime.hour) {
+        var width = (barWidth + barSpace) * (barItemsDay![k].sunSetDateTime.hour - barItemsDay![k].sunRiseDateTime.hour);
         var _dx = offsetDx +
             yLabelWidth +
             yLabelMargin +
             barStartOffsetX +
             (barWidth + barSpace) * i +
-            (barWidth + barSpace) * ((barDayItems![k].sunSetDateTime.hour - barDayItems![k].sunRiseDateTime.hour) &#47; 2);
+            (barWidth + barSpace) * ((barItemsDay![k].sunSetDateTime.hour - barItemsDay![k].sunRiseDateTime.hour) &#47; 2);
         if (k == 0 &amp;&amp; i == 0) {
-          if (barHourData[i]!.dateTime.hour &gt;= barDayItems![k].sunSetDateTime.hour) {
-            _dx = offsetDx + yLabelWidth + yLabelMargin + barStartOffsetX + (barWidth + barSpace) * ((barDayItems![k].sunSetDateTime.hour).abs() &#47; 2);
-            width = (barWidth + barSpace) * (barHourData[i]!.dateTime.hour - barDayItems![k].sunSetDateTime.hour).abs();
-          } else if (barHourData[i]!.dateTime.hour &lt; barDayItems![k].sunRiseDateTime.hour) {
-            _dx = offsetDx + yLabelWidth + yLabelMargin + barStartOffsetX + (barWidth + barSpace) * ((barHourData[i]!.dateTime.hour - barDayItems![k].sunRiseDateTime.hour).abs() &#47; 2);
-            width = (barWidth + barSpace) * (barHourData[i]!.dateTime.hour - barDayItems![k].sunRiseDateTime.hour).abs();
+          if (barDataHour[i]!.dateTime.hour &gt;= barItemsDay![k].sunSetDateTime.hour) {
+            _dx = offsetDx + yLabelWidth + yLabelMargin + barStartOffsetX + (barWidth + barSpace) * ((barItemsDay![k].sunSetDateTime.hour).abs() &#47; 2);
+            width = (barWidth + barSpace) * (barDataHour[i]!.dateTime.hour - barItemsDay![k].sunSetDateTime.hour).abs();
+          } else if (barDataHour[i]!.dateTime.hour &lt; barItemsDay![k].sunRiseDateTime.hour) {
+            _dx = offsetDx + yLabelWidth + yLabelMargin + barStartOffsetX + (barWidth + barSpace) * ((barDataHour[i]!.dateTime.hour - barItemsDay![k].sunRiseDateTime.hour).abs() &#47; 2);
+            width = (barWidth + barSpace) * (barDataHour[i]!.dateTime.hour - barItemsDay![k].sunRiseDateTime.hour).abs();
           }
         }
 
@@ -172,43 +172,43 @@ void paint(Canvas canvas, Size size) {
   }
 
   &#47;&#47; x축 일별 순회
-  for (var k = 0; k &lt; barDayItems!.length; k++) {
+  for (var k = 0; k &lt; barItemsDay!.length; k++) {
     Offset barCenter = Offset.zero;
     double barHeight = size.height;
-    List&lt;BarHourData?&gt; barHourData = barDayItems![k].barHourData;
+    List&lt;BarDataHour?&gt; barDataHour = barItemsDay![k].barDataHour;
 
     &#47;&#47; if (barDayItems?[k] == null)
-    &#47;&#47;   barHourData = [BarHourData(value: 0, valueLabel: &quot;0&quot;, realValue: 0, label: &quot;-&quot;, dateTime: DateTime.now())];
+    &#47;&#47;   barDataHour = [BarDataHour(value: 0, valueLabel: &quot;0&quot;, realValue: 0, label: &quot;-&quot;, dateTime: DateTime.now())];
     &#47;&#47; else
-    &#47;&#47;   barHourData = barDayItems![k].barHourData;
+    &#47;&#47;   barDataHour = barDayItems![k].barDataHour;
 
     offsetDx = offset.dx + ((barWidth * hourCntInDay + barSpace * hourCntInDay) * k);
-    String labelDay = (hourCntInDay == 1) ? &quot;&quot; : intl.DateFormat(&#39;yyyy.MM.dd&#39;).format(barDayItems![k].dateTime);
+    String labelDay = (hourCntInDay == 1) ? &quot;&quot; : intl.DateFormat(&#39;yyyy.MM.dd&#39;).format(barItemsDay![k].dateTime);
 
     &#47;&#47; 가로줄 그리기
     if (yLabelVisible || horizontalLineVisible) drawYLabel(canvas, size, k);
 
     &#47;&#47; xLabelDay 그리기
-    if (xLabelHourVisible) drawXLabelDay(canvas, size, Offset(offsetDx, 0), barDayItems![k].label, labelDay, k);
+    if (xLabelHourVisible) drawXLabelDay(canvas, size, Offset(offsetDx, 0), barItemsDay![k].label, labelDay, k);
 
     &#47;&#47; x축 - 시간 순회
     for (var i = 0; i &lt; hourCntInDay; i++) {
-      if (barHourData[i] == null) continue;
+      if (barDataHour[i] == null) continue;
       barCenter = Offset.zero;
       barHeight = size.height;
       double barHeightBottom = size.height;
 
       &#47;&#47; Bar 그리기
-      List&lt;dynamic&gt; result = drawBar(canvas, size, barHourData, offsetDx, i);
+      List&lt;dynamic&gt; result = drawBar(canvas, size, barDataHour, offsetDx, i);
       barCenter = result[0];
       barHeight = result[1];
       barHeightBottom = result[2];
 
       &#47;&#47; xLabelValue 텍스트 그리기
-      if (xLabelValueVisible) drawXLabelValue(canvas, size, barHourData[i]!.valueLabel, barHourData[i]!.valueBottomLabel, barCenter, barHeight, barHeightBottom);
+      if (xLabelValueVisible) drawXLabelValue(canvas, size, barDataHour[i]!.valueLabel, barDataHour[i]!.valueBottomLabel, barCenter, barHeight, barHeightBottom);
 
       &#47;&#47; xLabelHour 그리기
-      if (xLabelHourVisible) drawXLabelHour(canvas, size, barCenter, barHourData[i]!.label, labelDay);
+      if (xLabelHourVisible) drawXLabelHour(canvas, size, barCenter, barDataHour[i]!.label, labelDay);
 
       &#47;&#47; xLabelBirthDay 그리기
       if (xLabelHourVisible)
@@ -216,7 +216,7 @@ void paint(Canvas canvas, Size size) {
           canvas,
           size,
           barCenter,
-          cow?.getDayAfterBirthStrFromDateTime(barHourData[i]!.dateTime) ?? &quot;-&quot;,
+          cow?.getDayAfterBirthStrFromDateTime(barDataHour[i]!.dateTime) ?? &quot;-&quot;,
           labelDay,
         );
     }
@@ -267,8 +267,8 @@ void paint(Canvas canvas, Size size) {
     <li class="section-title">
       <a href="../../components_graph_bar_graph_painter/BarGraphPainter-class.html#instance-properties">Properties</a>
     </li>
-    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barDayItems.html">barDayItems</a></li>
     <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barHeightRatio.html">barHeightRatio</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barItemsDay.html">barItemsDay</a></li>
     <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaint.html">barPaint</a></li>
     <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaintDark.html">barPaintDark</a></li>
     <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaintHighlight.html">barPaintHighlight</a></li>

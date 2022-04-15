@@ -76,14 +76,14 @@
       &quot;hour_unit&quot;: _selectedGraphViewType.hourUnit.toString(),
     });
     currentStartAt = currentStartAt.subtract(Duration(days: _selectedGraphViewType.subDays + 1));
-    List&lt;BarDayData&gt; moreBarDayItems = Helper().convertCowDataToGraphData(
+    List&lt;BarDataDay&gt; moreBarItemsDay = Helper().convertCowDataToGraphData(
       cowData: cowData,
       targetDateTime: selectedDateTime,
       continuedDays: report.continuedDays == null ? 0 : report.continuedDays!,
       graphViewType: _selectedGraphViewType,
       actionType: selectedAction,
     );
-    barDayItems?.insertAll(0, moreBarDayItems);
+    barItemsDay?.insertAll(0, moreBarItemsDay);
   } else if (action == &quot;end&quot;) {
     List&lt;CowData&gt;? cowData = await ApiService().fetchCowData(queryParameters: {
       &quot;cow_ids&quot;: &#39;[&quot;${report.cow?.id}&quot;]&#39;,
@@ -92,14 +92,14 @@
       &quot;hour_unit&quot;: _selectedGraphViewType.hourUnit.toString(),
     });
     currentEndAt = currentEndAt.add(Duration(days: _selectedGraphViewType.subDays + 1));
-    List&lt;BarDayData&gt; moreBarDayItems = Helper().convertCowDataToGraphData(
+    List&lt;BarDataDay&gt; moreBarItemsDay = Helper().convertCowDataToGraphData(
       cowData: cowData,
       targetDateTime: selectedDateTime,
       continuedDays: report.continuedDays == null ? 0 : report.continuedDays!,
       graphViewType: _selectedGraphViewType,
       actionType: selectedAction,
     );
-    barDayItems?.addAll(moreBarDayItems);
+    barItemsDay?.addAll(moreBarItemsDay);
   }
 }</code></pre>
 </section>
@@ -132,7 +132,7 @@
     <li class="section-title">
       <a href="../../view_models_report_card_view_vm/ReportCardViewVM-class.html#instance-properties">Properties</a>
     </li>
-    <li><a href="../../view_models_report_card_view_vm/ReportCardViewVM/barDayItems.html">barDayItems</a></li>
+    <li><a href="../../view_models_report_card_view_vm/ReportCardViewVM/barItemsDay.html">barItemsDay</a></li>
     <li><a href="../../view_models_report_card_view_vm/ReportCardViewVM/bottomString.html">bottomString</a></li>
     <li><a href="../../view_models_report_card_view_vm/ReportCardViewVM/currentEndAt.html">currentEndAt</a></li>
     <li><a href="../../view_models_report_card_view_vm/ReportCardViewVM/currentStartAt.html">currentStartAt</a></li>

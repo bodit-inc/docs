@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the getMaxValueFromBarDataDay method from the Helper class, for the Dart programming language.">
+  <title>getMaxValueFromBarDataDay method - Helper class - helper library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../../index.html">farmershands</a></li>
+    <li><a href="../../utils_helper/utils_helper-library.html">helper</a></li>
+    <li><a href="../../utils_helper/Helper-class.html">Helper</a></li>
+    <li class="self-crumb">getMaxValueFromBarDataDay method</li>
+  </ol>
+  <div class="self-name">getMaxValueFromBarDataDay</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-method">getMaxValueFromBarDataDay</span> method 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
+
+    <section class="multi-line-signature">
+      
+
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span>
+<span class="name ">getMaxValueFromBarDataDay</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="getMaxValueFromBarDataDay-param-barDatasDay">{<span>required</span> <span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../models_bar_day_data/BarDataDay-class.html">BarDataDay</a></span>&gt;</span></span> <span class="parameter-name">barDatasDay</span>}</span></li>
+</ol>)
+
+      
+
+    </section>
+    
+<section class="desc markdown">
+  <p>그래프 데이터에서 최대값을 가져옵니다. 그래프 표현시 최대 범위를 표현하기 위해 사용합니다.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">double getMaxValueFromBarDataDay({required List&lt;BarDataDay&gt; barDatasDay}) {
+  List&lt;double&gt; tmp = [];
+  for (int i = 0; i &lt; barDatasDay.length; i++) {
+    for (int j = 0; j &lt; barDatasDay[i].barDataHour.length; j++) {
+      if (barDatasDay[i].barDataHour[j] == null) continue;
+      tmp.add(barDatasDay[i].barDataHour[j]!.value);
+      tmp.add(barDatasDay[i].barDataHour[j]!.realValue);
+      tmp.add(barDatasDay[i].barDataHour[j]!.realValueBottom);
+      tmp.add(barDatasDay[i].barDataHour[j]!.groupAvgValue);
+      tmp.add(barDatasDay[i].barDataHour[j]!.groupRangeTopValue);
+      tmp.add(barDatasDay[i].barDataHour[j]!.groupRangeTopValueBottom);
+      tmp.add(barDatasDay[i].barDataHour[j]!.groupRangeBottomValue);
+      tmp.add(barDatasDay[i].barDataHour[j]!.groupRangeBottomValueBottom);
+      tmp.add(barDatasDay[i].barDataHour[j]!.totalAvgValue);
+      tmp.add(barDatasDay[i].barDataHour[j]!.totalRangeTopValue);
+      tmp.add(barDatasDay[i].barDataHour[j]!.totalRangeTopValueBottom);
+      tmp.add(barDatasDay[i].barDataHour[j]!.totalRangeBottomValue);
+      tmp.add(barDatasDay[i].barDataHour[j]!.totalRangeBottomValueBottom);
+    }
+  }
+  return tmp.reduce((curr, next) =&gt; curr &gt; next ? curr : next);
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">farmershands</a></li>
+  <li><a href="../../utils_helper/utils_helper-library.html">helper</a></li>
+  <li><a href="../../utils_helper/Helper-class.html">Helper</a></li>
+  <li class="self-crumb">getMaxValueFromBarDataDay method</li>
+</ol>
+
+
+    <h5>Helper class</h5>
+    <ol>
+
+    <li class="section-title"><a href="../../utils_helper/Helper-class.html#constructors">Constructors</a></li>
+    <li><a href="../../utils_helper/Helper/Helper.html">Helper</a></li>
+
+
+    <li class="section-title">
+      <a href="../../utils_helper/Helper-class.html#instance-properties">Properties</a>
+    </li>
+    <li><a href="../../utils_helper/Helper/chatNavigatorKey.html">chatNavigatorKey</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li><a href="../../utils_helper/Helper/instanceId.html">instanceId</a></li>
+    <li><a href="../../utils_helper/Helper/rootNavigatorKey.html">rootNavigatorKey</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li><a href="../../utils_helper/Helper/settingsNavigatorKey.html">settingsNavigatorKey</a></li>
+
+    <li class="section-title"><a href="../../utils_helper/Helper-class.html#instance-methods">Methods</a></li>
+    <li><a href="../../utils_helper/Helper/convertCowDataToGraphData.html">convertCowDataToGraphData</a></li>
+    <li><a href="../../utils_helper/Helper/convertDateTimeToMidnight.html">convertDateTimeToMidnight</a></li>
+    <li><a href="../../utils_helper/Helper/getMaxValueFromBarDataDay.html">getMaxValueFromBarDataDay</a></li>
+    <li><a href="../../utils_helper/Helper/getMaxValueFromCowData.html">getMaxValueFromCowData</a></li>
+    <li><a href="../../utils_helper/Helper/isCowDataHighlighted.html">isCowDataHighlighted</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></li>
+
+    <li class="section-title inherited"><a href="../../utils_helper/Helper-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.flutter.dev/flutter/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+    <li class="section-title"><a href="../../utils_helper/Helper-class.html#static-methods">Static methods</a></li>
+    <li><a href="../../utils_helper/Helper/convertSecondsToHMFormat.html">convertSecondsToHMFormat</a></li>
+    <li><a href="../../utils_helper/Helper/convertWeekdayToKor.html">convertWeekdayToKor</a></li>
+    <li><a href="../../utils_helper/Helper/getFilenameFromPath.html">getFilenameFromPath</a></li>
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    farmershands
+      1.4.0-dev6+78
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/script.js?v1"></script>
+
+
+
+</body>
+
+</html>
+

@@ -71,7 +71,7 @@
   setState(() {});
 
   if (widget.reportCardViewVM.isDetailOpen) {
-    widget.reportCardViewVM.barDayItems = null;
+    widget.reportCardViewVM.barItemsDay = null;
     await widget.reportCardViewVM.fetchGraphData();
     await scrollToEnd();
   }

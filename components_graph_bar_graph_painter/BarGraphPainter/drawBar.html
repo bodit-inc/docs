@@ -55,7 +55,7 @@
 <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a></span>
 <span class="name ">drawBar</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="drawBar-param-canvas"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a></span> <span class="parameter-name">canvas</span>, </span></li>
 <li><span class="parameter" id="drawBar-param-size"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Size-class.html">Size</a></span> <span class="parameter-name">size</span>, </span></li>
-<li><span class="parameter" id="drawBar-param-barHourData"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../models_bar_hour_data/BarHourData-class.html">BarHourData</a>?</span>&gt;</span></span> <span class="parameter-name">barHourData</span>, </span></li>
+<li><span class="parameter" id="drawBar-param-barDataHour"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../../models_bar_hour_data/BarDataHour-class.html">BarDataHour</a>?</span>&gt;</span></span> <span class="parameter-name">barDataHour</span>, </span></li>
 <li><span class="parameter" id="drawBar-param-offsetDx"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">offsetDx</span>, </span></li>
 <li><span class="parameter" id="drawBar-param-i"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">i</span></span></li>
 </ol>)
@@ -72,10 +72,10 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">List&lt;dynamic&gt; drawBar(Canvas canvas, Size size, List&lt;BarHourData?&gt; barHourData, double offsetDx, int i) {
-  double barHeight = barHourData[i]!.realValue.toDouble() * barHeightRatio;
-  if (barHourData[i]!.realValue == 0) barHeight = 1;
-  double barHeightBottom = barHourData[i]!.realValueBottom.toDouble() * barHeightRatio;
+  <pre class="language-dart"><code class="language-dart">List&lt;dynamic&gt; drawBar(Canvas canvas, Size size, List&lt;BarDataHour?&gt; barDataHour, double offsetDx, int i) {
+  double barHeight = barDataHour[i]!.realValue.toDouble() * barHeightRatio;
+  if (barDataHour[i]!.realValue == 0) barHeight = 1;
+  double barHeightBottom = barDataHour[i]!.realValueBottom.toDouble() * barHeightRatio;
   Offset barCenter = Offset(
     offsetDx + barStartOffsetX + yLabelWidth + yLabelMargin + (barWidth &#47; 2) + (barWidth + barSpace) * i,
     baseOffsetY + size.height - xLabelDaySize - xLabelDayMargin - xLabelHourSize - xLabelHourMargin - xLabelBirthDaySize - xLabelBirthDayMargin - horizontalLineHeight - (barHeight &#47; 2),
@@ -86,10 +86,10 @@
       offsetDx + barStartOffsetX + yLabelWidth + yLabelMargin + (barWidth &#47; 2) + (barWidth + barSpace) * i,
       baseOffsetY + size.height - xLabelDaySize - xLabelDayMargin - xLabelHourSize - xLabelHourMargin - xLabelBirthDaySize - xLabelBirthDayMargin - horizontalLineHeight + (barHeightBottom &#47; 2),
     );
-    canvas.drawRect(Rect.fromCenter(center: barCenter, width: barWidth, height: barHeight), barHourData[i]!.isHighlighted ? barPaintStandHighlight : barPaintStand);
-    canvas.drawRect(Rect.fromCenter(center: barCenterBottom, width: barWidth, height: barHeightBottom), barHourData[i]!.isHighlighted ? barPaintSitHighlight : barPaintSit);
+    canvas.drawRect(Rect.fromCenter(center: barCenter, width: barWidth, height: barHeight), barDataHour[i]!.isHighlighted ? barPaintStandHighlight : barPaintStand);
+    canvas.drawRect(Rect.fromCenter(center: barCenterBottom, width: barWidth, height: barHeightBottom), barDataHour[i]!.isHighlighted ? barPaintSitHighlight : barPaintSit);
   } else {
-    canvas.drawRect(Rect.fromCenter(center: barCenter, width: barWidth, height: barHeight), barHourData[i]!.isHighlighted ? barPaintHighlight : barPaint);
+    canvas.drawRect(Rect.fromCenter(center: barCenter, width: barWidth, height: barHeight), barDataHour[i]!.isHighlighted ? barPaintHighlight : barPaint);
   }
 
   return [barCenter, barHeight, barHeightBottom];
@@ -124,8 +124,8 @@
     <li class="section-title">
       <a href="../../components_graph_bar_graph_painter/BarGraphPainter-class.html#instance-properties">Properties</a>
     </li>
-    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barDayItems.html">barDayItems</a></li>
     <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barHeightRatio.html">barHeightRatio</a></li>
+    <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barItemsDay.html">barItemsDay</a></li>
     <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaint.html">barPaint</a></li>
     <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaintDark.html">barPaintDark</a></li>
     <li><a href="../../components_graph_bar_graph_painter/BarGraphPainter/barPaintHighlight.html">barPaintHighlight</a></li>

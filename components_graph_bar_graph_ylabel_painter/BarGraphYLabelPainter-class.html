@@ -78,7 +78,7 @@
 
       <dl class="constructor-summary-list">
         <dt id="BarGraphYLabelPainter" class="callable">
-          <span class="name"><a href="../components_graph_bar_graph_ylabel_painter/BarGraphYLabelPainter/BarGraphYLabelPainter.html">BarGraphYLabelPainter</a></span><span class="signature">(<span class="parameter" id="-param-barDayItems">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_bar_day_data/BarDayData-class.html">BarDayData</a></span>&gt;</span>?</span> <span class="parameter-name">barDayItems</span>, </span><span class="parameter" id="-param-isBiDirectional"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isBiDirectional</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-yLabelVisible"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">yLabelVisible</span> = <span class="default-value">true</span>}</span>)</span>
+          <span class="name"><a href="../components_graph_bar_graph_ylabel_painter/BarGraphYLabelPainter/BarGraphYLabelPainter.html">BarGraphYLabelPainter</a></span><span class="signature">(<span class="parameter" id="-param-barItemsDay">{<span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_bar_day_data/BarDataDay-class.html">BarDataDay</a></span>&gt;</span>?</span> <span class="parameter-name">barItemsDay</span>, </span><span class="parameter" id="-param-isBiDirectional"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">isBiDirectional</span> = <span class="default-value">false</span>, </span><span class="parameter" id="-param-yLabelVisible"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">yLabelVisible</span> = <span class="default-value">true</span>}</span>)</span>
         </dt>
         <dd>
            
@@ -90,17 +90,6 @@
       <h2>Properties</h2>
 
       <dl class="properties">
-        <dt id="barDayItems" class="property">
-  <span class="name"><a href="../components_graph_bar_graph_ylabel_painter/BarGraphYLabelPainter/barDayItems.html">barDayItems</a></span>
-  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_bar_day_data/BarDayData-class.html">BarDayData</a></span>&gt;</span>?</span> 
-
-</dt>
-<dd>
-  그래프 데이터 
-  <div class="features">read / write, override</div>
-
-</dd>
-
         <dt id="barHeightRatio" class="property inherited">
   <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/barHeightRatio.html">barHeightRatio</a></span>
   <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> 
@@ -109,6 +98,17 @@
 <dd class="inherited">
    
   <div class="features">read / write, inherited</div>
+
+</dd>
+
+        <dt id="barItemsDay" class="property">
+  <span class="name"><a href="../components_graph_bar_graph_ylabel_painter/BarGraphYLabelPainter/barItemsDay.html">barItemsDay</a></span>
+  <span class="signature">&#8596; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_bar_day_data/BarDataDay-class.html">BarDataDay</a></span>&gt;</span>?</span> 
+
+</dt>
+<dd>
+  그래프 데이터 
+  <div class="features">read / write, override</div>
 
 </dd>
 
@@ -828,7 +828,7 @@ by this painter. <a href="https://api.flutter.dev/flutter/rendering/CustomPainte
 </dd>
 
         <dt id="drawBar" class="callable inherited">
-  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawBar.html">drawBar</a></span><span class="signature">(<wbr><span class="parameter" id="drawBar-param-canvas"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a></span> <span class="parameter-name">canvas</span>, </span><span class="parameter" id="drawBar-param-size"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Size-class.html">Size</a></span> <span class="parameter-name">size</span>, </span><span class="parameter" id="drawBar-param-barHourData"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_bar_hour_data/BarHourData-class.html">BarHourData</a>?</span>&gt;</span></span> <span class="parameter-name">barHourData</span>, </span><span class="parameter" id="drawBar-param-offsetDx"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">offsetDx</span>, </span><span class="parameter" id="drawBar-param-i"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">i</span></span>)
+  <span class="name"><a href="../components_graph_bar_graph_painter/BarGraphPainter/drawBar.html">drawBar</a></span><span class="signature">(<wbr><span class="parameter" id="drawBar-param-canvas"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Canvas-class.html">Canvas</a></span> <span class="parameter-name">canvas</span>, </span><span class="parameter" id="drawBar-param-size"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Size-class.html">Size</a></span> <span class="parameter-name">size</span>, </span><span class="parameter" id="drawBar-param-barDataHour"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="../models_bar_hour_data/BarDataHour-class.html">BarDataHour</a>?</span>&gt;</span></span> <span class="parameter-name">barDataHour</span>, </span><span class="parameter" id="drawBar-param-offsetDx"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/double-class.html">double</a></span> <span class="parameter-name">offsetDx</span>, </span><span class="parameter" id="drawBar-param-i"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span> <span class="parameter-name">i</span></span>)
     <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/List-class.html">List</a></span>
   </span>
   
@@ -1101,8 +1101,8 @@ implemented in terms of the former). <a href="../components_graph_bar_graph_ylab
     <li class="section-title">
       <a href="../components_graph_bar_graph_ylabel_painter/BarGraphYLabelPainter-class.html#instance-properties">Properties</a>
     </li>
-    <li><a href="../components_graph_bar_graph_ylabel_painter/BarGraphYLabelPainter/barDayItems.html">barDayItems</a></li>
     <li class="inherited"><a href="../components_graph_bar_graph_painter/BarGraphPainter/barHeightRatio.html">barHeightRatio</a></li>
+    <li><a href="../components_graph_bar_graph_ylabel_painter/BarGraphYLabelPainter/barItemsDay.html">barItemsDay</a></li>
     <li class="inherited"><a href="../components_graph_bar_graph_painter/BarGraphPainter/barPaint.html">barPaint</a></li>
     <li class="inherited"><a href="../components_graph_bar_graph_painter/BarGraphPainter/barPaintDark.html">barPaintDark</a></li>
     <li class="inherited"><a href="../components_graph_bar_graph_painter/BarGraphPainter/barPaintHighlight.html">barPaintHighlight</a></li>
