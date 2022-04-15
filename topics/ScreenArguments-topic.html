@@ -4,8 +4,8 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
-  <meta name="description" content="search_textfield_view library API docs, for the Dart programming language.">
-  <title>search_textfield_view library - Dart API</title>
+  <meta name="description" content="ScreenArguments Topic docs, for the Dart programming language.">
+  <title>ScreenArguments Topic - Dart API</title>
 
 
   
@@ -30,9 +30,9 @@
   <button id="sidenav-left-toggle" type="button">&nbsp;</button>
   <ol class="breadcrumbs gt-separated dark hidden-xs">
     <li><a href="../index.html">farmershands</a></li>
-    <li class="self-crumb">search_textfield_view library</li>
+    <li class="self-crumb">ScreenArguments Topic</li>
   </ol>
-  <div class="self-name">search_textfield_view</div>
+  <div class="self-name">ScreenArguments</div>
   <form class="search navbar-right" role="search">
     <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -41,30 +41,156 @@
 <main>
 
 
-  <div id="dartdoc-main-content" class="main-content">
-      <div>
-<h1><span class="kind-library">search_textfield_view</span> library 
-    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
- 
-</h1></div>
+<div id="dartdoc-main-content" class="main-content">
+  <h1><span class="kind-category">ScreenArguments</span> Topic</h1>
+  
+<section class="desc markdown">
+  <h1 id="--screenarguments-libscreen_arguments">화면 파라메터 ScreenArguments (lib/screen_arguments)</h1>
+<p>화면에 전달할 파라메터들을 정의하는 파일들입니다.</p>
+<p>Named Route에서는 화면전환시 객체를 직접 생성하는게 아니라 string으로 전달하기 때문에 Arguments 객체를 만들어 내비게이터에 전달하는 방법을 사용합니다.</p>
+<h3 id="-">사용 예시</h3>
+<pre class="language-dart"><code class="language-dart">Navigator.of(context, rootNavigator: true).pushNamed(ReportScreen.routeName, arguments: ReportScreenArguments(reportGroup: ReportGroup.cowHistory, cow: cow));
+</code></pre>
+<h2 id="------">파라메터 전달이 필요한 새로운 화면을 구현하는 방법</h2>
+<ol>
+<li>화면 파일을 생성합니다.</li>
+</ol>
+<pre class="language-dart"><code class="language-dart">class ReportScreen extends StatefulWidget implements ScreenImpl {
+  final ReportGroup reportGroup;
+  final Cow? cow;
 
-    
+  ReportScreen({
+    Key? key,
+    required this.reportGroup,
+    this.cow,
+  }) : super(key: key);
+
+  @override
+  State&lt;StatefulWidget&gt; createState() =&gt; ReportScreenState();
+
+  @override
+  String get title =&gt; reportGroup.name;
+
+  static const routeName = "/report";
+}
+</code></pre>
+<ol start="2">
+<li>ScreenArguments 클래스를 생성합니다.</li>
+</ol>
+<pre class="language-dart"><code class="language-dart">class ReportScreenArguments {
+  final ReportGroup reportGroup;
+  final Cow? cow;
+
+  ReportScreenArguments({
+    required this.reportGroup,
+    this.cow,
+  });
+}
+</code></pre>
+<ol start="3">
+<li><code>AppEntry</code>에 있는 <code>MaterialApp</code>위젯의 <code>onGenerateRoute</code>에 다음과 같이 정의해줍니다.</li>
+</ol>
+<pre class="language-dart"><code class="language-dart">...
+/// ReportScreen 화면일 때
+case ReportScreen.routeName:
+  /// 전달된 arguments를 RerportScreenArguments 객체로 변환합니다.
+  final args = settings.arguments as ReportScreenArguments;
+  
+  /// ReportScreen을 생성하면서 arguments를 전달해줍니다. 
+  return MaterialPageRoute(builder: (context) =&gt; ReportScreen(reportGroup: args.reportGroup, cow: args.cow), settings: settings);
+...
+</code></pre>
+</section>
 
 
-    <section class="summary offset-anchor" id="classes">
-      <h2>Classes</h2>
 
-      <dl>
-        <dt id="SearchTextFieldView">
-  <span class="name "><a href="../components_search_cow_search_textfield_view/SearchTextFieldView-class.html">SearchTextFieldView</a></span> 
+  <section class="summary offset-anchor" id="classes">
+    <h2>Classes</h2>
+
+    <dl>
+      <dt id="ChatListSubscreenArguments">
+  <span class="name "><a href="../screen_arguments_chat_list_subscreen_arguments/ChatListSubscreenArguments-class.html">ChatListSubscreenArguments</a></span> 
+    <span class="category screenarguments cp-2 linked" title="This is part of the ScreenArguments Topic."><a href="../topics/ScreenArguments-topic.html">ScreenArguments</a></span>
 
 </dt>
 <dd>
-  검색 텍스트 입력 뷰 
+   
 </dd>
 
-      </dl>
-    </section>
+      <dt id="CowDetailScreenArguments">
+  <span class="name "><a href="../screen_arguments_cow_detail_screen_arguments/CowDetailScreenArguments-class.html">CowDetailScreenArguments</a></span> 
+    <span class="category screenarguments cp-2 linked" title="This is part of the ScreenArguments Topic."><a href="../topics/ScreenArguments-topic.html">ScreenArguments</a></span>
+
+</dt>
+<dd>
+   
+</dd>
+
+      <dt id="DateTimePickerScreenArguments">
+  <span class="name "><a href="../screen_arguments_datetime_picker_screen_arguments/DateTimePickerScreenArguments-class.html">DateTimePickerScreenArguments</a></span> 
+    <span class="category screenarguments cp-2 linked" title="This is part of the ScreenArguments Topic."><a href="../topics/ScreenArguments-topic.html">ScreenArguments</a></span>
+
+</dt>
+<dd>
+   
+</dd>
+
+      <dt id="DiseaseObservationCreateScreenArguments">
+  <span class="name "><a href="../screen_arguments_disease_observation_create_screen_arguments/DiseaseObservationCreateScreenArguments-class.html">DiseaseObservationCreateScreenArguments</a></span> 
+    <span class="category screenarguments cp-2 linked" title="This is part of the ScreenArguments Topic."><a href="../topics/ScreenArguments-topic.html">ScreenArguments</a></span>
+
+</dt>
+<dd>
+   
+</dd>
+
+      <dt id="PhoneAuthScreenArguments">
+  <span class="name "><a href="../screen_arguments_phone_auth_screen_arguments/PhoneAuthScreenArguments-class.html">PhoneAuthScreenArguments</a></span> 
+    <span class="category screenarguments cp-2 linked" title="This is part of the ScreenArguments Topic."><a href="../topics/ScreenArguments-topic.html">ScreenArguments</a></span>
+
+</dt>
+<dd>
+   
+</dd>
+
+      <dt id="PhotoViewScreenArguments">
+  <span class="name "><a href="../screen_arguments_photo_view_screen_arguments/PhotoViewScreenArguments-class.html">PhotoViewScreenArguments</a></span> 
+    <span class="category screenarguments cp-2 linked" title="This is part of the ScreenArguments Topic."><a href="../topics/ScreenArguments-topic.html">ScreenArguments</a></span>
+
+</dt>
+<dd>
+   
+</dd>
+
+      <dt id="PopupScreenArguments">
+  <span class="name "><a href="../screen_arguments_popup_screen_arguments/PopupScreenArguments-class.html">PopupScreenArguments</a></span> 
+    <span class="category screenarguments cp-2 linked" title="This is part of the ScreenArguments Topic."><a href="../topics/ScreenArguments-topic.html">ScreenArguments</a></span>
+
+</dt>
+<dd>
+  팝업 화면에 전달하는 파라메터입니다. 
+</dd>
+
+      <dt id="ReportScreenArguments">
+  <span class="name "><a href="../screen_arguments_report_screen_arguments/ReportScreenArguments-class.html">ReportScreenArguments</a></span> 
+    <span class="category screenarguments cp-2 linked" title="This is part of the ScreenArguments Topic."><a href="../topics/ScreenArguments-topic.html">ScreenArguments</a></span>
+
+</dt>
+<dd>
+   
+</dd>
+
+      <dt id="WebviewScreenArguments">
+  <span class="name "><a href="../screen_arguments_webview_screen_arguments/WebviewScreenArguments-class.html">WebviewScreenArguments</a></span> 
+    <span class="category screenarguments cp-2 linked" title="This is part of the ScreenArguments Topic."><a href="../topics/ScreenArguments-topic.html">ScreenArguments</a></span>
+
+</dt>
+<dd>
+   
+</dd>
+
+    </dl>
+  </section>
 
 
 
@@ -73,11 +199,10 @@
 
 
 
+</div> <!-- /.main-content -->
 
-  </div> <!-- /.main-content -->
-
-  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
-    <header id="header-search-sidebar" class="hidden-l">
+<div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+  <header id="header-search-sidebar" class="hidden-l">
   <form class="search-sidebar" role="search">
     <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
   </form>
@@ -85,12 +210,12 @@
 
 <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
   <li><a href="../index.html">farmershands</a></li>
-  <li class="self-crumb">search_textfield_view library</li>
+  <li class="self-crumb">ScreenArguments Topic</li>
 </ol>
 
 
-    <h5><span class="package-name">farmershands</span> <span class="package-kind">package</span></h5>
-    <ol>
+  <h5><span class="package-name">farmershands</span> <span class="package-kind">package</span></h5>
+  <ol>
       <li class="section-title">Topics</li>
         <li><a href="../topics/Components-topic.html">Components</a></li>
         <li><a href="../topics/Events-topic.html">Events</a></li>
@@ -359,15 +484,23 @@
         <li class="section-subitem"><a href="../models_converting_methods/models_converting_methods-library.html">converting_methods</a></li>
 </ol>
 
-  </div>
+</div>
 
-  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
-    <h5>search_textfield_view library</h5>
-    <ol>
-  <li class="section-title"><a href="../components_search_cow_search_textfield_view/components_search_cow_search_textfield_view-library.html#classes">Classes</a></li>
-  <li><a href="../components_search_cow_search_textfield_view/SearchTextFieldView-class.html">SearchTextFieldView</a></li>
+<div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  <h5>ScreenArguments Topic</h5>
+  <ol>
 
 
+  <li class="section-title"><a href="../topics/ScreenArguments-topic.html#classes">Classes</a></li>
+  <li><a href="../screen_arguments_chat_list_subscreen_arguments/ChatListSubscreenArguments-class.html">ChatListSubscreenArguments</a></li>
+  <li><a href="../screen_arguments_cow_detail_screen_arguments/CowDetailScreenArguments-class.html">CowDetailScreenArguments</a></li>
+  <li><a href="../screen_arguments_datetime_picker_screen_arguments/DateTimePickerScreenArguments-class.html">DateTimePickerScreenArguments</a></li>
+  <li><a href="../screen_arguments_disease_observation_create_screen_arguments/DiseaseObservationCreateScreenArguments-class.html">DiseaseObservationCreateScreenArguments</a></li>
+  <li><a href="../screen_arguments_phone_auth_screen_arguments/PhoneAuthScreenArguments-class.html">PhoneAuthScreenArguments</a></li>
+  <li><a href="../screen_arguments_photo_view_screen_arguments/PhotoViewScreenArguments-class.html">PhotoViewScreenArguments</a></li>
+  <li><a href="../screen_arguments_popup_screen_arguments/PopupScreenArguments-class.html">PopupScreenArguments</a></li>
+  <li><a href="../screen_arguments_report_screen_arguments/ReportScreenArguments-class.html">ReportScreenArguments</a></li>
+  <li><a href="../screen_arguments_webview_screen_arguments/WebviewScreenArguments-class.html">WebviewScreenArguments</a></li>
 
 
 
@@ -376,8 +509,8 @@
 
 </ol>
 
-  </div><!--/sidebar-offcanvas-right-->
-
+</div>
+<!--/sidebar-offcanvas-right-->
 </main>
 
 <footer>
