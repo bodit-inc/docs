@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/Tagger.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/Tagger.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from "react";
+import { connect } from "react-redux";
+import { Container, Row, Col, Button, ButtonGroup, ButtonToolbar, InputGroup, FormControl, ToggleButtonGroup, ToggleButton } from "react-bootstrap";
+import BootstrapTable from "react-bootstrap-table-next";
+import ToolkitProvider from "react-bootstrap-table2-toolkit";
+import cellEditFactory from "react-bootstrap-table2-editor";
+import { showToast, setVideoState, resetVideoState, setTaggerDataState, resetTaggerDataState, setAppState, resetAppState, deleteTagging } from "../redux/actions";
+import { checkValidateTaggingData, convertTaggingClassToEnglish, logger } from "../utils/lib";
+import { MultiVideoPlayer, PlaybackRateController, SeekTimeIntervalController, TaggingClassList, BaseLayout, SaveDataController, ChannelsList, MenuController } from "../components";
+import { TaggingDatabaseModal } from "../components";
+import moment from "moment";
+import { PLAYBACK_RATE_PRESET, SEEKTIME_INTERVAL_PRESET, SEEKTIME_INTERVAL_VISIBLE_PRESET } from "../utils/appConstants";
+
+/**
+ * Tagger 페이지
+ */
+class Tagger extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      initialized: false,
+      taggingStack: [],
+      lastTagging: null,
+      isSkip: false,
+    };
+
+    this.myRef = React.createRef();
+
+    this.rowStyle = (row, rowIndex) => {
+      return {};
+    };
+    this.rowClasses = (row, rowIndex) => {
+      let classes = "cursor-pointer ";
+      const { taggingStack } = this.state;
+
+      if (taggingStack.findIndex((element) => element.id === row.id) !== -1) {
+        classes += "invalidate ";
+      } else {
+        classes += `${convertTaggingClassToEnglish(row.Class)} `;
+      }
+
+      return classes;
+    };
+
+    this.videoSeekTo = React.createRef();
+    this.seekToForward = React.createRef();
+    this.seekToBackward = React.createRef();
+    this.togglePlay = React.createRef();
+    this.onInitialized = React.createRef();
+    this.stateToggleButton = [React.createRef(), React.createRef()];
+    this.stateToggleButtonGroup = React.createRef();
+    this.menuControllerRef = React.createRef();
+    this.lastTaggingTimeout = null;
+  }
+
+  componentDidMount() {}
+
+  componentWillUnmount() {}
+
+  /**
+   * 저장된 데이터 불러오기가 완료되었을때 호출됩니다.
+   */
+  onSaveDataControllerInitialized = () => {
+    logger.info(this.constructor.displayName, "onSaveDataControllerInitialized");
+    this.setState({ initialized: true }, async () => {
+      setTimeout(() => {
+        this.onInitialized();
+      }, 100);
+    });
+    // this.props.setAppState({ showImportTaggingDataModal: true });
+  };
+
+  /**
+   * 마지막으로 태깅한 태깅아이템 클래스 이름을 잠시 표시합니다.
+   * @param {*} newTaggingDataItem
+   */
+  showLastTaggingText = (newTaggingDataItem) => {
+    clearTimeout(this.lastTaggingTimeout);
+    this.setState({ lastTagging: newTaggingDataItem });
+    this.lastTaggingTimeout = setTimeout(() => {
+      this.setState({ lastTagging: null });
+    }, 650);
+  };
+
+  /**
+   * 태깅 버튼을 클릭했을때 핸들링합니다.
+   * @param {*} item
+   */
+  handleClickTaggingClass = (item) => {
+    this.menuControllerRef.current.handleClickTaggingClass(item);
+  };
+
+  checkTaggingDataIsValid = () => {
+    const { taggerData } = this.props;
+    let _taggingStack = checkValidateTaggingData(taggerData.taggingData, this.props.showToast);
+    this.setState({ taggingStack: _taggingStack });
+    return _taggingStack.length === 0;
+  };
+
+  render() {
+    const { app, taggerData } = this.props;
+    const { isSkip, lastTagging, initialized, taggingStack } = this.state;
+
+    if (!initialized &amp;&amp; true)
+      return (
+        &lt;BaseLayout>
+          &lt;SaveDataController onInitialized={this.onSaveDataControllerInitialized.bind(this)} />
+        &lt;/BaseLayout>
+      );
+
+    return (
+      &lt;BaseLayout>
+        &lt;SaveDataController />
+        &lt;MenuController
+          ref={this.menuControllerRef}
+          stateToggleButton={this.stateToggleButton}
+          showLastTaggingText={(taggingItem) => {
+            this.showLastTaggingText(taggingItem);
+          }}
+          seekToForward={(e) => {
+            this.seekToForward(e);
+          }}
+          seekToBackward={(e) => {
+            this.seekToBackward(e);
+          }}
+          togglePlay={() => {
+            this.togglePlay();
+          }}
+          checkTaggingDataIsValid={this.checkTaggingDataIsValid.bind(this)}
+        />
+        &lt;ToolkitProvider bootstrap4 keyField="id" data={taggerData.taggingData} columns={app.taggingColumns} noDataIndication="태깅데이터가 없습니다.">
+          {(tableProps) => (
+            &lt;Container fluid className="bg-dark">
+              &lt;Row>
+                &lt;Col md={4} className="p-0 bg-dark">
+                  &lt;div className="table-area bg-dark unselectable">
+                    &lt;BootstrapTable
+                      {...tableProps.baseProps}
+                      condensed
+                      hover
+                      cellEdit={cellEditFactory({
+                        mode: "dbclick",
+                        // blurToSave: true,
+                        onStartEdit: (row, column, rowIndex, columnIndex) => {
+                          try {
+                            let obj = document.getElementsByClassName("note-editor")[0];
+                            obj.addEventListener("blur", () => {
+                              let obj = document.getElementsByClassName("table-area")[0];
+                              obj.scrollTo(0, obj.scrollTop);
+                            });
+                          } catch (e) {}
+                        },
+                      })}
+                      rowEvents={{
+                        onAuxClick: (e, row, rowIndex) => this.videoSeekTo(moment.duration(row.RecordTime).asSeconds(), false),
+                      }}
+                      rowStyle={this.rowStyle}
+                      rowClasses={this.rowClasses}
+                      style={{ color: "red" }}
+                      selectRow={{
+                        mode: "radio",
+                        clickToSelect: false,
+                        clickToEdit: true,
+                        selectColumnStyle: {
+                          width: 26,
+                        },
+                        onSelect: (row, isSelect, rowIndex, e) => {
+                          if (window.confirm("정말 삭제할까요?")) this.props.deleteTagging(row);
+
+                          return false;
+                        },
+                      }}
+                      defaultSorted={[
+                        {
+                          dataField: "RecordTime",
+                          order: "desc",
+                        },
+                      ]}
+                    />
+                  &lt;/div>
+                &lt;/Col>
+                &lt;Col md={17} className="p-0">
+                  &lt;div className="video-area-container">
+                    &lt;div className="video-area">
+                      &lt;MultiVideoPlayer
+                        onInitialized={(ref) => (this.onInitialized = ref)}
+                        videoSeekTo={(ref) => (this.videoSeekTo = ref)}
+                        seekToForward={(ref) => (this.seekToForward = ref)}
+                        seekToBackward={(ref) => (this.seekToBackward = ref)}
+                        togglePlay={(ref) => (this.togglePlay = ref)}
+                      />
+                      {isSkip &amp;&amp; (
+                        &lt;div className="skip-overlay">
+                          &lt;p className="message">소 움직임이 없습니다. SKIP 처리 하시겠습니까?&lt;/p>
+                          &lt;div className="btn-group w-100">
+                            &lt;span className="btn btn-secondary">아니요&lt;/span>
+                            &lt;span className="btn btn-primary">SKIP 처리&lt;/span>
+                          &lt;/div>
+                        &lt;/div>
+                      )}
+                    &lt;/div>
+                    {lastTagging &amp;&amp; (
+                      &lt;div className="overlay-area">
+                        {lastTagging.Class}
+                        &amp;nbsp;
+                        {lastTagging.Action === "START" &amp;&amp; "시작"}
+                        {lastTagging.Action === "STOP" &amp;&amp; "정지"}
+                      &lt;/div>
+                    )}
+                  &lt;/div>
+                  &lt;div className="video-bottom-area">
+                    &lt;Container fluid>
+                      &lt;Row>
+                        &lt;Col md={12} className="p-0">
+                          &lt;ChannelsList />
+                        &lt;/Col>
+                        &lt;Col md={12} className="p-0">
+                          &lt;PlaybackRateController preset={PLAYBACK_RATE_PRESET} />
+                          &lt;SeekTimeIntervalController visiblePreset={SEEKTIME_INTERVAL_VISIBLE_PRESET} preset={SEEKTIME_INTERVAL_PRESET} />
+
+                          &lt;ButtonToolbar className="d-flex w-100">
+                            &lt;InputGroup size="sm" style={{ width: 120 }}>
+                              &lt;FormControl type="text" className="" value={`[${app.selectedFarm.id}] ${app.selectedFarm.name}`} disabled />
+                            &lt;/InputGroup>
+                            &lt;InputGroup size="sm" style={{ width: 200 }}>
+                              &lt;FormControl type="text" className="" value={moment(app.taggingDate).format("YYYY-MM-DD HH:mm:ss.SSS")} disabled />
+                            &lt;/InputGroup>
+                            &lt;InputGroup size="sm" style={{ width: 90 }}>
+                              &lt;InputGroup.Prepend>
+                                &lt;InputGroup.Text>PIN&lt;/InputGroup.Text>
+                              &lt;/InputGroup.Prepend>
+                              &lt;FormControl
+                                type="text"
+                                value={app.taggingPIN}
+                                onChange={(e) => {
+                                  this.props.setAppState({
+                                    taggingPIN: e.target.value.trim(),
+                                  });
+                                }}
+                              />
+                            &lt;/InputGroup>
+                            &lt;InputGroup size="sm" className="flex-grow-1">
+                              &lt;FormControl type="text" className="" value={moment(app.lastDraftTime).format("LTS") + " 중간저장"} disabled />
+                            &lt;/InputGroup>
+                          &lt;/ButtonToolbar>
+                          &lt;div className="standardtime-container">
+                            &lt;ButtonToolbar className="d-flex w-100" key={"standard_time_" + 0}>
+                              &lt;ButtonGroup size="small" className="flex-grow-1">
+                                &lt;Button as="a" variant={taggingStack.length === 0 ? "primary" : "danger"} className="rounded-0 border-0" size="sm" onClick={this.checkTaggingDataIsValid.bind(this)}>
+                                  ACTION 태깅데이터 검증
+                                &lt;/Button>
+                              &lt;/ButtonGroup>
+                            &lt;/ButtonToolbar>
+                          &lt;/div>
+                        &lt;/Col>
+                      &lt;/Row>
+                    &lt;/Container>
+                  &lt;/div>
+                &lt;/Col>
+                &lt;Col md={3} className="p-0 bg-dark">
+                  &lt;div className="tagging-state-area">
+                    &lt;ToggleButtonGroup ref={(ref) => (this.stateToggleButtonGroup = ref)} type="radio" name="options" className="w-100">
+                      &lt;ToggleButton ref={(ref) => (this.stateToggleButton[0] = ref)} type="button" value={"앉아있음"} disabled className={`rounded-0 pl-1 pr-1 sit state_sit`}>
+                        앉아있음
+                      &lt;/ToggleButton>
+                      &lt;ToggleButton ref={(ref) => (this.stateToggleButton[1] = ref)} type="button" value={"서있음"} disabled className={`rounded-0 pl-1 pr-1 stand state_stand`}>
+                        서있음
+                      &lt;/ToggleButton>
+                    &lt;/ToggleButtonGroup>
+                  &lt;/div>
+                  &lt;TaggingClassList handleClickTaggingClass={this.handleClickTaggingClass.bind(this)} />
+                &lt;/Col>
+              &lt;/Row>
+            &lt;/Container>
+          )}
+        &lt;/ToolkitProvider>
+        &lt;TaggingDatabaseModal />
+      &lt;/BaseLayout>
+    );
+  }
+}
+
+export default connect(
+  (state) => ({
+    app: state.app,
+    taggerData: state.taggerData,
+  }),
+  (dispatch) => ({
+    showToast: (message, duration) => dispatch(showToast(message, duration)),
+    setVideoState: (videoObject) => dispatch(setVideoState(videoObject)),
+    resetVideoState: () => dispatch(resetVideoState()),
+    setAppState: (appObject) => dispatch(setAppState(appObject)),
+    resetAppState: () => dispatch(resetAppState()),
+    deleteTagging: (taggingItem) => dispatch(deleteTagging(taggingItem)),
+    setTaggerDataState: (dataObject) => dispatch(setTaggerDataState(dataObject)),
+    resetTaggerDataState: () => dispatch(resetTaggerDataState()),
+  }),
+)(Tagger);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="BaseLayout.html">BaseLayout</a></li><li><a href="ChannelsList.html">ChannelsList</a></li><li><a href="Login.html">Login</a></li><li><a href="MenuController.html">MenuController</a></li><li><a href="MultiVideoPlayer.html">MultiVideoPlayer</a></li><li><a href="PlaybackRateController.html">PlaybackRateController</a></li><li><a href="ProgressBar.html">ProgressBar</a></li><li><a href="SaveDataController.html">SaveDataController</a></li><li><a href="SeekTimeIntervalController.html">SeekTimeIntervalController</a></li><li><a href="SeekToSpecificTimeModal.html">SeekToSpecificTimeModal</a></li><li><a href="Tagger.html">Tagger</a></li><li><a href="TaggingDatabaseModal.html">TaggingDatabaseModal</a></li></ul><h3>Global</h3><ul><li><a href="global.html#basename">basename</a></li><li><a href="global.html#CHANGE_THEME_TO_DARK">CHANGE_THEME_TO_DARK</a></li><li><a href="global.html#checkValidateTaggingData">checkValidateTaggingData</a></li><li><a href="global.html#convertTaggingClassToEnglish">convertTaggingClassToEnglish</a></li><li><a href="global.html#deleteTagging">deleteTagging</a></li><li><a href="global.html#filterActiveChannels">filterActiveChannels</a></li><li><a href="global.html#formatProgressTime">formatProgressTime</a></li><li><a href="global.html#getInvalidTaggingData">getInvalidTaggingData</a></li><li><a href="global.html#initialStandardTime">initialStandardTime</a></li><li><a href="global.html#initialState">initialState</a></li><li><a href="global.html#isLogged">isLogged</a></li><li><a href="global.html#logEvent">logEvent</a></li><li><a href="global.html#logger">logger</a></li><li><a href="global.html#middlewares">middlewares</a></li><li><a href="global.html#pushTagging">pushTagging</a></li><li><a href="global.html#redoTagging">redoTagging</a></li><li><a href="global.html#resetAppState">resetAppState</a></li><li><a href="global.html#resetAuthState">resetAuthState</a></li><li><a href="global.html#resetTaggerDataState">resetTaggerDataState</a></li><li><a href="global.html#resetVideoState">resetVideoState</a></li><li><a href="global.html#resetViewerDataState">resetViewerDataState</a></li><li><a href="global.html#scrollToTaggingItem">scrollToTaggingItem</a></li><li><a href="global.html#setAppState">setAppState</a></li><li><a href="global.html#setAuthState">setAuthState</a></li><li><a href="global.html#setTaggerDataState">setTaggerDataState</a></li><li><a href="global.html#setVideoCurrentDuration">setVideoCurrentDuration</a></li><li><a href="global.html#setVideoState">setVideoState</a></li><li><a href="global.html#setViewerDataState">setViewerDataState</a></li><li><a href="global.html#showToast">showToast</a></li><li><a href="global.html#sortAsc">sortAsc</a></li><li><a href="global.html#sortDesc">sortDesc</a></li><li><a href="global.html#undoTagging">undoTagging</a></li><li><a href="global.html#updateTaggingState">updateTaggingState</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Apr 20 2022 18:46:05 GMT+0900 (Korean Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: redux/reducers/taggerDataReducer.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: redux/reducers/taggerDataReducer.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { SET_TAGGER_DATA_STATE, PUSH_TAGGING, DELETE_TAGGING, UNDO_TAGGING, REDO_TAGGING, RESET_TAGGER_DATA_STATE } from "../constants/actionTypes";
+import _ from "lodash";
+import packageJson from "../../../package.json";
+
+/**
+ * Tagger와 관련된 리듀서
+ */
+
+let initialStandardTime = new Date();
+initialStandardTime.setFullYear(new Date().getFullYear());
+initialStandardTime.setMonth(new Date().getMonth());
+initialStandardTime.setDate(new Date().getDate());
+initialStandardTime.setHours(0);
+initialStandardTime.setMinutes(0);
+initialStandardTime.setSeconds(0);
+initialStandardTime.setMilliseconds(0);
+
+export const initialState = {
+  version: packageJson.version,
+  taggingData: [],
+  taggingStateData: [],
+  taggingHistory: [],
+  currentTaggingHistoryIdx: 0,
+};
+let poppedTaggingDataItem;
+let currentTaggingHistoryIdx;
+let taggingHistory;
+let taggingData;
+export default function dataReducer(state = initialState, action) {
+  switch (action.type) {
+    case SET_TAGGER_DATA_STATE:
+      return { ...state, ...action.dataObject };
+    case PUSH_TAGGING:
+      console.log("PUSH_TAGGING");
+      currentTaggingHistoryIdx = _.cloneDeep(state.currentTaggingHistoryIdx);
+      taggingHistory = _.cloneDeep(state.taggingHistory);
+      taggingData = _.cloneDeep(state.taggingData);
+
+      // 태깅히스토리가 마지막이 아니면 해당 인덱스 뒤의 태깅은 삭제
+      if (taggingHistory.length > 1) {
+        if (taggingHistory.length !== currentTaggingHistoryIdx + 1) {
+          taggingHistory = taggingHistory.slice(0, currentTaggingHistoryIdx + 1);
+        }
+      } else {
+        currentTaggingHistoryIdx = 0;
+      }
+      taggingData.push(action.newTaggingDataItem);
+      taggingHistory.push({ item: action.newTaggingDataItem, action: "PUSH" });
+      currentTaggingHistoryIdx++;
+
+      return { ...state, currentTaggingHistoryIdx, taggingHistory, taggingData };
+    case DELETE_TAGGING:
+      console.log("DELETE_TAGGING");
+      console.log(state.taggingHistory);
+      currentTaggingHistoryIdx = _.cloneDeep(state.currentTaggingHistoryIdx);
+      taggingHistory = _.cloneDeep(state.taggingHistory);
+      taggingData = _.cloneDeep(state.taggingData);
+
+      // 태깅히스토리가 마지막이 아니면 해당 인덱스 뒤의 태깅은 삭제
+      if (taggingHistory.length > 1) {
+        if (taggingHistory.length !== currentTaggingHistoryIdx + 1) {
+          taggingHistory = taggingHistory.slice(0, currentTaggingHistoryIdx + 1);
+        }
+      } else {
+        currentTaggingHistoryIdx = 0;
+      }
+      taggingData = taggingData.filter(function (obj) {
+        return obj.id !== action.newTaggingDataItem.id;
+      });
+      taggingHistory.push({ item: action.newTaggingDataItem, action: "DELETE" });
+      currentTaggingHistoryIdx++;
+      console.log(taggingHistory);
+
+      return { ...state, currentTaggingHistoryIdx, taggingHistory, taggingData };
+    case UNDO_TAGGING:
+      console.log("UNDO_TAGGING");
+      console.log(state.taggingHistory);
+      currentTaggingHistoryIdx = _.cloneDeep(state.currentTaggingHistoryIdx);
+      taggingHistory = _.cloneDeep(state.taggingHistory);
+      taggingData = _.cloneDeep(state.taggingData);
+      poppedTaggingDataItem = taggingHistory[currentTaggingHistoryIdx];
+
+      console.log(poppedTaggingDataItem);
+      if (taggingHistory.length > 0 &amp;&amp; !_.isEmpty(poppedTaggingDataItem)) {
+        let foundIdx = taggingData.findIndex((item) => _.isEqual(item, poppedTaggingDataItem.item));
+        if (poppedTaggingDataItem.action === "PUSH") {
+          taggingData.splice(foundIdx, 1);
+        } else if (poppedTaggingDataItem.action === "DELETE") {
+          taggingData.push(poppedTaggingDataItem.item);
+        }
+      }
+
+      return { ...state, currentTaggingHistoryIdx, taggingHistory, taggingData };
+    case REDO_TAGGING:
+      console.log("REDO_TAGGING");
+      console.log(state.taggingHistory);
+      currentTaggingHistoryIdx = _.cloneDeep(state.currentTaggingHistoryIdx);
+      taggingHistory = _.cloneDeep(state.taggingHistory);
+      taggingData = _.cloneDeep(state.taggingData);
+      poppedTaggingDataItem = taggingHistory[currentTaggingHistoryIdx + 1];
+      console.log(poppedTaggingDataItem);
+      if (taggingHistory.length > 0 &amp;&amp; !_.isEmpty(poppedTaggingDataItem)) {
+        let foundIdx = taggingData.findIndex((item) => _.isEqual(item, poppedTaggingDataItem.item));
+        if (poppedTaggingDataItem.action === "PUSH") {
+          taggingData.push(poppedTaggingDataItem.item);
+        } else if (poppedTaggingDataItem.action === "DELETE") {
+          taggingData.splice(foundIdx, 1);
+        }
+      }
+
+      return { ...state, currentTaggingHistoryIdx, taggingHistory, taggingData };
+    case RESET_TAGGER_DATA_STATE:
+      let _initialState = _.cloneDeep(initialState);
+      return _initialState;
+    default:
+      return state;
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="BaseLayout.html">BaseLayout</a></li><li><a href="ChannelsList.html">ChannelsList</a></li><li><a href="Login.html">Login</a></li><li><a href="MenuController.html">MenuController</a></li><li><a href="MultiVideoPlayer.html">MultiVideoPlayer</a></li><li><a href="PlaybackRateController.html">PlaybackRateController</a></li><li><a href="ProgressBar.html">ProgressBar</a></li><li><a href="SaveDataController.html">SaveDataController</a></li><li><a href="SeekTimeIntervalController.html">SeekTimeIntervalController</a></li><li><a href="SeekToSpecificTimeModal.html">SeekToSpecificTimeModal</a></li><li><a href="Tagger.html">Tagger</a></li><li><a href="TaggingDatabaseModal.html">TaggingDatabaseModal</a></li></ul><h3>Global</h3><ul><li><a href="global.html#basename">basename</a></li><li><a href="global.html#CHANGE_THEME_TO_DARK">CHANGE_THEME_TO_DARK</a></li><li><a href="global.html#checkValidateTaggingData">checkValidateTaggingData</a></li><li><a href="global.html#convertTaggingClassToEnglish">convertTaggingClassToEnglish</a></li><li><a href="global.html#deleteTagging">deleteTagging</a></li><li><a href="global.html#filterActiveChannels">filterActiveChannels</a></li><li><a href="global.html#formatProgressTime">formatProgressTime</a></li><li><a href="global.html#getInvalidTaggingData">getInvalidTaggingData</a></li><li><a href="global.html#initialStandardTime">initialStandardTime</a></li><li><a href="global.html#initialState">initialState</a></li><li><a href="global.html#isLogged">isLogged</a></li><li><a href="global.html#logEvent">logEvent</a></li><li><a href="global.html#logger">logger</a></li><li><a href="global.html#middlewares">middlewares</a></li><li><a href="global.html#pushTagging">pushTagging</a></li><li><a href="global.html#redoTagging">redoTagging</a></li><li><a href="global.html#resetAppState">resetAppState</a></li><li><a href="global.html#resetAuthState">resetAuthState</a></li><li><a href="global.html#resetTaggerDataState">resetTaggerDataState</a></li><li><a href="global.html#resetVideoState">resetVideoState</a></li><li><a href="global.html#resetViewerDataState">resetViewerDataState</a></li><li><a href="global.html#scrollToTaggingItem">scrollToTaggingItem</a></li><li><a href="global.html#setAppState">setAppState</a></li><li><a href="global.html#setAuthState">setAuthState</a></li><li><a href="global.html#setTaggerDataState">setTaggerDataState</a></li><li><a href="global.html#setVideoCurrentDuration">setVideoCurrentDuration</a></li><li><a href="global.html#setVideoState">setVideoState</a></li><li><a href="global.html#setViewerDataState">setViewerDataState</a></li><li><a href="global.html#showToast">showToast</a></li><li><a href="global.html#sortAsc">sortAsc</a></li><li><a href="global.html#sortDesc">sortDesc</a></li><li><a href="global.html#undoTagging">undoTagging</a></li><li><a href="global.html#updateTaggingState">updateTaggingState</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Apr 20 2022 18:46:05 GMT+0900 (Korean Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

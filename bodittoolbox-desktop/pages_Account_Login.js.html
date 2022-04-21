@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: pages/Account/Login.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: pages/Account/Login.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { setAppState, setAuthState, showToast } from "../../redux/actions";
+import { Container, Form, Button } from "react-bootstrap";
+import logo from "../../assets/logo_dark.webp";
+import { ipcRenderer } from "electron";
+import { isLogged, logger } from "../../utils/lib";
+import { BaseLayout, SaveDataController } from "../../components";
+import { IS_DEV } from "../../utils/appConstants";
+
+/**
+ * 로그인 페이지 컴포넌트
+ */
+class Login extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      inputId: IS_DEV ? "andy.kim@bodit.co" : "",
+      inputPasswd: IS_DEV ? "123123" : "",
+    };
+  }
+
+  componentDidMount() {
+    this.setLoading(true);
+
+    // 이벤트 리스너 추가
+    ipcRenderer.on("loginResult", this.onLoginResult);
+  }
+
+  componentWillUnmount() {
+    // 이벤트 리스너 제거
+    ipcRenderer.removeListener("loginResult", this.onLoginResult);
+  }
+
+  /**
+   * 저장된 데이터 불러오기가 완료되었을때 호출됩니다.
+   * @param {*} event
+   * @param {*} arg
+   */
+  onInitialized = (event, arg) => {
+    this.setLoading(false);
+
+    if (isLogged(arg.auth)) {
+      this.setLoading(true);
+      ipcRenderer.send("login", { auth: arg.auth });
+    }
+  };
+
+  /**
+   * 로그인 결과를 가져옵니다. 성공시 tagger페이지로 이동하고 실패시 toast 오류 메시지 띄움.
+   * @param {*} event
+   * @param {Object} arg - 결과
+   * @param {Boolean} arg.success - true: 성공, false: 실패
+   * @param {String} arg.message - 결과 메시지
+   * @param {Object} arg.auth - 인증 데이터
+   */
+  onLoginResult = async (event, arg) => {
+    logger.info(this.constructor.displayName, `onLoginResult`);
+
+    this.setLoading(false);
+
+    if (arg.success) {
+      await this.props.setAuthState(arg.auth);
+      this.props.history.push("/tagger");
+    } else {
+      this.props.showToast(arg.message);
+    }
+  };
+
+  /**
+   * 로딩중인지 표시하는 UI를 On/Off 합니다.
+   * @param {Boolean} loading
+   */
+  setLoading = (loading) => {
+    this.props.setAppState({ loadingNetwork: loading });
+  };
+
+  /**
+   * 로그인 정보 제출을 핸들링합니다.
+   * @param {*} e
+   */
+  handleFormSubmit(e) {
+    logger.info(this.constructor.displayName, `handleFormSubmit`);
+    e.preventDefault();
+
+    const { inputId, inputPasswd } = this.state;
+
+    this.setLoading(true);
+
+    ipcRenderer.send("login", {
+      id: inputId,
+      passwd: inputPasswd,
+    });
+  }
+
+  render() {
+    const { inputId, inputPasswd } = this.state;
+    const { app } = this.props;
+
+    return (
+      &lt;BaseLayout>
+        &lt;div className="login-container">
+          &lt;SaveDataController onInitialized={this.onInitialized.bind(this)} saveSavedDataIntervalEnabled={false} />
+          &lt;img src={logo} alt="logo" />
+          &lt;Container>
+            &lt;Form onSubmit={this.handleFormSubmit.bind(this)}>
+              &lt;Form.Group controlId="formBasicEmail">
+                &lt;Form.Label>아이디&lt;/Form.Label>
+                &lt;Form.Control
+                  type="text"
+                  placeholder="아이디"
+                  value={inputId}
+                  onChange={(e) => {
+                    this.setState({ inputId: e.target.value });
+                  }}
+                />
+              &lt;/Form.Group>
+              &lt;Form.Group controlId="formBasicPassword">
+                &lt;Form.Label>비밀번호&lt;/Form.Label>
+                &lt;Form.Control
+                  type="password"
+                  placeholder="비밀번호"
+                  value={inputPasswd}
+                  onChange={(e) => {
+                    this.setState({ inputPasswd: e.target.value });
+                  }}
+                />
+              &lt;/Form.Group>
+              &lt;Button variant="primary" type="submit" className="w-100" disabled={app.loadingNetwork}>
+                {app.loadingNetwork ? "로그인 중..." : "로그인"}
+              &lt;/Button>
+            &lt;/Form>
+          &lt;/Container>
+        &lt;/div>
+      &lt;/BaseLayout>
+    );
+  }
+}
+
+export default withRouter(
+  connect(
+    (state) => ({
+      app: state.app,
+    }),
+    (dispatch) => ({
+      showToast: (message, duration) => dispatch(showToast(message, duration)),
+      setAuthState: (dataObject) => dispatch(setAuthState(dataObject)),
+      setAppState: (dataObject) => dispatch(setAppState(dataObject)),
+    }),
+  )(Login),
+);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="BaseLayout.html">BaseLayout</a></li><li><a href="ChannelsList.html">ChannelsList</a></li><li><a href="Login.html">Login</a></li><li><a href="MenuController.html">MenuController</a></li><li><a href="MultiVideoPlayer.html">MultiVideoPlayer</a></li><li><a href="PlaybackRateController.html">PlaybackRateController</a></li><li><a href="ProgressBar.html">ProgressBar</a></li><li><a href="SaveDataController.html">SaveDataController</a></li><li><a href="SeekTimeIntervalController.html">SeekTimeIntervalController</a></li><li><a href="SeekToSpecificTimeModal.html">SeekToSpecificTimeModal</a></li><li><a href="Tagger.html">Tagger</a></li><li><a href="TaggingDatabaseModal.html">TaggingDatabaseModal</a></li></ul><h3>Global</h3><ul><li><a href="global.html#basename">basename</a></li><li><a href="global.html#CHANGE_THEME_TO_DARK">CHANGE_THEME_TO_DARK</a></li><li><a href="global.html#checkValidateTaggingData">checkValidateTaggingData</a></li><li><a href="global.html#convertTaggingClassToEnglish">convertTaggingClassToEnglish</a></li><li><a href="global.html#deleteTagging">deleteTagging</a></li><li><a href="global.html#filterActiveChannels">filterActiveChannels</a></li><li><a href="global.html#formatProgressTime">formatProgressTime</a></li><li><a href="global.html#getInvalidTaggingData">getInvalidTaggingData</a></li><li><a href="global.html#initialStandardTime">initialStandardTime</a></li><li><a href="global.html#initialState">initialState</a></li><li><a href="global.html#isLogged">isLogged</a></li><li><a href="global.html#logEvent">logEvent</a></li><li><a href="global.html#logger">logger</a></li><li><a href="global.html#middlewares">middlewares</a></li><li><a href="global.html#pushTagging">pushTagging</a></li><li><a href="global.html#redoTagging">redoTagging</a></li><li><a href="global.html#resetAppState">resetAppState</a></li><li><a href="global.html#resetAuthState">resetAuthState</a></li><li><a href="global.html#resetTaggerDataState">resetTaggerDataState</a></li><li><a href="global.html#resetVideoState">resetVideoState</a></li><li><a href="global.html#resetViewerDataState">resetViewerDataState</a></li><li><a href="global.html#scrollToTaggingItem">scrollToTaggingItem</a></li><li><a href="global.html#setAppState">setAppState</a></li><li><a href="global.html#setAuthState">setAuthState</a></li><li><a href="global.html#setTaggerDataState">setTaggerDataState</a></li><li><a href="global.html#setVideoCurrentDuration">setVideoCurrentDuration</a></li><li><a href="global.html#setVideoState">setVideoState</a></li><li><a href="global.html#setViewerDataState">setViewerDataState</a></li><li><a href="global.html#showToast">showToast</a></li><li><a href="global.html#sortAsc">sortAsc</a></li><li><a href="global.html#sortDesc">sortDesc</a></li><li><a href="global.html#undoTagging">undoTagging</a></li><li><a href="global.html#updateTaggingState">updateTaggingState</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Apr 20 2022 18:46:05 GMT+0900 (Korean Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/ProgressBar.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/ProgressBar.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from "react";
+import { shell } from "electron";
+import moment from "moment";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import path from "path";
+import { DAY_DURATION_SECONDS } from "../utils/appConstants";
+import { isChannelExist, logEvent, formatProgressTime, sortDesc, logger, convertTaggingClassToEnglish } from "../utils/lib";
+import memoizeOne from "memoize-one";
+import _ from "lodash";
+
+/**
+ * 동영상 진행바 컴포넌트
+ * @param {*} param0
+ * @returns
+ */
+class ProgressBar extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      isVideoSeeking: false,
+      isMouseOver: false,
+      currentVideoIdx: 0,
+      zoomLevel: 1,
+      progressBarWidth: 1000,
+    };
+
+    this.progressBarRef = React.createRef();
+    this.tmpRef = React.createRef();
+    this.eachVideos = [];
+    this.eachVideosLeft = [];
+    this.eachVideosWidth = [];
+    this.mouseOffset = {
+      clientX: 0,
+      progressX: 0,
+      ratioX: 0,
+    };
+    this.eachVideosRef = Array.from({ length: 100 }).map(() => React.createRef());
+    this.initialProgressBarWidth = 0;
+    this.initialProgressBarLeft = 0;
+    this.wheelDone = true;
+  }
+
+  componentDidMount() {
+    const { channels, mainChannelKey } = this.props.app;
+    this.initialProgressBarWidth = this.progressBarRef.current.offsetWidth;
+    this.initialProgressBarLeft = Math.floor(this.progressBarRef.current.getBoundingClientRect().x);
+    this.setState({
+      progressBarWidth: this.progressBarRef.current.offsetWidth,
+    });
+    this.updateEachVideos(channels, mainChannelKey);
+  }
+
+  componentWillUnmount() {}
+
+  /**
+   * 태깅데이터를 내림차순으로 정렬하고 idx값을 할당합니다.
+   * @param {*} taggingData
+   * @returns
+   */
+  remapTaggingData = (taggingData) => {
+    let _taggingData = _.cloneDeep(taggingData);
+    _taggingData = sortDesc(_taggingData).map((item, idx) => {
+      item.idx = idx;
+      return item;
+    });
+    return _taggingData;
+  };
+  remapTaggingDataMemoized = memoizeOne(this.remapTaggingData);
+
+  /**
+   * Action 태깅만을 표시합니다.
+   * @param {*} taggingData
+   * @returns
+   */
+  getActionBlocks = (taggingData) => {
+    let _taggingData = this.remapTaggingDataMemoized(taggingData);
+
+    let _actionBlocks = _taggingData
+      .map((taggingItem, idx) => {
+        if (taggingItem.Action !== "STOP") return null;
+
+        let _startTaggingItem;
+        const _stopTaggingItem = taggingItem;
+        const _stopTaggingClassNameEng = convertTaggingClassToEnglish(_stopTaggingItem.Class);
+
+        // Start 태깅을 찾습니다.
+        _taggingData.some((_taggingItem, idx) => {
+          if (idx > _stopTaggingItem.idx &amp;&amp; _stopTaggingItem.Class === _taggingItem.Class &amp;&amp; _taggingItem.Action === "STOP") return true;
+          if (idx > _stopTaggingItem.idx &amp;&amp; _stopTaggingItem.Class === _taggingItem.Class &amp;&amp; _taggingItem.Action === "START") {
+            _startTaggingItem = _taggingItem;
+            return true;
+          }
+          return false;
+        });
+
+        // 시작 태깅이 없으면 넘어갑니다.
+        if (_.isEmpty(_startTaggingItem)) return null;
+
+        const _stopRecordTimeDuration = moment.duration(taggingItem.RecordTime).asSeconds();
+        const _startRecordTimeDuration = moment.duration(_startTaggingItem.RecordTime).asSeconds();
+        let _left, _width;
+
+        // startRecordTimeDuration - thisVideoFile.startTimeDuration
+
+        // block UI element를 생성합니다.
+        if (!_.isEmpty(_stopTaggingClassNameEng)) {
+          _left = (_startRecordTimeDuration / DAY_DURATION_SECONDS) * 100;
+          _width = ((_stopRecordTimeDuration - _startRecordTimeDuration) / DAY_DURATION_SECONDS) * 100;
+          return &lt;div key={`item_idx_${idx}`} left={_left} width={_width} style={{ top: `0px`, left: `${_left}%`, width: `${_width}%`, minWidth: "1px" }} className={_stopTaggingClassNameEng} />;
+        } else {
+          return null;
+        }
+      })
+      .filter((taggingItem) => taggingItem !== null);
+
+    return _actionBlocks;
+  };
+  getActionBlocksMemoized = memoizeOne(this.getActionBlocks);
+
+  /**
+   * State 태깅만을 표시합니다.
+   * @param {*} taggingStateData
+   * @returns
+   */
+  getStateBlocks = (taggingStateData) => {
+    let _taggingStateData = this.remapTaggingDataMemoized(taggingStateData);
+
+    return _taggingStateData
+      .map((taggingItem, idx) => {
+        if (taggingItem.Action !== "STOP") return null;
+
+        let _startTaggingItem = taggingStateData[idx - 1];
+        const _stopTaggingItem = taggingItem;
+        const _stopTaggingClassNameEng = convertTaggingClassToEnglish(_stopTaggingItem.Class);
+
+        // Start 태깅을 찾습니다.
+        _taggingStateData.some((_taggingItem, idx) => {
+          if (idx > _stopTaggingItem.idx &amp;&amp; _stopTaggingItem.Class === _taggingItem.Class &amp;&amp; _taggingItem.Action === "STOP") return true;
+          if (idx > _stopTaggingItem.idx &amp;&amp; _stopTaggingItem.Class === _taggingItem.Class &amp;&amp; _taggingItem.Action === "START") {
+            _startTaggingItem = _taggingItem;
+            return true;
+          }
+          return false;
+        });
+
+        // 시작 태깅이 없으면 넘어갑니다.
+        if (_.isEmpty(_startTaggingItem)) return null;
+
+        const _stopRecordTimeDuration = moment.duration(taggingItem.RecordTime).asSeconds();
+        const _startRecordTimeDuration = moment.duration(_startTaggingItem.RecordTime).asSeconds();
+        let _left, _width;
+
+        // block UI element를 생성합니다.
+        if (!_.isEmpty(_stopTaggingClassNameEng)) {
+          _left = (_startRecordTimeDuration / DAY_DURATION_SECONDS) * 100;
+          _width = ((_stopRecordTimeDuration - _startRecordTimeDuration) / DAY_DURATION_SECONDS) * 100;
+          return &lt;div key={`item_idx_${idx}`} left={_left} width={_width} style={{ top: `0px`, left: `${_left}%`, width: `${_width}%`, minWidth: "1px" }} className={_stopTaggingClassNameEng} />;
+        } else {
+          return null;
+        }
+        // if (!_.isEmpty(_stopTaggingClassNameEng))
+        //   return &lt;div key={`item_idx_${idx}`} style={{ top: `0px`, left: `${_left}%`, width: `${_width}%`, minWidth: "1px" }} className={_stopTaggingClassNameEng} />;
+        // else
+        //   return null;
+      })
+      .filter((taggingItem) => taggingItem !== null);
+  };
+  getStateBlocksMemoized = memoizeOne(this.getStateBlocks);
+
+  /**
+   * mainChannel의 동영상 파일 리스트 UI 관련 변수들을 업데이트합니다.
+   * @param {*} channels
+   * @param {*} mainChannelKey
+   * @returns
+   */
+  updateEachVideos = (channels, mainChannelKey) => {
+    if (!this.progressBarRef.current) return;
+
+    let { progressBarWidth } = this.state;
+
+    logger.info(this.constructor.displayName, "updateEachVideos");
+    this.eachVideos = [];
+    this.eachVideosLeft = [];
+    this.eachVideosWidth = [];
+    // let progressBarWidth = this.progressBarRef.current.offsetWidth;
+
+    Object.keys(channels).forEach((channelKey) => {
+      if (channelKey !== mainChannelKey) return;
+
+      channels[channelKey].files.forEach((file, idx) => {
+        const duration = file.duration;
+        let width = progressBarWidth * (duration / DAY_DURATION_SECONDS);
+        let left = progressBarWidth * (file.startTimeDuration / DAY_DURATION_SECONDS);
+        this.eachVideos.push(&lt;div key={`file_idx_${channelKey}_${idx}`} ref={this.eachVideosRef[idx]} className="divider" style={{ width: width, left: left }} />);
+        this.eachVideosLeft.push(left);
+        this.eachVideosWidth.push(width);
+      });
+    });
+  };
+  updateEachVideosMemoized = memoizeOne(this.updateEachVideos);
+
+  /**
+   * 재생 시간 표시 hover 툴팁의 위치를 계산합니다.
+   * @param {*} mouseOffset
+   * @returns
+   */
+  getPlaytimeOffsetLeft = (mouseOffset) => {
+    let playtimeTooltipOffsetLeft = 0;
+
+    if (mouseOffset.clientX >= this.initialProgressBarWidth - 150) playtimeTooltipOffsetLeft = this.initialProgressBarWidth - 300;
+    else if (mouseOffset.clientX &lt;= 150) playtimeTooltipOffsetLeft = 0;
+    else playtimeTooltipOffsetLeft = mouseOffset.clientX - 150;
+
+    return playtimeTooltipOffsetLeft;
+  };
+  getPlaytimeOffsetLeftMemoized = memoizeOne(this.getPlaytimeOffsetLeft);
+
+  /**
+   * 진행바를 클릭했을때 핸들링합니다.
+   */
+  handleClickProgressBar = async () => {
+    try {
+      const { videoSeekTo } = this.props;
+      const currentDuration = DAY_DURATION_SECONDS * this.mouseOffset.progressRatioX;
+
+      await videoSeekTo(currentDuration);
+
+      logEvent({ event_name: "click_progress_bar", duration: currentDuration });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  /**
+   * 진행바에 마우스를 올렸을때 발동됩니다.
+   * @param {*} e
+   */
+  onMouseOver = (e) => {
+    this.setState({ isMouseOver: true });
+  };
+
+  /**
+   * 진행바에 마우스 왼쪽키가 눌러지면 발동합니다.
+   * @param {*} e
+   */
+  onMouseDown = (e) => {
+    const { app } = this.props;
+    const { currentVideoIdx } = this.state;
+
+    if (e.button === 0) {
+      // 0 = 마우스 왼쪽키
+      this.setState({ isVideoSeeking: true });
+      if (!e.altKey) this.handleClickProgressBar();
+    } else {
+      // 우클릭시 OS 파일 탐색기를 열어 파일 표시
+      shell.showItemInFolder(app.channels[app.mainChannelKey].files[currentVideoIdx].path);
+    }
+  };
+
+  /**
+   * 진행바에 마우스 왼쪽키를 떼면 발동됩니다.
+   * @param {*} e
+   */
+  onMouseUp = (e) => {
+    this.setState({ isVideoSeeking: false });
+  };
+
+  /**
+   * 진행바 위에서 마우스를 움직이면 발동됩니다.
+   * @param {*} e
+   */
+  onMouseMove = (e) => {
+    const { isVideoSeeking } = this.state;
+    this.updateMouseOffset(e);
+    this.highlightEachVideos();
+
+    // alt키 누른상태에서 드래그하면 확대된 재생바를 이동시킵니다.
+    if (e.altKey &amp;&amp; isVideoSeeking) {
+      this.progressBarRef.current.scrollTo({ left: this.progressBarRef.current.scrollLeft - e.movementX });
+    } else if (isVideoSeeking) {
+      this.handleClickProgressBar();
+    }
+  };
+
+  updateMouseOffset = (e) => {
+    let { progressBarWidth } = this.state;
+    const clientX = e.clientX - this.initialProgressBarLeft + 1; // Math.floor(e.target.getBoundingClientRect().x) + 1;
+    const progressX = e.clientX - Math.floor(e.target.getBoundingClientRect().x) + 1; //- Math.floor(e.target.getBoundingClientRect().x) + 1;
+    const ratioX = clientX / this.initialProgressBarWidth;
+    const progressRatioX = progressX / progressBarWidth;
+    this.mouseOffset = {
+      clientX: clientX,
+      ratioX: ratioX,
+      progressX: progressX,
+      progressRatioX: progressRatioX,
+    };
+  };
+
+  /**
+   * 재생바 확대
+   * @param {*} e
+   * @returns
+   */
+  onWheel = (e) => {
+    let { zoomLevel } = this.state;
+    let { app } = this.props;
+
+    if (!e.altKey || !this.wheelDone) return false;
+    this.wheelDone = false;
+
+    this.updateMouseOffset(e);
+
+    let ratio = 6.25;
+    if (zoomLevel &lt;= 10) {
+      ratio = 100;
+    } else if (zoomLevel &lt;= 50) {
+      ratio = 25;
+    } else if (zoomLevel &lt;= 100) {
+      ratio = 12.5;
+    }
+    zoomLevel -= e.deltaY / ratio;
+    zoomLevel = zoomLevel &lt; 1 ? 1 : zoomLevel;
+
+    let _progressBarWidth = this.initialProgressBarWidth * zoomLevel;
+    this.setState({ zoomLevel: zoomLevel, progressBarWidth: _progressBarWidth }, () => {
+      let left = _progressBarWidth * this.mouseOffset.progressRatioX;
+      let back = this.initialProgressBarWidth - (this.initialProgressBarWidth - this.mouseOffset.clientX); // * zoomLevelRatio; /// zoomLevelRatio;
+      this.progressBarRef.current.scrollTo({ left: left - back, behavior: "auto" });
+      this.updateEachVideos(app.channels, app.mainChannelKey);
+      this.updateMouseOffset(e);
+      this.highlightEachVideos();
+      this.wheelDone = true;
+    });
+  };
+
+  /**
+   * 마우스가 위치한 파일의 배경색을 하이라이트합니다.
+   * @param {*} reset
+   * @returns
+   */
+  highlightEachVideos = (reset = false) => {
+    const { currentVideoIdx } = this.state;
+    const ctx = this;
+
+    if (reset) {
+      ctx.eachVideos.forEach((item, idx) => {
+        ctx.eachVideosRef[currentVideoIdx].current.style.backgroundColor = null;
+      });
+      return;
+    }
+
+    // 마우스가 위치한 영상 파일의 index를 가져옵니다.
+    let foundVideoIdx = this.eachVideosLeft.findIndex((item, idx) => {
+      if (this.mouseOffset.progressX &lt;= item + ctx.eachVideosWidth[idx]) return true;
+      else return false;
+    });
+
+    // 스타일을 업데이트합니다.
+    try {
+      ctx.eachVideos.forEach((item, idx) => {
+        if (ctx.eachVideosRef[idx].current == null) return;
+        if (idx === foundVideoIdx) {
+          ctx.eachVideosRef[idx].current.style.backgroundColor = "lightgreen";
+        } else {
+          ctx.eachVideosRef[idx].current.style.backgroundColor = null;
+        }
+      });
+
+      this.setState({ currentVideoIdx: foundVideoIdx &lt; 0 ? 0 : foundVideoIdx });
+      this.forceUpdate(); // this.mouseOffset이 변경됨에 따라 위치를 렌더링 하기 위해 강제로 렌더링합니다.
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  /**
+   * 진행바에서 마우스를 벗어나면 발동됩니다.
+   * @param {*} e
+   */
+  onMouseOut = () => {
+    this.highlightEachVideos(true);
+    this.setState({
+      isMouseOver: false,
+      isVideoSeeking: false,
+    });
+  };
+
+  render() {
+    const { currentVideoIdx, isMouseOver } = this.state;
+    let { progressBarWidth } = this.state;
+    const { app, video, taggerData } = this.props;
+
+    this.updateEachVideosMemoized(app.channels, app.mainChannelKey);
+    let playtimeTooltipOffsetLeft = this.getPlaytimeOffsetLeftMemoized(this.mouseOffset);
+    let stateBlocks = this.getStateBlocksMemoized(taggerData.taggingStateData);
+    let actionBlocks = this.getActionBlocksMemoized(taggerData.taggingData);
+    let mainChannel = app.channels[app.mainChannelKey];
+
+    return (
+      &lt;React.Fragment>
+        &lt;div className="progressbar-wrapper-outer">
+          &lt;div className="progressbar-wrapper">
+            &lt;div className="progressbar-all-outer" ref={this.progressBarRef}>
+              &lt;div style={{ width: progressBarWidth }}>
+                &lt;div className="state-blocks-container">{stateBlocks}&lt;/div>
+
+                &lt;div className={`progressbar-container-outer unselectable`}>
+                  &lt;div className={"progressbar-container"}>
+                    {this.eachVideos.map((eachVideo, idx) => {
+                      return eachVideo;
+                    })}
+                    &lt;progress className={`progress-behind rounded-0 ${isMouseOver ? "mouse-over " : " "}`} min={0} max={progressBarWidth} value={isMouseOver ? this.mouseOffset.progressX : 0} />
+                    &lt;progress
+                      ref={this.tmpRef}
+                      className="progress rounded-0"
+                      min={0}
+                      max={DAY_DURATION_SECONDS}
+                      value={video.currentDuration}
+                      onMouseOver={this.onMouseOver.bind(this)}
+                      onMouseOut={this.onMouseOut.bind(this)}
+                      onMouseDown={this.onMouseDown.bind(this)}
+                      onMouseUp={this.onMouseUp.bind(this)}
+                      onMouseMove={this.onMouseMove.bind(this)}
+                      onWheel={this.onWheel.bind(this)}
+                    />
+                  &lt;/div>
+                &lt;/div>
+                &lt;div className="action-blocks-container">{actionBlocks}&lt;/div>
+              &lt;/div>
+            &lt;/div>
+            &lt;div className="playtime">
+              &lt;span>{formatProgressTime(video.currentDuration * 1000)}&lt;/span>
+              &lt;span>&amp;nbsp;/&amp;nbsp;&lt;/span>
+              &lt;span>{formatProgressTime(app.channels[app.mainChannelKey] != null ? mainChannel.totalDuration * 1000 : 0)}&lt;/span>
+              &lt;span>&amp;nbsp;/&amp;nbsp;&lt;/span>
+              &lt;span>{formatProgressTime(mainChannel != null ? DAY_DURATION_SECONDS * 1000 : 0)}&lt;/span>
+            &lt;/div>
+          &lt;/div>
+          {isMouseOver &amp;&amp; isChannelExist(app, app.mainChannelKey) &amp;&amp; app.channels[app.mainChannelKey].files.length > 0 &amp;&amp; (
+            &lt;div className={`playtime-tooltip`} style={{ left: playtimeTooltipOffsetLeft }}>
+              &lt;div>
+                [{currentVideoIdx}] {this.mouseOffset.clientX} / {progressBarWidth} = {((this.mouseOffset.clientX / progressBarWidth) * 100).toFixed(3)}%
+              &lt;/div>
+              &lt;div>{app.channels[app.mainChannelKey].files[currentVideoIdx] !== undefined &amp;&amp; path.basename(app.channels[app.mainChannelKey].files[currentVideoIdx].path)}&lt;/div>
+              &lt;div>
+                {formatProgressTime(typeof app.channels[app.mainChannelKey].files[currentVideoIdx] !== "undefined" ? app.channels[app.mainChannelKey].files[currentVideoIdx].duration * 1000 : 0)} /{" "}
+                {formatProgressTime(
+                  app.channels[app.mainChannelKey].files.reduce((acc, val, idx, arr) => {
+                    if (idx &lt; currentVideoIdx) return acc + val.duration;
+                    else return acc;
+                  }, 0) * 1000,
+                )}
+                &amp;nbsp;~&amp;nbsp;
+                {formatProgressTime(
+                  app.channels[app.mainChannelKey].files.reduce((acc, val, idx, arr) => {
+                    if (idx &lt;= currentVideoIdx) return acc + val.duration;
+                    else return acc;
+                  }, 0) * 1000,
+                )}
+              &lt;/div>
+              &lt;div>
+                &lt;div>
+                  총 영상길이 기준:{" "}
+                  {this.mouseOffset.progressX === progressBarWidth
+                    ? "24:00:00.000"
+                    : formatProgressTime(moment.duration((this.mouseOffset.progressX / progressBarWidth) * app.channels[app.mainChannelKey].totalDuration * 1000).asMilliseconds())}
+                &lt;/div>
+                &lt;div style={{ color: "lightgreen" }}>
+                  24시간 기준:{" "}
+                  {this.mouseOffset.progressX === progressBarWidth
+                    ? "24:00:00.000"
+                    : formatProgressTime(moment.duration((this.mouseOffset.progressX / progressBarWidth) * DAY_DURATION_SECONDS * 1000).asMilliseconds())}
+                &lt;/div>
+              &lt;/div>
+            &lt;/div>
+          )}
+        &lt;/div>
+      &lt;/React.Fragment>
+    );
+  }
+}
+
+ProgressBar.defaultProps = {
+  seekable: false,
+};
+
+ProgressBar.propTypes = {
+  seekable: PropTypes.bool,
+};
+
+export default connect(
+  (state) => ({
+    app: state.app,
+    video: state.video,
+    taggerData: state.taggerData,
+  }),
+  (dispatch) => ({}),
+)(ProgressBar);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="BaseLayout.html">BaseLayout</a></li><li><a href="ChannelsList.html">ChannelsList</a></li><li><a href="Login.html">Login</a></li><li><a href="MenuController.html">MenuController</a></li><li><a href="MultiVideoPlayer.html">MultiVideoPlayer</a></li><li><a href="PlaybackRateController.html">PlaybackRateController</a></li><li><a href="ProgressBar.html">ProgressBar</a></li><li><a href="SaveDataController.html">SaveDataController</a></li><li><a href="SeekTimeIntervalController.html">SeekTimeIntervalController</a></li><li><a href="SeekToSpecificTimeModal.html">SeekToSpecificTimeModal</a></li><li><a href="Tagger.html">Tagger</a></li><li><a href="TaggingDatabaseModal.html">TaggingDatabaseModal</a></li></ul><h3>Global</h3><ul><li><a href="global.html#basename">basename</a></li><li><a href="global.html#CHANGE_THEME_TO_DARK">CHANGE_THEME_TO_DARK</a></li><li><a href="global.html#checkValidateTaggingData">checkValidateTaggingData</a></li><li><a href="global.html#convertTaggingClassToEnglish">convertTaggingClassToEnglish</a></li><li><a href="global.html#deleteTagging">deleteTagging</a></li><li><a href="global.html#filterActiveChannels">filterActiveChannels</a></li><li><a href="global.html#formatProgressTime">formatProgressTime</a></li><li><a href="global.html#getInvalidTaggingData">getInvalidTaggingData</a></li><li><a href="global.html#initialStandardTime">initialStandardTime</a></li><li><a href="global.html#initialState">initialState</a></li><li><a href="global.html#isLogged">isLogged</a></li><li><a href="global.html#logEvent">logEvent</a></li><li><a href="global.html#logger">logger</a></li><li><a href="global.html#middlewares">middlewares</a></li><li><a href="global.html#pushTagging">pushTagging</a></li><li><a href="global.html#redoTagging">redoTagging</a></li><li><a href="global.html#resetAppState">resetAppState</a></li><li><a href="global.html#resetAuthState">resetAuthState</a></li><li><a href="global.html#resetTaggerDataState">resetTaggerDataState</a></li><li><a href="global.html#resetVideoState">resetVideoState</a></li><li><a href="global.html#resetViewerDataState">resetViewerDataState</a></li><li><a href="global.html#scrollToTaggingItem">scrollToTaggingItem</a></li><li><a href="global.html#setAppState">setAppState</a></li><li><a href="global.html#setAuthState">setAuthState</a></li><li><a href="global.html#setTaggerDataState">setTaggerDataState</a></li><li><a href="global.html#setVideoCurrentDuration">setVideoCurrentDuration</a></li><li><a href="global.html#setVideoState">setVideoState</a></li><li><a href="global.html#setViewerDataState">setViewerDataState</a></li><li><a href="global.html#showToast">showToast</a></li><li><a href="global.html#sortAsc">sortAsc</a></li><li><a href="global.html#sortDesc">sortDesc</a></li><li><a href="global.html#undoTagging">undoTagging</a></li><li><a href="global.html#updateTaggingState">updateTaggingState</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Apr 20 2022 18:46:05 GMT+0900 (Korean Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

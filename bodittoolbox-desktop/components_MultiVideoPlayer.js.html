@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/MultiVideoPlayer.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/MultiVideoPlayer.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from "react";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { setAppState, setVideoState, setVideoCurrentDuration } from "../redux/actions";
+import { Container, Row, Col } from "react-bootstrap";
+import ReactPlayer from "react-player";
+import { ProgressBar, SeekToSpecificTimeModal } from ".";
+import { filterActiveChannels, getVideoRefIdxByChannelKey, scrollToTaggingItem, logEvent, logger, formatProgressTime, wait } from "../utils/lib";
+import { ipcRenderer } from "electron";
+import path from "path";
+import { MIN_DIFF_DURATION, MIN_SYNC_DURATION_DIFF_SECONDS, SHORT_SEEK_DURATION_SECONDS, SKIP_TAGGING_CLASSES_NAME } from "../utils/appConstants";
+import moment from "moment";
+import memoizeOne from "memoize-one";
+import Lottie from "react-lottie";
+import animSleep from "../assets/anim/anim_sleep.json";
+import _ from "lodash";
+
+const animSleepCatOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: animSleep,
+  rendererSettings: {
+    preserveAspectRatio: "xMidYMid slice",
+  },
+};
+
+/**
+ * Tagger에서 사용되는 여러개의 동영상 플레이어 컴포넌트
+ */
+class MultiVideoPlayer extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.videoPlayers = [React.createRef(), React.createRef(), React.createRef(), React.createRef(), React.createRef(), React.createRef()];
+    this.prevMouseOffset = { clientX: 0, clientY: 0 };
+    this.activeChannels = filterActiveChannels(props.app.channels);
+    this.currentDuration = props.video.currentDuration;
+    this.isInitialized = false;
+    this.inSectionTaggingPair = [undefined, 0, undefined, 99999999];
+
+    this.state = {
+      videoZoomLevel: 1,
+      videoLayoutX: 0,
+      videoLayoutY: 0,
+      fullScreenChannel: null,
+      isSkipSection: false,
+      skipSkipSection: false,
+      isSyncing: false,
+      // isVideoInitialized: new Array(this.activeChannels.length).fill(false),
+    };
+
+    this.maxDurationDiff = 0;
+    this.nearestTaggingPair = undefined;
+
+    if (typeof props.onInitialized === "function") props.onInitialized(this.onInitialized.bind(this));
+    if (typeof props.videoSeekTo === "function") props.videoSeekTo(this.videoSeekTo.bind(this));
+    if (typeof props.seekToForward === "function") props.seekToForward(this.seekToForward.bind(this));
+    if (typeof props.seekToBackward === "function") props.seekToBackward(this.seekToBackward.bind(this));
+    if (typeof props.togglePlay === "function") props.togglePlay(this.togglePlay.bind(this));
+  }
+
+  componentDidMount() {
+    // 이벤트 리스너 추가
+    ipcRenderer.on("menu", this.onMenu);
+    document.addEventListener("keydown", this.onKeyDown.bind(this));
+
+    this.props.setAppState({ loadingNetwork: true });
+  }
+
+  componentWillUnmount() {
+    // 이벤트 리스너 제거
+    try {
+      ipcRenderer.removeListener("menu", this.onMenu);
+      document.removeEventListener("keydown", this.onKeyDown.bind(this));
+    } catch (e) {
+      logger.error(this.constructor.displayName, e);
+    }
+  }
+
+  onKeyDown(e) {
+    const { app } = this.props;
+    const { isSkipSection } = this.state;
+
+    if (app.loadingNetwork) return;
+
+    switch (e.code) {
+      case "Escape":
+        if (!isSkipSection) return;
+        this.cancelSkip(e);
+        break;
+      case "Enter":
+        if (!isSkipSection) return;
+        this.doSkip(e);
+        break;
+      case "Backquote":
+        this.doSync(e);
+        break;
+      default:
+        break;
+    }
+  }
+
+  onMenu = (e, action, ignoreInput = false) => {
+    if (document.activeElement.tagName === "INPUT" &amp;&amp; document.activeElement.type !== "radio" &amp;&amp; !ignoreInput) {
+      return true;
+    }
+    if (document.activeElement.tagName !== "BODY") {
+      try {
+        document.activeElement.blur();
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    let { videoZoomLevel, videoLayoutX, videoLayoutY } = this.state;
+    const { app } = this.props;
+
+    if (app.loadingNetwork) return;
+
+    switch (action) {
+      case "videoseektostart":
+        this.seekToStart();
+        break;
+      case "videoseektoend":
+        this.seekToEnd();
+        break;
+      case "videoseekforward":
+        this.seekToForward();
+        break;
+      case "videoseekbackward":
+        this.seekToBackward();
+        break;
+      case "videoseekforwardshort":
+        this.seekToForwardShort();
+        break;
+      case "videoseekbackwardshort":
+        this.seekToBackwardShort();
+        break;
+      case "videozoomin":
+        videoZoomLevel *= 1.1;
+        videoLayoutX *= 1.1;
+        videoLayoutY *= 1.1;
+        this.setState({
+          videoZoomLevel: videoZoomLevel,
+          videoLayoutX: videoLayoutX,
+          videoLayoutY: videoLayoutY,
+        });
+        break;
+      case "videozoomout":
+        videoZoomLevel *= 0.9;
+        videoLayoutX *= 0.9;
+        videoLayoutY *= 0.9;
+        this.setState({
+          videoZoomLevel: videoZoomLevel,
+          videoLayoutX: videoLayoutX,
+          videoLayoutY: videoLayoutY,
+        });
+        break;
+      case "videoresetzoom":
+        this.setState({
+          videoZoomLevel: 1,
+          videoLayoutX: 0,
+          videoLayoutY: 0,
+        });
+        break;
+      case "videomoveleft":
+        this.setState({
+          videoLayoutX: videoLayoutX + 50,
+        });
+        break;
+      case "videomoveup":
+        this.setState({
+          videoLayoutY: videoLayoutY + 50,
+        });
+        break;
+      case "videomoveright":
+        this.setState({ videoLayoutX: videoLayoutX - 50 });
+        break;
+      case "videomovedown":
+        this.setState({ videoLayoutY: videoLayoutY - 50 });
+        break;
+      case "videosetfullscreenchannelprev":
+        this.prevFullscreenChannel();
+        break;
+      case "videosetfullscreenchannelinit":
+        this.handleTriggerFullscreenChannel();
+        break;
+      case "videosetfullscreenchannelnext":
+        this.nextFullscreenChannel();
+        break;
+      default:
+        break;
+    }
+  };
+
+  // 활성화 채널만 필터링합니다
+  filterActiveChannelsMemoized = memoizeOne(filterActiveChannels);
+
+  onInitialized = async () => {
+    await this.props.setVideoState({ isVideoPlaying: false });
+    setTimeout(async () => {
+      await this.videoSeekTo(this.currentDuration);
+      this.isInitialized = true;
+      setTimeout(async () => {
+        await this.props.setAppState({ loadingNetwork: false });
+      }, 1000);
+    }, 500);
+  };
+
+  /**
+   * 풀스크린에 들어가거나 나올떄를 핸들링합니다.
+   */
+  handleTriggerFullscreenChannel = async (channelKey) => {
+    await this.props.setAppState({ loadingNetwork: true });
+
+    const { fullScreenChannel } = this.state;
+    const { video } = this.props;
+    let origIsVideoPlaying = _.cloneDeep(video.isVideoPlaying);
+
+    if (origIsVideoPlaying) await this.togglePlay(false);
+
+    let _fullScreenChannel = null;
+    if (typeof fullScreenChannel !== "string") {
+      // 현재 fullScreenChannel이 null이면
+      _fullScreenChannel = channelKey;
+    }
+
+    this.setState({ fullScreenChannel: _fullScreenChannel }, async () => {
+      setTimeout(async () => {
+        await this.videoSeekTo(this.currentDuration);
+        if (origIsVideoPlaying) await this.togglePlay(true);
+        await this.props.setAppState({ loadingNetwork: false });
+      }, 100);
+    });
+  };
+
+  /**
+   * 이전 채널로 풀스크린을 변경합니다.
+   */
+  prevFullscreenChannel = async () => {
+    await this.props.setAppState({ loadingNetwork: true });
+
+    const { fullScreenChannel } = this.state;
+    const { video } = this.props;
+    const activeChannelKeys = Object.keys(this.activeChannels);
+    const currentChannelIdx = activeChannelKeys.findIndex((item) => item === fullScreenChannel);
+    let targetChannelKey = null;
+
+    if (currentChannelIdx &lt;= 0) targetChannelKey = activeChannelKeys[activeChannelKeys.length - 1];
+    else targetChannelKey = activeChannelKeys[currentChannelIdx - 1];
+
+    let origIsVideoPlaying = _.cloneDeep(video.isVideoPlaying);
+    if (origIsVideoPlaying) await this.togglePlay(false);
+    this.setState({ fullScreenChannel: targetChannelKey }, async () => {
+      setTimeout(async () => {
+        await this.videoSeekTo(this.currentDuration);
+        await this.props.setAppState({ loadingNetwork: false });
+        if (origIsVideoPlaying) await this.togglePlay(true);
+      }, 100);
+    });
+  };
+
+  /**
+   * 다음 채널로 풀스크린을 변경합니다.
+   */
+  nextFullscreenChannel = async () => {
+    await this.props.setAppState({ loadingNetwork: true });
+
+    const { fullScreenChannel } = this.state;
+    const { video } = this.props;
+    const activeChannelKeys = Object.keys(this.activeChannels);
+    const currentChannelIdx = activeChannelKeys.findIndex((item) => item === fullScreenChannel);
+    let targetChannelKey = null;
+
+    if (currentChannelIdx === activeChannelKeys.length - 1) targetChannelKey = activeChannelKeys[0];
+    else targetChannelKey = activeChannelKeys[currentChannelIdx + 1];
+
+    let origIsVideoPlaying = _.cloneDeep(video.isVideoPlaying);
+    if (origIsVideoPlaying) await this.togglePlay(false);
+    this.setState({ fullScreenChannel: targetChannelKey }, async () => {
+      setTimeout(async () => {
+        await this.videoSeekTo(this.currentDuration);
+        await this.props.setAppState({ loadingNetwork: false });
+        if (origIsVideoPlaying) await this.togglePlay(true);
+      }, 100);
+    });
+  };
+
+  /**
+   * SKIP 구간 건너뛰기 팝업을 숨깁니다.
+   * @param {*} e
+   */
+  cancelSkip = (e) => {
+    this.setState({ skipSkipSection: true });
+  };
+
+  /**
+   * SKIP 구간에서 건너뜁니다.
+   * @param {*} e
+   */
+  doSkip = (e) => {
+    this.videoSeekTo(this.inSectionTaggingPair[3] + SHORT_SEEK_DURATION_SECONDS);
+  };
+
+  /**
+   * 재생시간을 동기화합니다.
+   * @param {*} e
+   */
+  doSync = async (e) => {
+    e.preventDefault();
+    this.setState({ isSyncing: true });
+    await this.videoSeekTo(this.currentDuration, true, true);
+    await wait(100);
+    this.setState({ isSyncing: false });
+  };
+
+  /**
+   * 현재 재생 시간 위치가 특정 태깅 START-STOP 쌍 내부에 위치한 구간인지를 판별합니다.
+   * @param {*} taggingData
+   * @param {*} currentDuration
+   * @returns
+   */
+  getInSectionStartStopTagging = (taggingData, currentDuration) => {
+    let _taggingData = taggingData; // 오름차순 정렬 되어있습니다.
+    let _inSectionStartTaggingItem;
+    let _inSectionStopTaggingItem;
+    let _startTaggingItemDuration = 0;
+    let _stopTaggingItemDuration = 99999999;
+    const _currentDuration = currentDuration;
+    _taggingData = _taggingData.filter((item) => SKIP_TAGGING_CLASSES_NAME.find((skipClassName) => skipClassName === item.Class));
+
+    for (let i = 0; i &lt; _taggingData.length; i += 2) {
+      try {
+        const _startTaggingItem = _taggingData[i];
+        const _stopTaggingItem = _taggingData[i + 1];
+        if (_startTaggingItem.Action !== "START" || _stopTaggingItem.Action !== "STOP") continue;
+        const __startTaggingItemDuration = moment.duration(_startTaggingItem.RecordTime).asSeconds();
+        const __stopTaggingItemDuration = moment.duration(_stopTaggingItem.RecordTime).asSeconds();
+        if (__startTaggingItemDuration &lt;= _currentDuration &amp;&amp; _currentDuration &lt;= __stopTaggingItemDuration) {
+          _inSectionStartTaggingItem = _startTaggingItem;
+          _inSectionStopTaggingItem = _stopTaggingItem;
+          _startTaggingItemDuration = __startTaggingItemDuration;
+          _stopTaggingItemDuration = __stopTaggingItemDuration;
+          break;
+        }
+      } catch (e) {}
+    }
+
+    if (_inSectionStartTaggingItem &amp;&amp; _inSectionStopTaggingItem) return [_inSectionStartTaggingItem, _startTaggingItemDuration, _inSectionStopTaggingItem, _stopTaggingItemDuration];
+    else return [_inSectionStartTaggingItem, _startTaggingItemDuration, _inSectionStopTaggingItem, _stopTaggingItemDuration];
+  };
+  getInSectionStartStopTaggingMemoized = memoizeOne(this.getInSectionStartStopTagging);
+
+  /**
+   * 동영상 재생시 progress를 지속적으로 받아오는 이벤트입니다
+   * @param {*} e
+   */
+  onVideoProgress = async (e) => {
+    if (!this.isInitialized) return;
+
+    try {
+      let { app, video, taggerData } = this.props;
+      const { isSkipSection, skipSkipSection } = this.state;
+
+      const _mainChannelCurrentVideoFileIdx = this.activeChannels[app.mainChannelKey].currentVideoFileIdx;
+      const _mainChannelStartTimeDuration = this.activeChannels[app.mainChannelKey].files[_mainChannelCurrentVideoFileIdx].startTimeDuration;
+      let _calcMainChannelCurrentDuration = _mainChannelStartTimeDuration + this.videoPlayers[getVideoRefIdxByChannelKey(app.channels, app.mainChannelKey)].getCurrentTime();
+
+      this.props.setVideoCurrentDuration(_calcMainChannelCurrentDuration);
+      this.currentDuration = _calcMainChannelCurrentDuration;
+
+      /**
+       * 스킵구간을 판별합니다
+       */
+      // 현재 재생시간이 스킵구간을 벗어났다면 skipSkipSection state를 false로 합니다.
+      let _isSkipSection = isSkipSection;
+      let _skipSkipSection = skipSkipSection;
+      if (this.currentDuration &lt;= this.inSectionTaggingPair[1] || this.inSectionTaggingPair[3] &lt;= this.currentDuration) _skipSkipSection = false;
+
+      // 가장 가까운 START와 STOP 찾기
+      this.inSectionTaggingPair = this.getInSectionStartStopTaggingMemoized(taggerData.taggingData, this.currentDuration);
+      if (this.inSectionTaggingPair[0] &amp;&amp; !skipSkipSection) _isSkipSection = true;
+      // 스킵 구간일떄
+      else if (this.inSectionTaggingPair[3] === 99999999) _isSkipSection = false; // 스킵 구간이 아닐때
+
+      // 다를때만 setState를 호출합니다.
+      if (isSkipSection !== _isSkipSection || skipSkipSection !== _skipSkipSection) this.setState({ isSkipSection: _isSkipSection, skipSkipSection: _skipSkipSection });
+
+      /**
+       * 재생중인 상태에서 재생이 끝난 영상과 파일이 없는 영상을 찾습니다.
+       */
+      let _maxDurationDiff = 0;
+      if (video.isVideoPlaying) {
+        for (const _activeChannelKey in this.activeChannels) {
+          const __activeChannel = this.activeChannels[_activeChannelKey];
+          const __currentFileStartTimeDuration = __activeChannel.files[__activeChannel.currentVideoFileIdx].startTimeDuration;
+          const __currentFileDuration = __activeChannel.files[__activeChannel.currentVideoFileIdx].duration;
+          const __videoRefIdx = getVideoRefIdxByChannelKey(app.channels, _activeChannelKey);
+          if (__activeChannel.currentVideoFileIdx >= __activeChannel.files.length - 1) return; // 마지막 파일일 경우 currentVideoFileIdx 증가를 하지 않습니다.
+
+          // 재생이 끝난 파일
+          if (this.currentDuration >= __currentFileStartTimeDuration + __currentFileDuration) {
+            let _channels = _.cloneDeep(app.channels);
+            await this.props.setVideoState({ isVideoPlaying: false });
+            _channels[_activeChannelKey].currentVideoFileIdx += 1;
+            await this.props.setAppState({ channels: _channels });
+            await wait(500);
+            // await this.videoSeekTo(this.currentDuration + SHORT_SEEK_DURATION_SECONDS);
+            // await wait(500);
+            await this.props.setVideoState({ isVideoPlaying: true });
+          }
+
+          /**
+           * 영상 시간 동기화 상태를 판별합니다
+           */
+          if (this.videoPlayers[__videoRefIdx].props.playing) {
+            let _thisChannelPlayerDuration = this.videoPlayers[__videoRefIdx].getCurrentTime();
+            const durationDiff = Math.abs(this.currentDuration - __currentFileStartTimeDuration - _thisChannelPlayerDuration);
+            if (durationDiff > _maxDurationDiff) _maxDurationDiff = durationDiff;
+          }
+        }
+
+        this.maxDurationDiff = _maxDurationDiff;
+        if (!video.isVideoNotSync &amp;&amp; _maxDurationDiff >= MIN_SYNC_DURATION_DIFF_SECONDS) this.props.setVideoState({ isVideoNotSync: true });
+        else if (video.isVideoNotSync &amp;&amp; _maxDurationDiff &lt; MIN_SYNC_DURATION_DIFF_SECONDS) this.props.setVideoState({ isVideoNotSync: false });
+      }
+
+      if (this.props.onVideoProgress) this.props.onVideoProgress(e);
+    } catch (e) {
+      logger.error("onVideoProgress", e);
+      console.log(e);
+    }
+  };
+
+  /**
+   * 영상 재생 또는 정지
+   */
+  togglePlay = async (setPlaying) => {
+    const { video } = this.props;
+    let _setPlaying = false;
+
+    if (setPlaying === true) _setPlaying = true;
+    else if (setPlaying === false) _setPlaying = false;
+    else if (video.isVideoPlaying) _setPlaying = false;
+    else if (!video.isVideoPlaying) _setPlaying = true;
+
+    await this.props.setVideoState({ isVideoPlaying: _setPlaying });
+
+    if (typeof setPlaying == "undefined") logEvent({ event_name: video.isVideoPlaying ? "video_play" : "video_stop", duration: video.currentDuration });
+  };
+
+  /**
+   * 특정 시간으로 탐색합니다.
+   * @param {*} targetDuration
+   * @param {boolean} doScroll 탐색시 태깅 리스트를 특정 시간 근처로 스크롤 할지를 받습니다
+   * @returns
+   */
+  videoSeekTo = async (targetDuration, doScroll = true, strictSyncMode = false) => {
+    logger.info(this.constructor.displayName, "videoSeekTo");
+
+    try {
+      // 탐색 전 플레이어를 모두 준비되지않은 상태로 명시합니다.
+      // this.setState({ isVideoReady: new Array(MAX_ACTIVE_CHANNELS_CNT).fill(false) });
+
+      let { app, video, taggerData } = this.props;
+      let _taggingData = _.cloneDeep(taggerData.taggingData);
+      let _channels = _.cloneDeep(app.channels);
+      let origIsVideoPlaying = _.cloneDeep(video.isVideoPlaying);
+
+      // 현재 재생중이라면 버벅임으로 인해 재생 시간 동기화가 풀리지 않도록 잠시 일시정지시킵니다.
+      if (origIsVideoPlaying) {
+        await this.props.setVideoState({ isVideoPlaying: false });
+      }
+
+      // 활성화된 채널들의 targetDuration에 맞는 currentVideoFileIdx를 업데이트합니다.
+      for (const _activeChannelKey in this.activeChannels) {
+        let _currentVideoFileIdx = 0;
+
+        // 활성화된 채널의 targetDuration에 위치엔 영상파일 index(currentVideoFileIdx)를 업데이트합니다.
+        _channels[_activeChannelKey].files.some((file, idx) => {
+          try {
+            if (file.startTimeDuration + file.duration >= targetDuration) {
+              _currentVideoFileIdx = idx;
+              return true;
+            }
+            return false;
+          } catch (e) {
+            logger.error(this.constructor.displayName, e);
+            return false;
+          }
+        });
+        _channels[_activeChannelKey].currentVideoFileIdx = _currentVideoFileIdx;
+      }
+
+      // currentVideoFileIdx를 업데이트하여 render()를 발생시켜 플레이어에서 해당하는 영상파일을 불러오도록 합니다.
+      // 영상 파일 로딩이 끝날때까지 대기합니다.
+      const isNotEqualChannel = !_.isEqual(_channels, app.channels);
+      if (isNotEqualChannel) {
+        await this.props.setAppState({ loadingNetwork: true, channels: _channels });
+        await wait(1000);
+      }
+
+      // 활성화된 채널들의 targetDuration으로 탐색합니다..
+      for (const _activeChannelKey in this.activeChannels) {
+        const _videoRefIdx = getVideoRefIdxByChannelKey(app.channels, _activeChannelKey);
+        const _targetDuration = targetDuration - _channels[_activeChannelKey].files[_channels[_activeChannelKey].currentVideoFileIdx].startTimeDuration;
+        this.videoPlayers[_videoRefIdx].seekTo(_targetDuration, "seconds");
+      }
+
+      // wait() 시 isPlaying이 안먹히는 문제가 있어 직접 play시킴
+      if (isNotEqualChannel) {
+        await wait(1000);
+        await this.props.setAppState({ loadingNetwork: false });
+      }
+      if (origIsVideoPlaying) await this.props.setVideoState({ isVideoPlaying: true });
+      if (isNotEqualChannel) {
+        for (const _activeChannelKey in this.activeChannels) {
+          const _videoRefIdx = getVideoRefIdxByChannelKey(app.channels, _activeChannelKey);
+          const _targetDuration = targetDuration - _channels[_activeChannelKey].files[_channels[_activeChannelKey].currentVideoFileIdx].startTimeDuration;
+          this.videoPlayers[_videoRefIdx].seekTo(_targetDuration, "seconds");
+        }
+      }
+
+      // 재생시간 동기화 관련 변수들을 초기화합니다.
+      this.maxDurationDiff = 0;
+      await this.props.setVideoState({ isVideoNotSync: false });
+
+      // 탐색 시간과 가장 가까운 태깅을 찾고 해당 태깅으로 스크롤합니다.
+      if (doScroll) {
+        let _minDiffDuration = MIN_DIFF_DURATION; // 최소값 비교를 위한 변수
+        let _nearestTaggingItem; // 탐색 시간과 가장 가까운 태깅
+        for (let i = 0; i &lt; _taggingData.length; i++) {
+          const _taggingItemDuration = moment.duration(_taggingData[i].RecordTime).asSeconds();
+          const _diffDuration = Math.abs(targetDuration - _taggingItemDuration);
+          if (_diffDuration &lt; _minDiffDuration) {
+            _nearestTaggingItem = _.cloneDeep(_taggingData[i]);
+            _minDiffDuration = _diffDuration;
+          }
+        }
+        scrollToTaggingItem(_nearestTaggingItem);
+      }
+    } catch (e) {
+      logger.error("videoSeekTo", e);
+    }
+
+    logEvent({ event_name: "video_seek", duration: targetDuration });
+
+    return targetDuration;
+  };
+
+  /**
+   * 총 영상의 시작시간으로 이동합니다.
+   */
+  seekToStart = async () => {
+    this.videoSeekTo(0);
+  };
+
+  /**
+   * 총 영상의 끝시간으로 이동합니다.
+   */
+  seekToEnd = async () => {
+    let { app } = this.props;
+    let lastFile = app.channels[app.mainChannelKey].files[app.channels[app.mainChannelKey].files.length - 1];
+    let endDuration = lastFile.startTimeDuration + lastFile.duration;
+    this.videoSeekTo(endDuration);
+  };
+
+  /**
+   * 앞으로 탐색
+   */
+  seekToForward = async () => {
+    let { video } = this.props;
+    let _targetDuration = video.currentDuration - video.videoSeekTimeIntervalSeconds;
+    this.videoSeekTo(_targetDuration);
+    logEvent({ event_name: "seek_to_forward", duration: _targetDuration });
+  };
+
+  /**
+   * 뒤로 탐색
+   */
+  seekToBackward = async () => {
+    let { video } = this.props;
+    let _targetDuration = video.currentDuration + video.videoSeekTimeIntervalSeconds;
+    this.videoSeekTo(_targetDuration);
+    logEvent({ event_name: "seek_to_backward", duration: _targetDuration });
+  };
+
+  /**
+   * 앞으로 짧게(1프레임) 탐색
+   */
+  seekToForwardShort = () => {
+    let { video } = this.props;
+    let _targetDuration = video.currentDuration - SHORT_SEEK_DURATION_SECONDS;
+    this.videoSeekTo(_targetDuration);
+    logEvent({ event_name: "seek_to_forward_short", duration: _targetDuration });
+  };
+
+  /**
+   * 뒤로 짧게(1프레임) 탐색
+   */
+  seekToBackwardShort = () => {
+    let { video } = this.props;
+    let _targetDuration = video.currentDuration + SHORT_SEEK_DURATION_SECONDS;
+    this.videoSeekTo(_targetDuration);
+    logEvent({ event_name: "seek_to_backward_short", duration: _targetDuration });
+  };
+
+  /**
+   * 특정 시간 탐색 modal 숨기기
+   */
+  onHideSeekToSpecificTimeModal = () => {
+    this.props.setAppState({ showSeekToSpecificTimeModal: false });
+  };
+
+  /**
+   * 특정 시간 탐색
+   */
+  onSeekToSeekToSpecificTimeModal = (targetDuration) => {
+    this.props.setAppState({ showSeekToSpecificTimeModal: false });
+    this.videoSeekTo(targetDuration);
+  };
+
+  render() {
+    const { app, video } = this.props;
+    let { videoZoomLevel, videoLayoutX, videoLayoutY, fullScreenChannel, isSkipSection, skipSkipSection, isSyncing } = this.state;
+
+    this.activeChannels = this.filterActiveChannelsMemoized(app.channels);
+    this.currentDuration = video.currentDuration;
+
+    return (
+      &lt;React.Fragment>
+        &lt;Container fluid className="bg-dark">
+          &lt;Row
+            className="video-player-area"
+            onWheel={(e) => {
+              if (e.deltaY > 0) {
+                videoZoomLevel *= 0.9;
+                videoLayoutX *= 0.9;
+                videoLayoutY *= 0.9;
+              } else {
+                videoZoomLevel *= 1.1;
+                videoLayoutX *= 1.1;
+                videoLayoutY *= 1.1;
+              }
+              this.setState({ videoZoomLevel, videoLayoutX, videoLayoutY });
+            }}
+            onMouseMove={(e) => {
+              if (e.buttons === 1) {
+                videoLayoutX += e.movementX;
+                videoLayoutY += e.movementY;
+              }
+
+              this.setState({ videoLayoutX, videoLayoutY });
+              this.prevMouseOffset = {
+                clientX: e.clientX,
+                clientY: e.clientY,
+              };
+            }}
+          >
+            {video.isVideoNotSync &amp;&amp; !isSyncing &amp;&amp; (
+              &lt;div className="need-timesync-overlay noselect">
+                &lt;div className="bg">&lt;/div>
+                &lt;div>
+                  &lt;div className="message">
+                    &lt;div>
+                      성능 문제로 인해 영상간 재생시간 차이가 많이 나고 있습니다. ({this.maxDurationDiff.toFixed(1)}초) 이 창이 자주 뜬다면 활성화된 채널수를 줄이거나 배속을 줄이는게 도움이 될 수
+                      있습니다. 재생시간을 동기화 하려면 &lt;strong>`(백틱)&lt;/strong>키를 누르거나 &lt;strong>좌우탐색&lt;/strong>을 하세요.
+                    &lt;/div>
+                  &lt;/div>
+                &lt;/div>
+              &lt;/div>
+            )}
+            {isSyncing &amp;&amp; (
+              &lt;div className="need-timesync-overlay noselect">
+                &lt;div className="bg">&lt;/div>
+                &lt;div>
+                  &lt;div className="message">
+                    &lt;div>동기화 중&lt;/div>
+                  &lt;/div>
+                &lt;/div>
+              &lt;/div>
+            )}
+            {isSkipSection &amp;&amp; !skipSkipSection &amp;&amp; (
+              &lt;div className="skip-section-overlay noselect">
+                &lt;div>
+                  &lt;div className="anim">
+                    &lt;Lottie options={animSleepCatOptions} width={160} height={80} isClickToPauseDisabled={true} />
+                  &lt;/div>
+                  &lt;div className="message">
+                    &lt;div>
+                      아무런 행동을 하지않는 구간으로 추정됩니다.
+                      &lt;br />
+                      넘어가시겠습니까?
+                    &lt;/div>
+                  &lt;/div>
+                  &lt;div className="btn-group w-100">
+                    &lt;span className="btn btn-secondary btn-sm" onClick={this.cancelSkip.bind(this)}>
+                      아니요 (Esc)
+                    &lt;/span>
+                    &lt;span className="btn btn-primary btn-sm" onClick={this.doSkip.bind(this)}>
+                      넘어가기 (Enter)
+                    &lt;/span>
+                  &lt;/div>
+                &lt;/div>
+              &lt;/div>
+            )}
+            {Object.keys(app.channels).map((channelKey, idx) => {
+              if (!app.channels[channelKey].isActive) return null;
+              const channel = app.channels[channelKey];
+              const currentFile = app.channels[channelKey].files[app.channels[channelKey].currentVideoFileIdx];
+              const isNotVideoFileExist = video.currentDuration &lt; currentFile.startTimeDuration;
+              // let isPlaying = isVideoPlayerValid(this.videoPlayers[idx]) ? video.isVideoPlaying : false;
+
+              return (
+                &lt;Col
+                  key={`video_player_${idx}`}
+                  style={{
+                    display: fullScreenChannel != null ? (fullScreenChannel === channelKey ? "block" : "none") : "block",
+                  }}
+                  md={fullScreenChannel != null ? (fullScreenChannel === channelKey ? 24 : 0) : 12}
+                  className={`p-0`}
+                >
+                  &lt;div
+                    className={`video-player-container ${fullScreenChannel != null ? "fullscreen-channel" : ""} ${app.mainChannelKey === channelKey ? "main-channel" : ""}`}
+                    onDoubleClick={this.handleTriggerFullscreenChannel.bind(this, channelKey)}
+                    onAuxClick={(e) => {
+                      this.props.setAppState({ mainChannelKey: channelKey });
+                    }}
+                  >
+                    &lt;div className="filename noselect">
+                      {idx + 1}번&amp;nbsp;[{channelKey}]&amp;nbsp;[{channel.currentVideoFileIdx}]&amp;nbsp;
+                      {channel.currentVideoFileIdx >= 0 &amp;&amp; path.parse(channel.files[channel.currentVideoFileIdx].path).base}
+                    &lt;/div>
+                    &lt;ReactPlayer
+                      ref={(player) => (this.videoPlayers[idx] = player)}
+                      className="video-player"
+                      url={Object.keys(this.activeChannels).length > 0 &amp;&amp; channel.currentVideoFileIdx >= 0 ? "file://" + channel.files[channel.currentVideoFileIdx].path : null}
+                      width={"100%"}
+                      height={"100%"}
+                      playbackRate={parseFloat(video.videoPlaybackRate)}
+                      playing={isNotVideoFileExist || (fullScreenChannel != null &amp;&amp; channelKey !== app.mainChannelKey &amp;&amp; channelKey !== fullScreenChannel) ? false : video.isVideoPlaying}
+                      // playing={video.isVideoPlaying}
+                      style={{
+                        transform: "scale(" + videoZoomLevel + ")",
+                        top: videoLayoutY,
+                        left: videoLayoutX,
+                      }}
+                      // progressInterval={66}
+                      progressInterval={10}
+                      muted
+                      onProgress={channelKey === app.mainChannelKey ? this.onVideoProgress : undefined}
+                    />
+                    {/* {isVideoReady[idx] &amp;&amp;
+                      // !(video.currentDuration >= currentFile.startTimeDuration &amp;&amp; video.currentDuration &lt;= currentFile.startTimeDuration + currentFile.duration) &amp;&amp;
+                      video.currentDuration &lt; currentFile.startTimeDuration &amp;&amp;
+                      (&lt;div className="black-screen"> 영상파일 없음 &lt;/div>)} */}
+                    {isNotVideoFileExist &amp;&amp; &lt;div className="black-screen"> 영상파일 없음 &lt;/div>}
+                  &lt;/div>
+                &lt;/Col>
+              );
+            })}
+          &lt;/Row>
+          &lt;Row>
+            &lt;Col md={24} className="p-0">
+              &lt;ProgressBar videoPlayers={this.videoPlayers} seekable videoSeekTo={this.videoSeekTo.bind(this)} />
+            &lt;/Col>
+          &lt;/Row>
+        &lt;/Container>
+        {app.showSeekToSpecificTimeModal &amp;&amp; (
+          &lt;SeekToSpecificTimeModal
+            defaultRecordTime={formatProgressTime(video.currentDuration * 1000)}
+            onHide={this.onHideSeekToSpecificTimeModal.bind(this)}
+            onSeekTo={this.onSeekToSeekToSpecificTimeModal.bind(this)}
+          />
+        )}
+      &lt;/React.Fragment>
+    );
+  }
+}
+
+MultiVideoPlayer.defaultProps = {};
+MultiVideoPlayer.propTypes = {
+  videoSeekTo: PropTypes.func,
+  seekToForward: PropTypes.func,
+  seekToBackward: PropTypes.func,
+  togglePlay: PropTypes.func,
+};
+
+export default connect(
+  (state) => ({
+    app: state.app,
+    video: state.video,
+    taggerData: state.taggerData,
+  }),
+  (dispatch) => ({
+    setAppState: (dataObject) => dispatch(setAppState(dataObject)),
+    setVideoState: (dataObject) => dispatch(setVideoState(dataObject)),
+    setVideoCurrentDuration: (dataObject) => dispatch(setVideoCurrentDuration(dataObject)),
+  }),
+)(MultiVideoPlayer);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="BaseLayout.html">BaseLayout</a></li><li><a href="ChannelsList.html">ChannelsList</a></li><li><a href="Login.html">Login</a></li><li><a href="MenuController.html">MenuController</a></li><li><a href="MultiVideoPlayer.html">MultiVideoPlayer</a></li><li><a href="PlaybackRateController.html">PlaybackRateController</a></li><li><a href="ProgressBar.html">ProgressBar</a></li><li><a href="SaveDataController.html">SaveDataController</a></li><li><a href="SeekTimeIntervalController.html">SeekTimeIntervalController</a></li><li><a href="SeekToSpecificTimeModal.html">SeekToSpecificTimeModal</a></li><li><a href="Tagger.html">Tagger</a></li><li><a href="TaggingDatabaseModal.html">TaggingDatabaseModal</a></li></ul><h3>Global</h3><ul><li><a href="global.html#basename">basename</a></li><li><a href="global.html#CHANGE_THEME_TO_DARK">CHANGE_THEME_TO_DARK</a></li><li><a href="global.html#checkValidateTaggingData">checkValidateTaggingData</a></li><li><a href="global.html#convertTaggingClassToEnglish">convertTaggingClassToEnglish</a></li><li><a href="global.html#deleteTagging">deleteTagging</a></li><li><a href="global.html#filterActiveChannels">filterActiveChannels</a></li><li><a href="global.html#formatProgressTime">formatProgressTime</a></li><li><a href="global.html#getInvalidTaggingData">getInvalidTaggingData</a></li><li><a href="global.html#initialStandardTime">initialStandardTime</a></li><li><a href="global.html#initialState">initialState</a></li><li><a href="global.html#isLogged">isLogged</a></li><li><a href="global.html#logEvent">logEvent</a></li><li><a href="global.html#logger">logger</a></li><li><a href="global.html#middlewares">middlewares</a></li><li><a href="global.html#pushTagging">pushTagging</a></li><li><a href="global.html#redoTagging">redoTagging</a></li><li><a href="global.html#resetAppState">resetAppState</a></li><li><a href="global.html#resetAuthState">resetAuthState</a></li><li><a href="global.html#resetTaggerDataState">resetTaggerDataState</a></li><li><a href="global.html#resetVideoState">resetVideoState</a></li><li><a href="global.html#resetViewerDataState">resetViewerDataState</a></li><li><a href="global.html#scrollToTaggingItem">scrollToTaggingItem</a></li><li><a href="global.html#setAppState">setAppState</a></li><li><a href="global.html#setAuthState">setAuthState</a></li><li><a href="global.html#setTaggerDataState">setTaggerDataState</a></li><li><a href="global.html#setVideoCurrentDuration">setVideoCurrentDuration</a></li><li><a href="global.html#setVideoState">setVideoState</a></li><li><a href="global.html#setViewerDataState">setViewerDataState</a></li><li><a href="global.html#showToast">showToast</a></li><li><a href="global.html#sortAsc">sortAsc</a></li><li><a href="global.html#sortDesc">sortDesc</a></li><li><a href="global.html#undoTagging">undoTagging</a></li><li><a href="global.html#updateTaggingState">updateTaggingState</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Apr 20 2022 18:46:05 GMT+0900 (Korean Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: redux/reducers/appReducer.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: redux/reducers/appReducer.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { SET_APP_STATE, RESET_APP_STATE, SHOW_TOAST } from "../constants/actionTypes";
+import { TAGGING_CLASSES } from "../../utils/appConstants";
+import { taggingColumns } from "../../utils/lib";
+import _ from "lodash";
+import packageJson from "../../../package.json";
+
+/**
+ * 앱 구동과 관련된 리듀서
+ */
+
+export const initialState = {
+  version: packageJson.version,
+  toast: false,
+  lastDraftTime: new Date(),
+  taggingPIN: "000",
+  taggingMode: "",
+  taggingDate: new Date(new Date().setHours(0, 0, 0, 0)),
+  taggingColumns: taggingColumns,
+  taggingClasses: TAGGING_CLASSES,
+  taggingState: null,
+  loadingNetwork: false,
+  showImportTaggingDataModal: false,
+  showSeekToSpecificTimeModal: false,
+  mainChannelKey: "CH2",
+  channels: {
+    CH2: {
+      files: [],
+      isActive: false,
+      collapse: true,
+      totalDuration: 0,
+      currentDuration: 0,
+      currentVideoFileIdx: 0,
+      date: "1970-01-01",
+    },
+    CH3: {
+      files: [],
+      isActive: false,
+      collapse: true,
+      totalDuration: 0,
+      currentDuration: 0,
+      currentVideoFileIdx: 0,
+      date: "1970-01-01",
+    },
+    CH4: {
+      files: [],
+      isActive: false,
+      collapse: true,
+      totalDuration: 0,
+      currentDuration: 0,
+      currentVideoFileIdx: 0,
+      date: "1970-01-01",
+    },
+    CH5: {
+      files: [],
+      isActive: false,
+      collapse: true,
+      totalDuration: 0,
+      currentDuration: 0,
+      currentVideoFileIdx: 0,
+      date: "1970-01-01",
+    },
+    CH6: {
+      files: [],
+      isActive: false,
+      collapse: true,
+      totalDuration: 0,
+      currentDuration: 0,
+      currentVideoFileIdx: 0,
+      date: "1970-01-01",
+    },
+    CH7: {
+      files: [],
+      isActive: false,
+      collapse: true,
+      totalDuration: 0,
+      currentDuration: 0,
+      currentVideoFileIdx: 0,
+      date: "1970-01-01",
+    },
+  },
+  selectedVideoFilesDirectoryPath: "",
+  // 태깅 데이터베이스 관련 reducer START
+  selectedFarm: {},
+  selectedTaggingGroup: {},
+  selectedTaggingVersion: {},
+  taggingGroups: [],
+  taggingVersions: [],
+  farms: [],
+  cows: [],
+  // 태깅 데이터베이스 관련 reducer END
+};
+
+export default function dataReducer(state = initialState, action) {
+  switch (action.type) {
+    case SHOW_TOAST:
+      return { ...state, toast: { ...action.data } };
+    case SET_APP_STATE:
+      return { ...state, ...action.data };
+    case RESET_APP_STATE:
+      let _initialState = _.cloneDeep(initialState);
+      return _initialState;
+    default:
+      return state;
+  }
+}
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="BaseLayout.html">BaseLayout</a></li><li><a href="ChannelsList.html">ChannelsList</a></li><li><a href="Login.html">Login</a></li><li><a href="MenuController.html">MenuController</a></li><li><a href="MultiVideoPlayer.html">MultiVideoPlayer</a></li><li><a href="PlaybackRateController.html">PlaybackRateController</a></li><li><a href="ProgressBar.html">ProgressBar</a></li><li><a href="SaveDataController.html">SaveDataController</a></li><li><a href="SeekTimeIntervalController.html">SeekTimeIntervalController</a></li><li><a href="SeekToSpecificTimeModal.html">SeekToSpecificTimeModal</a></li><li><a href="Tagger.html">Tagger</a></li><li><a href="TaggingDatabaseModal.html">TaggingDatabaseModal</a></li></ul><h3>Global</h3><ul><li><a href="global.html#basename">basename</a></li><li><a href="global.html#CHANGE_THEME_TO_DARK">CHANGE_THEME_TO_DARK</a></li><li><a href="global.html#checkValidateTaggingData">checkValidateTaggingData</a></li><li><a href="global.html#convertTaggingClassToEnglish">convertTaggingClassToEnglish</a></li><li><a href="global.html#deleteTagging">deleteTagging</a></li><li><a href="global.html#filterActiveChannels">filterActiveChannels</a></li><li><a href="global.html#formatProgressTime">formatProgressTime</a></li><li><a href="global.html#getInvalidTaggingData">getInvalidTaggingData</a></li><li><a href="global.html#initialStandardTime">initialStandardTime</a></li><li><a href="global.html#initialState">initialState</a></li><li><a href="global.html#isLogged">isLogged</a></li><li><a href="global.html#logEvent">logEvent</a></li><li><a href="global.html#logger">logger</a></li><li><a href="global.html#middlewares">middlewares</a></li><li><a href="global.html#pushTagging">pushTagging</a></li><li><a href="global.html#redoTagging">redoTagging</a></li><li><a href="global.html#resetAppState">resetAppState</a></li><li><a href="global.html#resetAuthState">resetAuthState</a></li><li><a href="global.html#resetTaggerDataState">resetTaggerDataState</a></li><li><a href="global.html#resetVideoState">resetVideoState</a></li><li><a href="global.html#resetViewerDataState">resetViewerDataState</a></li><li><a href="global.html#scrollToTaggingItem">scrollToTaggingItem</a></li><li><a href="global.html#setAppState">setAppState</a></li><li><a href="global.html#setAuthState">setAuthState</a></li><li><a href="global.html#setTaggerDataState">setTaggerDataState</a></li><li><a href="global.html#setVideoCurrentDuration">setVideoCurrentDuration</a></li><li><a href="global.html#setVideoState">setVideoState</a></li><li><a href="global.html#setViewerDataState">setViewerDataState</a></li><li><a href="global.html#showToast">showToast</a></li><li><a href="global.html#sortAsc">sortAsc</a></li><li><a href="global.html#sortDesc">sortDesc</a></li><li><a href="global.html#undoTagging">undoTagging</a></li><li><a href="global.html#updateTaggingState">updateTaggingState</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Apr 20 2022 18:46:05 GMT+0900 (Korean Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

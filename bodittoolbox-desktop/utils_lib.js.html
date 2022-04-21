@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: utils/lib.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: utils/lib.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from "react";
+import { Type } from "react-bootstrap-table2-editor";
+import { ipcRenderer } from "electron";
+import { RecordTimeEditor } from "../components";
+import moment from "moment";
+import axios from "axios";
+import _ from "lodash";
+import { API_HOST, IS_DEV, TAGGING_CLASSES } from "./appConstants";
+import packageJson from "../../package.json";
+import store from "../redux/store";
+
+/**
+ * 브라우저 콘솔과 electron에 로그를 보여줍니다.
+ */
+export var logger = {
+  info: (TAG, content, showInElectron = true) => {
+    if (IS_DEV) {
+      TAG = _.isEmpty(TAG) ? "" : TAG;
+      content = typeof content != "string" ? String(content) : content;
+      console.log(`%c${TAG.padEnd(24)} %c${content}`, `color: #bada55`, `color: #2196f3`);
+      if (showInElectron) ipcRenderer.send("logInfo", content);
+    }
+  },
+  verbose: (TAG, content, showInElectron = true) => {
+    if (IS_DEV) {
+      TAG = _.isEmpty(TAG) ? "" : TAG;
+      content = typeof content != "string" ? String(content) : content;
+      console.log(`%c${TAG.padEnd(24)} %c${content}`, `color: #bada55`, ``);
+      if (showInElectron) ipcRenderer.send("logVerbose", content);
+    }
+  },
+  error: (TAG, content, showInElectron = true) => {
+    if (IS_DEV) {
+      TAG = _.isEmpty(TAG) ? "" : TAG;
+      content = typeof content != "string" ? String(content) : content;
+      console.log(`%c${TAG.padEnd(24)} %c${content}`, `color: #bada55`, `color: #ef5350`);
+      if (showInElectron) ipcRenderer.send("logError", content);
+    }
+  },
+};
+
+/**
+ * 태깅을 검증합니다.
+ * @param {*} _taggingData
+ * @returns
+ */
+export const checkValidateTaggingData = (_taggingData, showToast) => {
+  let taggingStack = getInvalidTaggingData(_taggingData);
+
+  if (taggingStack.length === 0) {
+    showToast("검증을 통과하였습니다.");
+  } else {
+    showToast(
+      &lt;div>
+        검증을 통과하지 못하였습니다. &lt;br />
+        아래 사항들 중 하나 이상 문제가 있으니 확인해보세요. &lt;br /> &lt;br />
+        - 같은 시각에 중복으로 들어간 태깅이 있습니다. &lt;br />
+        - 서있는 상태에서 다시 서기 태깅을 했거나 앉아있는 상태에서 다시 앉기 태깅을 하였습니다. &lt;br />
+        - START-STOP 쌍이 맞지 않습니다. &lt;br />
+        - START-STOP 쌍 안에 다른 클래스의 START 또는 STOP 태깅이 들어가있습니다. &lt;br /> &lt;br />
+        &lt;strong className="text-danger">표에서 빨갛게 표시된 부분을 확인해주세요.&lt;/strong>
+      &lt;/div>,
+      10000,
+    );
+    scrollToTaggingItem(taggingStack[taggingStack.length - 1 >= 0 ? taggingStack.length - 1 : 0]);
+  }
+
+  return taggingStack;
+};
+
+/**
+ * 한글로 된 태깅 클래스를 영어로 변환합니다.
+ * @param {String} taggingClass 한글 태깅클래스
+ * @returns {String} 영문 태깅클래스
+ */
+export function convertTaggingClassToEnglish(taggingClass) {
+  let actionClassName = "";
+
+  switch (taggingClass) {
+    case "손포유":
+      actionClassName = "action_hand";
+      break;
+    case "로봇포유":
+      actionClassName = "action_robot";
+      break;
+    case "자연포유":
+      actionClassName = "action_natural";
+      break;
+    case "사료섭취":
+      actionClassName = "action_feed";
+      break;
+    case "음수":
+      actionClassName = "action_drink";
+      break;
+    case "반추":
+      actionClassName = "action_ruminant";
+      break;
+    case "서기동작":
+      actionClassName = "action_stand";
+      break;
+    case "앉기동작":
+      actionClassName = "action_sit";
+      break;
+    case "알수없음":
+      actionClassName = "action_unknown";
+      break;
+    case "앉아있음":
+      actionClassName = "state_sit";
+      break;
+    case "서있음":
+      actionClassName = "state_stand";
+      break;
+    case "데이터버림":
+      actionClassName = "action_discard";
+      break;
+    case "SKIP":
+      actionClassName = "action_skip";
+      break;
+    default:
+      actionClassName = "default";
+      break;
+  }
+  return actionClassName;
+}
+
+/**
+ * 로그인 된 상태인지 체크합니다.
+ * @param {*} authData
+ * @returns Boolean
+ */
+export function isLogged(authData) {
+  return !_.isEmpty(authData) &amp;&amp; _.isObject(authData) &amp;&amp; !_.isEmpty(authData.user);
+}
+
+/**
+ * 파일 경로에서 파일이름만 가져옵니다.
+ * @param {*} path
+ * @returns String
+ */
+export function basename(path) {
+  try {
+    if (path === "" || path === undefined || path === null) return;
+    return path.split(/[\\/]/).reverse()[0];
+  } catch (e) {
+    return "";
+  }
+}
+
+export const getMetaInfo = (columns) =>
+  columns
+    .map((column) => ({
+      field: column.dataField,
+      type: column.csvType || String,
+      formatter: column.csvFormatter,
+      formatExtraData: column.formatExtraData,
+      header: column.csvText || column.text,
+      export: column.csvExport === false ? false : true,
+      row: Number(column.row) || 0,
+      rowSpan: Number(column.rowSpan) || 1,
+      colSpan: Number(column.colSpan) || 1,
+      footer: column.footer,
+      footerFormatter: column.footerFormatter,
+    }))
+    .filter((_) => _.export);
+
+/**
+ *
+ * @param {*} timeInMillis
+ * @returns
+ */
+export const formatProgressTime = (timeInMillis) => {
+  var dur = moment.duration(timeInMillis);
+  var hours = Math.floor(dur.asHours()).toString().padStart(2, "0");
+  var mins = (Math.floor(dur.asMinutes()) - hours * 60).toString().padStart(2, "0");
+  var sec = (Math.floor(dur.asSeconds()) - hours * 60 * 60 - mins * 60).toString().padStart(1, "0");
+  var millis = (Math.floor(dur.asMilliseconds()) - hours * 60 * 60 * 1000 - mins * 60 * 1000 - sec * 1000).toString().substring(0, 3).padStart(3, "0");
+
+  var result = hours + ":" + mins + ":" + (sec > 9 ? sec : "0" + sec) + "." + millis;
+  return result;
+};
+
+export const transform = (data, meta, columns, { separator, ignoreHeader, ignoreFooter }) => {
+  const visibleColumns = meta.filter((m) => m.export);
+  let content = "";
+  // extract csv header
+  if (!ignoreHeader) {
+    content += visibleColumns.map((m) => `"${m.header}"`).join(separator);
+    content += "\n";
+  }
+  // extract csv body
+  if (data.length === 0) return content;
+  content += data
+    .map((row, rowIndex) =>
+      visibleColumns
+        .map((m) => {
+          let cellContent = _.get(row, m.field);
+          if (m.formatter) {
+            cellContent = m.formatter(cellContent, row, rowIndex, m.formatExtraData);
+          }
+          if (m.type === String) {
+            return `"${`${cellContent}`.replace(/"/g, '""')}"`;
+          }
+          return cellContent;
+        })
+        .join(separator),
+    )
+    .join("\n");
+
+  if (!ignoreFooter) {
+    content += "\n";
+    content += visibleColumns
+      .map((m, i) => {
+        if (typeof m.footer === "function") {
+          const columnData = _.pluck(data, columns[i].dataField);
+          return `"${m.footer(columnData, columns[i], i)}"`;
+        } else if (m.footerFormatter) {
+          return `"${m.footerFormatter(columns[i], i)}"`;
+        }
+        return `"${m.footer}"`;
+      })
+      .join(separator);
+  }
+  return content;
+};
+
+export function isEmpty(_var) {
+  return typeof _var === "undefined" || _var === null || _var === "";
+}
+
+export function makeId(length) {
+  var result = "";
+  var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  var charactersLength = characters.length;
+  for (var i = 0; i &lt; length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
+export const isVideoPlayerValid = (_videoPlayer) => {
+  try {
+    return typeof _videoPlayer.getDuration !== "undefined" &amp;&amp; _videoPlayer.getDuration() !== null;
+  } catch (e) {
+    return false;
+  }
+};
+
+/**
+ * 검증에 통과하지 못한 태깅들을 가져옵니다.
+ * @param {*} _taggingData
+ * @returns
+ */
+export const getInvalidTaggingData = (_taggingData) => {
+  let taggingData = _.cloneDeep(_taggingData);
+  let taggingStack = [];
+  taggingData = sortAsc(taggingData);
+
+  const isStand = (item) => ["서기동작", "변칙 서기 동작"].includes(item.Class);
+  const isSit = (item) => ["앉기동작", "변칙 앉기 동작"].includes(item.Class);
+
+  const startStopTaggingData = taggingData.filter((item) => ["START", "STOP"].includes(item.Action));
+
+  // 중복 태깅 제거
+  if (taggingStack.length === 0) {
+    for (let item1 of taggingData) {
+      for (let item2 of taggingData) {
+        if (item1.RecordTime === item2.RecordTime &amp;&amp; item1.id !== item2.id) {
+          taggingStack.push(item1);
+          taggingStack.push(item2);
+          console.log(item1);
+          console.log(item2);
+        }
+        if (taggingStack.length > 0) break;
+      }
+      if (taggingStack.length > 0) break;
+    }
+  }
+
+  // START - STOP 쌍 체크
+  if (taggingStack.length === 0) {
+    // console.log(startStopTaggingData);
+    for (let i = 0; i &lt; startStopTaggingData.length; i = i + 2) {
+      let nextItem = startStopTaggingData[i + 1];
+      let currentItem = startStopTaggingData[i];
+
+      try {
+        // STOP 태깅이 아닌지 체크
+        if (currentItem.Action !== "START") taggingStack.push(currentItem);
+        // 직전 태깅이 START가 아닌지 체크
+        if (nextItem.Action !== "STOP") taggingStack.push(nextItem);
+        // 다음 태깅과 현재 태깅 클래스가 다르면 체크
+        if (nextItem.Class !== currentItem.Class) taggingStack.push(currentItem);
+      } catch (e) {
+        taggingStack.push(currentItem);
+      }
+
+      if (taggingStack.length > 0) break;
+    }
+  }
+
+  // 연속 앉기, 연속 서기 체크
+  if (taggingStack.length === 0) {
+    const standSitTaggingData = taggingData.filter((item) => item.Action === "START" &amp;&amp; (isStand(item) || isSit(item)));
+    console.log(standSitTaggingData);
+    let evenCheckFunc = isSit,
+      oddCheckFunc = isStand;
+    for (let [index, item] of standSitTaggingData.entries()) {
+      if (index === 0 &amp;&amp; isStand(item)) {
+        // 시작이 서있으면
+        evenCheckFunc = isStand;
+        oddCheckFunc = isSit;
+      }
+
+      if (index % 2 === 0) {
+        // 짝수면
+        if (!evenCheckFunc(item)) taggingStack.push(item);
+      } else {
+        // 홀수면
+        if (!oddCheckFunc(item)) taggingStack.push(item);
+      }
+      if (taggingStack.length > 0) break;
+    }
+  }
+
+  return taggingStack;
+};
+
+export const taggingColumns = [
+  {
+    dataField: "id",
+    text: "id",
+    sort: true,
+    csvExport: false,
+    editCellClasses: (cell, row, rowIndex, colIndex) => "m-0 p-0",
+    editorClasses: (cell, row, rowIndex, colIndex) => "form-control-sm",
+    headerStyle: (column, colIndex) => {
+      return { width: "0px", display: "none" };
+    },
+    style: {
+      width: "0px",
+      maxWidth: "0px",
+      display: "none",
+    },
+  },
+  {
+    dataField: "RecordTime",
+    text: "RecordTime",
+    sort: true,
+    sortValue: (cell, row) => moment.duration(cell).asSeconds(),
+    editCellClasses: (cell, row, rowIndex, colIndex) => "m-0 p-0",
+    editorClasses: (cell, row, rowIndex, colIndex) => "form-control-sm",
+    editorRenderer: (editorProps, value, row, column, rowIndex, columnIndex) => {
+      return &lt;RecordTimeEditor {...editorProps} defaultValue={value} />;
+    },
+    headerStyle: (column, colIndex) => {
+      return { width: "230px" };
+    },
+  },
+  {
+    dataField: "Class",
+    text: "Class",
+    sort: true,
+    editor: {
+      type: Type.SELECT,
+      options: TAGGING_CLASSES.filter((item) => item.value !== "구분선"),
+    },
+    editCellClasses: (cell, row, rowIndex, colIndex) => "m-0 p-0",
+    editorClasses: (cell, row, rowIndex, colIndex) => "form-control-sm",
+    headerStyle: (column, colIndex) => {
+      return { width: "120px" };
+    },
+  },
+  {
+    dataField: "Action",
+    text: "Action",
+    sort: true,
+    editor: {
+      type: Type.SELECT,
+      options: [
+        { value: "START", label: "START" },
+        { value: "STOP", label: "STOP" },
+        { value: "SPOT", label: "SPOT" },
+        { value: "STATE", label: "STATE" },
+      ],
+    },
+    editCellClasses: (cell, row, rowIndex, colIndex) => "m-0 p-0",
+    editorClasses: (cell, row, rowIndex, colIndex) => "form-control-sm",
+    headerStyle: (column, colIndex) => {
+      return { width: "120px" };
+    },
+  },
+  {
+    text: "Note",
+    dataField: "Note",
+    editCellClasses: (cell, row, rowIndex, colIndex) => "m-0 p-0",
+    editorClasses: (cell, row, rowIndex, colIndex) => "form-control-sm note-editor",
+  },
+];
+
+export const isChannelExist = (data, channelKey) => {
+  if (data.channels[channelKey] != null) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+/**
+ * Active 된 채널들만 가져옵니다.
+ * @param {*} channels
+ * @returns
+ */
+export const filterActiveChannels = (channels) => {
+  return Object.keys(channels)
+    .filter((key) => channels[key].isActive)
+    .reduce((obj, key) => {
+      obj[key] = channels[key];
+      return obj;
+    }, {});
+};
+
+export const getVideoRefIdxByChannelKey = (channels, targetChannelKey) => Object.keys(channels).findIndex((channelKey) => channelKey === targetChannelKey);
+
+export const getChannelKeyFromVideoRefIdx = (channels, videoRefIdx) => Object.keys(channels)[videoRefIdx];
+
+export const getAccDurationOfVideo = (data, channelKey) => {
+  let accDuration = 0; // currentDuration에 위치한 영상파일 바로 전까지의 누적 duration
+
+  data.channels[channelKey].files.some((file, idx) => {
+    accDuration += file.duration;
+    // if (accDuration >= targetDuration) {
+    if (idx >= data.channels[channelKey].currentVideoFileIdx) {
+      accDuration -= file.duration;
+      return true;
+    }
+    return false;
+  });
+
+  return accDuration;
+};
+
+export const wait = (millis) => {
+  return new Promise((resolve) => setTimeout(resolve, millis));
+};
+
+/**
+ * 타겟 태깅으로 스크롤합니다.
+ * @param {*} taggingItem
+ * @returns
+ */
+export const scrollToTaggingItem = (taggingItem) => {
+  try {
+    if (typeof taggingItem == "undefined") return;
+    let tableContainerOuter = document.getElementsByClassName("table-area")[0];
+    let tableContainer = document.getElementsByClassName("react-bootstrap-table")[0];
+    let tableObj = tableContainer.childNodes[0];
+    let trItems = tableObj.tBodies.item(0).children;
+    let targetTrItem;
+    let offset;
+
+    for (const trItem of trItems) {
+      let tdItems = trItem.childNodes;
+      let id = tdItems[1].textContent;
+
+      if (id.toString() === taggingItem.id.toString()) {
+        offset = trItem.offsetTop;
+        targetTrItem = trItem;
+      }
+    }
+
+    targetTrItem.classList.remove("scrolled-item");
+    setTimeout(() => {
+      targetTrItem.classList.add("scrolled-item");
+    }, 1);
+
+    tableContainerOuter.scrollTo({ top: offset, left: 0, behavior: "auto" });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export const hexToRGBA = (hex, a) => {
+  var c;
+  if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
+    c = hex.substring(1).split("");
+    if (c.length === 3) {
+      c = [c[0], c[0], c[1], c[1], c[2], c[2]];
+    }
+    c = "0x" + c.join("");
+    return "rgba(" + [(c >> 16) &amp; 255, (c >> 8) &amp; 255, c &amp; 255].join(",") + "," + a + ")";
+  }
+  throw new Error("Bad Hex");
+};
+
+/**
+ * 사용 이벤트를 로깅합니다.
+ * @param {*} arg
+ */
+export const logEvent = async (arg) => {
+  try {
+    const { auth } = store.getState();
+
+    await axios.post(`${API_HOST}/logEvent`, {
+      created_at: moment().toISOString(),
+      version: packageJson.version,
+      user_id: auth.user.uid,
+      user_email: auth.user.email,
+      ...arg,
+    });
+  } catch (e) {
+    logger.error("logEvent", e);
+  }
+};
+
+/**
+ * 태깅 데이터를 오름차순으로 정렬합니다
+ * @param {*} arr
+ * @returns
+ */
+export const sortAsc = (arr) => {
+  arr.sort((a, b) => {
+    a = moment.duration(a.RecordTime).asSeconds();
+    b = moment.duration(b.RecordTime).asSeconds();
+    return a &lt; b ? -1 : a > b ? 1 : 0;
+  });
+  return arr;
+};
+
+/**
+ * 태깅 데이터를 내림차순으로 정렬합니다.
+ * @param {*} arr
+ * @returns
+ */
+export const sortDesc = (arr) => {
+  // 내림차순으로 정렬
+  arr.sort((a, b) => {
+    a = moment.duration(a.RecordTime).asSeconds();
+    b = moment.duration(b.RecordTime).asSeconds();
+    return a &lt; b ? 1 : a > b ? -1 : 0;
+  });
+  return arr;
+};
+
+/**
+ * 태깅데이터에서 State만 가져옵니다
+ * @param {*} taggingData
+ * @returns
+ */
+export const updateTaggingState = (taggingData) => {
+  let taggingDataStateFiltered = taggingData.filter((item, idx) => {
+    // return ["앉기동작", "서기동작", "데이터버림"].indexOf(item.Class) !== -1;
+    return ["앉기동작", "변칙 앉기 동작", "서기동작", "변칙 서기 동작"].indexOf(item.Class) !== -1;
+    // item.idx = idx;
+    // return item;
+  });
+  // 오름차순으로 정렬
+  taggingDataStateFiltered.sort((a, b) => {
+    a = moment.duration(a.RecordTime).asSeconds();
+    b = moment.duration(b.RecordTime).asSeconds();
+    return a &lt; b ? -1 : a > b ? 1 : 0;
+  });
+
+  let taggingStateData = [];
+  // console.log("taggingDataStateFiltered");
+  // console.log(taggingDataStateFiltered);
+  let prevTaggingStateItem;
+  let startDiscardTaggingStateItem;
+  taggingDataStateFiltered.map((item, idx) => {
+    // if (["앉기동작", "서기동작", "데이터버림"].indexOf(item.Class) === -1) return false;
+    if (item.Class === "데이터버림" &amp;&amp; item.Action === "START") startDiscardTaggingStateItem = item;
+    if (item.Action !== "STOP") return false;
+
+    let newTaggingStateItem = {
+      // id: ix,
+      Class: "",
+      RecordTime: "00:00:00.000",
+      Action: "",
+    };
+
+    // 앉기 또는 서기 동작이면 (STOP)
+    // if(item.Class === "앉기동작") {
+
+    // } else if(item.Class === "서기동작") {
+
+    // }
+    // let prevTaggingStateItem = taggingDataStateFiltered[idx - 1];
+    // console.log(prevTaggingStateItem);
+    if (item.Class === "앉기동작" || item.Class === "변칙 앉기 동작") {
+      if (prevTaggingStateItem) {
+        if (prevTaggingStateItem.Class === "앉아있음") {
+          newTaggingStateItem.Class = "앉아있음";
+          newTaggingStateItem.RecordTime = item.RecordTime;
+          newTaggingStateItem.Action = "STOP";
+        } else if (prevTaggingStateItem.Class === "서있음") {
+          newTaggingStateItem.Class = "서있음";
+          newTaggingStateItem.RecordTime = item.RecordTime;
+          newTaggingStateItem.Action = "STOP";
+        } else if (prevTaggingStateItem.Class === "데이터버림") {
+        }
+        if (!_.isEmpty(newTaggingStateItem.Class)) taggingStateData.push(newTaggingStateItem);
+      }
+
+      if (taggingStateData.length === 0) {
+        taggingStateData.push({
+          Class: "서있음",
+          RecordTime: "00:00:00.000",
+          Action: "START",
+        });
+        taggingStateData.push({
+          Class: "서있음",
+          RecordTime: item.RecordTime,
+          Action: "STOP",
+        });
+      }
+
+      newTaggingStateItem = _.cloneDeep(newTaggingStateItem);
+      newTaggingStateItem.Class = "앉아있음";
+      newTaggingStateItem.RecordTime = item.RecordTime;
+      newTaggingStateItem.Action = "START";
+      taggingStateData.push(newTaggingStateItem);
+    } else if (item.Class === "서기동작" || item.Class === "변칙 서기 동작") {
+      try {
+        if (prevTaggingStateItem.Class === "앉아있음") {
+          newTaggingStateItem.Class = "앉아있음";
+          newTaggingStateItem.RecordTime = item.RecordTime;
+          newTaggingStateItem.Action = "STOP";
+        } else if (prevTaggingStateItem.Class === "서있음") {
+          newTaggingStateItem.Class = "서있음";
+          newTaggingStateItem.RecordTime = item.RecordTime;
+          newTaggingStateItem.Action = "STOP";
+        } else if (prevTaggingStateItem.Class === "데이터버림") {
+        }
+        if (!_.isEmpty(newTaggingStateItem.Class)) taggingStateData.push(newTaggingStateItem);
+      } catch (e) {
+        logger.error("updateTaggingState", e);
+      }
+
+      if (taggingStateData.length === 0) {
+        taggingStateData.push({
+          Class: "앉아있음",
+          RecordTime: "00:00:00.000",
+          Action: "START",
+        });
+        taggingStateData.push({
+          Class: "앉아있음",
+          RecordTime: item.RecordTime,
+          Action: "STOP",
+        });
+      }
+
+      newTaggingStateItem = _.cloneDeep(newTaggingStateItem);
+      newTaggingStateItem.Class = "서있음";
+      newTaggingStateItem.RecordTime = item.RecordTime;
+      newTaggingStateItem.Action = "START";
+      taggingStateData.push(newTaggingStateItem);
+    } else if (item.Class === "데이터버림") {
+      try {
+        if (prevTaggingStateItem.Class === "앉아있음") {
+          newTaggingStateItem.Class = "앉아있음";
+          newTaggingStateItem.RecordTime = startDiscardTaggingStateItem.RecordTime;
+          newTaggingStateItem.Action = "STOP";
+        } else if (prevTaggingStateItem.Class === "서있음") {
+          newTaggingStateItem.Class = "서있음";
+          newTaggingStateItem.RecordTime = startDiscardTaggingStateItem.RecordTime;
+          newTaggingStateItem.Action = "STOP";
+        }
+        // } else if (prevTaggingStateItem.Class === "데이터버림") {
+
+        // }
+        if (!_.isEmpty(newTaggingStateItem.Class)) taggingStateData.push(newTaggingStateItem);
+
+        newTaggingStateItem = _.cloneDeep(newTaggingStateItem);
+        newTaggingStateItem.Class = "데이터버림";
+        newTaggingStateItem.RecordTime = startDiscardTaggingStateItem.RecordTime;
+        newTaggingStateItem.Action = "START";
+        taggingStateData.push(newTaggingStateItem);
+
+        newTaggingStateItem = _.cloneDeep(newTaggingStateItem);
+        newTaggingStateItem.Class = "데이터버림";
+        newTaggingStateItem.RecordTime = item.RecordTime;
+        newTaggingStateItem.Action = "STOP";
+        taggingStateData.push(newTaggingStateItem);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    prevTaggingStateItem = newTaggingStateItem;
+
+    return null;
+  });
+
+  if (
+    taggingStateData.length > 0 &amp;&amp;
+    taggingStateData[taggingStateData.length - 1].Action === "START" &amp;&amp;
+    ["앉아있음", "변칙 앉기 동작", "서있음", "변칙 서기 동작"].indexOf(taggingStateData[taggingStateData.length - 1].Class) !== -1
+  ) {
+    let tmp = _.cloneDeep(taggingStateData[taggingStateData.length - 1]);
+    tmp.RecordTime = "23:59:59.999";
+    tmp.Action = "STOP";
+    taggingStateData.push(tmp);
+  }
+
+  // this.props.setDataState({
+  //   taggingStateData,
+  // });
+
+  return taggingStateData;
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="BaseLayout.html">BaseLayout</a></li><li><a href="ChannelsList.html">ChannelsList</a></li><li><a href="Login.html">Login</a></li><li><a href="MenuController.html">MenuController</a></li><li><a href="MultiVideoPlayer.html">MultiVideoPlayer</a></li><li><a href="PlaybackRateController.html">PlaybackRateController</a></li><li><a href="ProgressBar.html">ProgressBar</a></li><li><a href="SaveDataController.html">SaveDataController</a></li><li><a href="SeekTimeIntervalController.html">SeekTimeIntervalController</a></li><li><a href="SeekToSpecificTimeModal.html">SeekToSpecificTimeModal</a></li><li><a href="Tagger.html">Tagger</a></li><li><a href="TaggingDatabaseModal.html">TaggingDatabaseModal</a></li></ul><h3>Global</h3><ul><li><a href="global.html#basename">basename</a></li><li><a href="global.html#CHANGE_THEME_TO_DARK">CHANGE_THEME_TO_DARK</a></li><li><a href="global.html#checkValidateTaggingData">checkValidateTaggingData</a></li><li><a href="global.html#convertTaggingClassToEnglish">convertTaggingClassToEnglish</a></li><li><a href="global.html#deleteTagging">deleteTagging</a></li><li><a href="global.html#filterActiveChannels">filterActiveChannels</a></li><li><a href="global.html#formatProgressTime">formatProgressTime</a></li><li><a href="global.html#getInvalidTaggingData">getInvalidTaggingData</a></li><li><a href="global.html#initialStandardTime">initialStandardTime</a></li><li><a href="global.html#initialState">initialState</a></li><li><a href="global.html#isLogged">isLogged</a></li><li><a href="global.html#logEvent">logEvent</a></li><li><a href="global.html#logger">logger</a></li><li><a href="global.html#middlewares">middlewares</a></li><li><a href="global.html#pushTagging">pushTagging</a></li><li><a href="global.html#redoTagging">redoTagging</a></li><li><a href="global.html#resetAppState">resetAppState</a></li><li><a href="global.html#resetAuthState">resetAuthState</a></li><li><a href="global.html#resetTaggerDataState">resetTaggerDataState</a></li><li><a href="global.html#resetVideoState">resetVideoState</a></li><li><a href="global.html#resetViewerDataState">resetViewerDataState</a></li><li><a href="global.html#scrollToTaggingItem">scrollToTaggingItem</a></li><li><a href="global.html#setAppState">setAppState</a></li><li><a href="global.html#setAuthState">setAuthState</a></li><li><a href="global.html#setTaggerDataState">setTaggerDataState</a></li><li><a href="global.html#setVideoCurrentDuration">setVideoCurrentDuration</a></li><li><a href="global.html#setVideoState">setVideoState</a></li><li><a href="global.html#setViewerDataState">setViewerDataState</a></li><li><a href="global.html#showToast">showToast</a></li><li><a href="global.html#sortAsc">sortAsc</a></li><li><a href="global.html#sortDesc">sortDesc</a></li><li><a href="global.html#undoTagging">undoTagging</a></li><li><a href="global.html#updateTaggingState">updateTaggingState</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Apr 20 2022 18:46:05 GMT+0900 (Korean Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

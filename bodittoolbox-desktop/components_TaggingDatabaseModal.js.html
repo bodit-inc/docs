@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/TaggingDatabaseModal.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/TaggingDatabaseModal.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from "react";
+import { connect } from "react-redux";
+import { API_HOST } from "../utils/appConstants";
+import { setAppState, setTaggerDataState } from "../redux/actions";
+import { Modal, Button, Row, Col, Table, ToggleButtonGroup, ToggleButton, Form, Spinner } from "react-bootstrap";
+import { ArrowCounterclockwise } from "react-bootstrap-icons";
+import axios from "axios";
+import moment from "moment";
+import { logger, updateTaggingState } from "../utils/lib";
+import "moment/locale/ko";
+import _ from "lodash";
+
+/**
+ * 태깅 불러오기 창
+ */
+class TaggingDatabaseModal extends React.Component {
+  handleClose = () => {
+    this.props.setAppState({
+      showImportTaggingDataModal: false,
+    });
+  };
+
+  handleShow = () => {
+    this.props.setAppState({
+      showImportTaggingDataModal: true,
+    });
+  };
+
+  handleChangeFarm = async (farm) => {
+    this.props
+      .setAppState({
+        selectedFarm: farm,
+        selectedTaggingGroup: {},
+        selectedTaggingVersion: {},
+        taggingVersions: [],
+      })
+      .then(async () => {
+        try {
+          let taggingGroups = await this.getTaggingGroups(farm.id);
+          this.props.setAppState({
+            taggingGroups: taggingGroups.result,
+          });
+        } catch (e) {
+          alert(e.response.data.message);
+        }
+      });
+  };
+
+  handleClickDate = async (selectedTaggingGroup) => {
+    this.props
+      .setAppState({
+        selectedTaggingGroup: selectedTaggingGroup,
+        selectedTaggingVersion: {},
+        taggingVersions: [],
+      })
+      .then(async () => {
+        try {
+          let result = await this.getTaggingGroups(selectedTaggingGroup.farm_id, selectedTaggingGroup.date);
+          this.props.setAppState({
+            taggingGroups: result.result,
+          });
+        } catch (e) {
+          alert("PIN 리스트를 가져오는 중 오류가 발생하여 가져올 수 없습니다.");
+        }
+      });
+  };
+
+  handleClickCowId = async (taggingGroup) => {
+    this.props
+      .setAppState({
+        selectedTaggingGroup: taggingGroup,
+        selectedTaggingVersion: {},
+      })
+      .then(async () => {
+        try {
+          let result = await this.getTaggingVersions(taggingGroup.id);
+          this.props.setAppState({
+            taggingVersions: result.result,
+          });
+        } catch (e) {
+          alert("버전을 가져오는 중 오류가 발생하여 가져올 수 없습니다.");
+        }
+      });
+  };
+
+  handleClickTaggingVersion = async (taggingVersion) => {
+    this.props
+      .setAppState({
+        selectedTaggingVersion: taggingVersion,
+      })
+      .then(() => {
+        // this.getTaggingGroups(taggingGroup.farm_id, taggingGroup.date);
+      });
+  };
+
+  handleSubmitAddDate = async (e) => {
+    e.preventDefault();
+
+    let { app } = this.props;
+    let date = e.target[0].value;
+
+    try {
+      this.setLoading(true);
+      await axios({
+        method: "post",
+        url: `${API_HOST}/taggingGroup`,
+        data: {
+          farm_id: app.selectedFarm.id,
+          date: date,
+          cow_id: "",
+        },
+        responseType: "json",
+      });
+      this.setLoading(false);
+    } catch (e) {
+      alert(e.response.data.message);
+      this.setLoading(false);
+      return;
+    }
+
+    try {
+      this.setLoading(true);
+      let result = await this.getTaggingGroups(app.selectedFarm.id);
+      this.props.setAppState({
+        taggingGroups: result.result,
+      });
+      this.setLoading(false);
+    } catch (e) {
+      alert(e.response.data.message);
+      this.setLoading(false);
+      return;
+    }
+  };
+
+  handleSubmitAddCowId = async (e) => {
+    e.preventDefault();
+
+    let { app } = this.props;
+    let cowId = e.target[0].value;
+    console.log(e.target[0].value);
+
+    try {
+      this.setLoading(true);
+      await axios({
+        method: "post",
+        url: `${API_HOST}/taggingGroup`,
+        data: {
+          farm_id: app.selectedTaggingGroup.farm_id,
+          date: moment(app.selectedTaggingGroup.date).format("yyyy-MM-DD"),
+          cow_id: cowId,
+        },
+        responseType: "json",
+      });
+      this.setLoading(false);
+    } catch (e) {
+      alert(e.response.data.message);
+      this.setLoading(false);
+      return;
+    }
+
+    try {
+      this.setLoading(true);
+      let result = await this.getTaggingGroups(app.selectedFarm.id, app.selectedTaggingGroup.date);
+
+      this.props.setAppState({
+        taggingGroups: result.result,
+      });
+      this.setLoading(false);
+    } catch (e) {
+      alert(e.response.data.message);
+      this.setLoading(false);
+      return;
+    }
+  };
+
+  handleClickImport = async (e) => {
+    e.preventDefault();
+    this.setLoading(true);
+
+    let { app } = this.props;
+    let taggingData = [];
+    try {
+      let result = await this.getTaggings();
+
+      if (!result.success) {
+        alert(result.message);
+        return;
+      }
+
+      for (const item of result.result) {
+        let obj = {};
+        obj.id = item.id;
+        obj.Action = item.tagging_action;
+        obj.Class = item.tagging_class;
+        obj.Note = item.tagging_note;
+        obj.RecordTime = moment(item.tagging_record_time).format("HH:mm:ss.SSS");
+        taggingData.push(obj);
+      }
+
+      let taggingStateData = updateTaggingState(taggingData);
+      this.props.setAppState({
+        taggingPIN: app.selectedTaggingGroup.cow_id,
+        taggingDate: moment(app.selectedTaggingGroup.date).startOf("day").toDate(),
+      });
+      this.props.setTaggerDataState({
+        taggingData,
+        taggingStateData,
+      });
+    } catch (e) {
+      alert(e.data.message);
+      return;
+    }
+
+    this.setLoading(false);
+    this.handleClose();
+  };
+
+  getFarms = async () => {
+    try {
+      this.setLoading(true);
+      let result = await axios({ method: "get", url: `${API_HOST}/farms`, params: {} });
+      this.setLoading(false);
+      return result.data;
+    } catch (e) {
+      this.setLoading(false);
+      throw e;
+    }
+  };
+
+  getCows = async () => {
+    try {
+      this.setLoading(true);
+      let result = await axios({
+        method: "get",
+        url: `${API_HOST}/cows`,
+      });
+      this.setLoading(false);
+      return result.data;
+    } catch (e) {
+      this.setLoading(false);
+      throw e;
+    }
+  };
+
+  getTaggingGroups = async (farm_id = null, date = null) => {
+    try {
+      this.setLoading(true);
+      let result = await axios({
+        method: "get",
+        url: `${API_HOST}/taggingGroups`,
+        params: { farm_id: farm_id, date: date },
+      });
+      this.setLoading(false);
+      return result.data;
+    } catch (e) {
+      this.setLoading(false);
+      throw e;
+    }
+  };
+
+  getTaggingVersions = async (tagging_group_id = null) => {
+    try {
+      this.setLoading(true);
+      let result = await axios({
+        method: "get",
+        url: `${API_HOST}/taggingVersions`,
+        params: { tagging_group_id: tagging_group_id },
+      });
+      this.setLoading(false);
+      return result.data;
+    } catch (e) {
+      this.setLoading(false);
+      throw e;
+    }
+  };
+
+  getTaggings = async () => {
+    try {
+      this.setLoading(true);
+      let { app } = this.props;
+      let result = await axios({
+        method: "get",
+        url: `${API_HOST}/taggings`,
+        params: {
+          tagging_group_id: app.selectedTaggingGroup.id,
+          tagging_version: app.selectedTaggingVersion.id,
+        },
+        responseType: "json",
+      });
+      this.setLoading(false);
+      return result.data;
+    } catch (e) {
+      this.setLoading(false);
+      throw e.response;
+    }
+  };
+
+  async componentDidMount() {
+    await this.getInitialData();
+  }
+
+  async shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.app.showImportTaggingDataModal !== nextProps.app.showImportTaggingDataModal &amp;&amp; nextProps.app.showImportTaggingDataModal === true) {
+      await this.getInitialData();
+    }
+  }
+
+  async getInitialData() {
+    try {
+      let farms = [];
+      let cows = [];
+      let taggingGroups = [];
+      let taggingVersions = [];
+
+      this.setLoading(true);
+      this.props.setAppState({
+        farms: [],
+        cows: [],
+        taggingGroups: [],
+        taggingVersions: [],
+      });
+      farms = await this.getFarms();
+      farms = farms.result;
+      cows = await this.getCows();
+      cows = cows.result;
+      if (!_.isEmpty(this.props.app.selectedFarm)) {
+        taggingGroups = await this.getTaggingGroups(this.props.app.selectedFarm.id, this.props.app.selectedTaggingGroup.date);
+        taggingGroups = taggingGroups.result;
+      }
+      if (!_.isEmpty(this.props.app.selectedTaggingGroup)) {
+        taggingVersions = await this.getTaggingVersions(this.props.app.selectedTaggingGroup.id);
+        taggingVersions = taggingVersions.result;
+      }
+
+      this.props.setAppState({
+        farms: farms,
+        cows: cows,
+        taggingGroups: taggingGroups,
+        taggingVersions: taggingVersions,
+      });
+      this.setLoading(false);
+    } catch (e) {
+      this.setLoading(false);
+      logger.error("getInitialData", e);
+    }
+  }
+
+  componentWillUnmount() {
+    // document.removeEventListener("keydown", this.handleKeyDown.bind(this));
+  }
+
+  async resetData() {
+    try {
+      let farms = await this.getFarms();
+      // let taggingGroups = await this.getTaggingGroups(data.selectedFarm.id, data.selectedTaggingGroup.date);
+      // let cows = await this.getCows();
+      // let taggingVersions = await this.getTaggingVersions(data.selectedTaggingGroup.id);
+
+      this.props.setAppState({
+        selectedFarm: {},
+        selectedTaggingGroup: {},
+        selectedTaggingVersion: {},
+        farms: farms.result,
+        taggingGroups: [],
+        // taggingGroups: taggingGroups.result,
+        // cows: cows.result,
+        // taggingVersions: taggingVersions.result,
+      });
+    } catch (e) {
+      alert(e);
+    }
+  }
+
+  // handleKeyDown(e) {
+  //   // if (
+  //   //   !(
+  //   //     document.activeElement.tagName === "INPUT" &amp;&amp;
+  //   //     (document.activeElement.type === "text" || document.activeElement.type === "number")
+  //   //   )
+  //   // ) {
+  //   // }
+  // }
+
+  /**
+   * 로딩 인디케이터를 띄우거나 숨깁니다.
+   * @param {*} loading
+   */
+  setLoading = async (loading) => {
+    const { app } = this.props;
+    if (app.showImportTaggingDataModal) this.props.setAppState({ loadingNetwork: loading });
+  };
+
+  render() {
+    const { app } = this.props;
+
+    let buttonColor = "primary";
+    let buttonDisabled = true;
+    if (_.isEmpty(app.selectedFarm)) {
+      buttonColor = "danger";
+    } else if (_.isEmpty(app.selectedTaggingGroup.cow_id)) {
+      buttonColor = "danger";
+    } else if (_.isEmpty(app.selectedTaggingVersion)) {
+      buttonColor = "info";
+      buttonDisabled = false;
+    } else {
+      buttonColor = "warning";
+      buttonDisabled = false;
+    }
+
+    return (
+      &lt;Modal show={app.showImportTaggingDataModal} size="xl" animation={false} onHide={this.handleClose.bind(this)}>
+        &lt;Modal.Header closeButton>
+          &lt;Modal.Title>
+            태깅 데이터 불러오기{" "}
+            &lt;ArrowCounterclockwise
+              className={`btn-refresh ${app.loadingNetwork &amp;&amp; "loading"}`}
+              onClick={async () => {
+                await this.resetData();
+              }}
+            />
+          &lt;/Modal.Title>
+        &lt;/Modal.Header>
+        &lt;Modal.Body>
+          &lt;Row>
+            &lt;Col md={8} className="pr-0">
+              &lt;div>
+                &lt;Table striped hover size="sm">
+                  &lt;thead>
+                    &lt;tr>
+                      &lt;th>
+                        &lt;ToggleButtonGroup
+                          type="radio"
+                          name="options"
+                          size="sm"
+                          value={_.isEmpty(app.selectedFarm.id) ? null : app.selectedFarm.id}
+                          onChange={(val) => {
+                            let farm = app.farms.find((farm) => {
+                              return farm.id === val;
+                            });
+                            this.handleChangeFarm(farm);
+                          }}
+                        >
+                          {app.farms.length &lt;= 0 ? (
+                            &lt;ToggleButton value="" disabled>
+                              농장 목록 가져오는 중...
+                            &lt;/ToggleButton>
+                          ) : (
+                            app.farms.map((farm, idx) => {
+                              let result = [];
+
+                              // if (idx === 0)
+                              //   result.push(
+                              //     &lt;ToggleButton name="options" type="radio" value="ALL">
+                              //       모두
+                              //     &lt;/ToggleButton>
+                              //   );
+
+                              result.push(
+                                &lt;ToggleButton name="options" type="radio" value={farm.id}>
+                                  {farm.name}
+                                &lt;/ToggleButton>,
+                              );
+
+                              return result;
+                            })
+                          )}
+                        &lt;/ToggleButtonGroup>
+                      &lt;/th>
+                    &lt;/tr>
+                  &lt;/thead>
+                  &lt;tbody>
+                    {app.taggingGroups.map(
+                      (taggingGroup, idx) =>
+                        _.isEmpty(taggingGroup.cow_id) &amp;&amp; (
+                          &lt;tr
+                            key={`tagging_group_${idx}`}
+                            className={app.selectedTaggingGroup.farm_id === taggingGroup.farm_id &amp;&amp; app.selectedTaggingGroup.date === taggingGroup.date ? "selected" : ""}
+                            onClick={(e) => this.handleClickDate(taggingGroup)}
+                          >
+                            &lt;td>
+                              &lt;span className="farm">[{taggingGroup.farm_id}]&lt;/span>
+                              &lt;span>{moment(taggingGroup.date).format("YYYY-MM-DD")}&lt;/span>
+                              &lt;span className="cnt">
+                                {app.taggingGroups.reduce((acc, curTaggingGroup) => {
+                                  if (curTaggingGroup.farm_id === taggingGroup.farm_id &amp;&amp; curTaggingGroup.date === taggingGroup.date &amp;&amp; !_.isEmpty(curTaggingGroup.cow_id)) return acc + 1;
+                                  else return acc;
+                                }, 0)}
+                              &lt;/span>
+                            &lt;/td>
+                          &lt;/tr>
+                        ),
+                    )}
+                  &lt;/tbody>
+                  &lt;tfoot>
+                    &lt;tr>
+                      &lt;td style={{ padding: 0, paddingTop: 6 }}>
+                        &lt;Form inline onSubmit={this.handleSubmitAddDate.bind(this)} className="d-flex">
+                          &lt;Form.Control
+                            name="date"
+                            placeholder="0000-00-00"
+                            className="flex-grow-1"
+                            size="sm"
+                            disabled={app.loadingNetwork || app.farms.length === 0 || Object.keys(app.selectedFarm).length === 0}
+                          />
+                          &lt;Button type="submit" size="sm" disabled={app.loadingNetwork || app.farms.length === 0 || Object.keys(app.selectedFarm).length === 0}>
+                            {app.loadingNetwork ? &lt;Spinner animation="border" variant="light" role="status" size="sm" /> : "날짜 추가"}
+                          &lt;/Button>
+                        &lt;/Form>
+                      &lt;/td>
+                    &lt;/tr>
+                  &lt;/tfoot>
+                &lt;/Table>
+              &lt;/div>
+            &lt;/Col>
+            &lt;Col md={6} className="pl-0 pr-0">
+              &lt;div>
+                &lt;Table striped hover size="sm">
+                  &lt;thead>
+                    &lt;tr>
+                      &lt;th>
+                        &lt;ToggleButtonGroup type="radio" name="options" size="sm" defaultValue={1}>
+                          &lt;ToggleButton value={1} disabled>
+                            PIN
+                          &lt;/ToggleButton>
+                        &lt;/ToggleButtonGroup>
+                      &lt;/th>
+                    &lt;/tr>
+                  &lt;/thead>
+                  &lt;tbody>
+                    {app.taggingGroups.map(
+                      (taggingGroup, idx) =>
+                        taggingGroup.farm_id === app.selectedTaggingGroup.farm_id &amp;&amp;
+                        taggingGroup.date === app.selectedTaggingGroup.date &amp;&amp;
+                        !_.isEmpty(taggingGroup.cow_id) &amp;&amp; (
+                          &lt;tr
+                            key={`tagging_cow_${idx}`}
+                            className={app.selectedTaggingGroup.cow_id === taggingGroup.cow_id ? "selected" : ""}
+                            onClick={(e) => {
+                              this.handleClickCowId(taggingGroup);
+                            }}
+                          >
+                            &lt;td>
+                              {taggingGroup.cow_id} ({taggingGroup.cow_name})&lt;span className="float-right">{taggingGroup.tagging_cnt}&lt;/span>
+                            &lt;/td>
+                          &lt;/tr>
+                        ),
+                    )}
+                  &lt;/tbody>
+                  &lt;tfoot>
+                    &lt;tr>
+                      &lt;td style={{ padding: 0, paddingTop: 6 }}>
+                        &lt;Form inline onSubmit={this.handleSubmitAddCowId.bind(this)} className="d-flex">
+                          {/* &lt;Form.Control
+                            name="pin"
+                            placeholder="000"
+                            size="sm"
+                            disabled={
+                              this.state.loading ||
+                              this.state.farms.length === 0 ||
+                              !data.selectedTaggingGroup.date ||
+                              (data.selectedTaggingGroup.date &amp;&amp; data.selectedTaggingGroup.date.length &lt;= 0)
+                            }
+                          /> */}
+                          &lt;Form.Control
+                            name="cow_id"
+                            as="select"
+                            size="sm"
+                            className="flex-grow-1"
+                            custom
+                            disabled={app.loadingNetwork || app.farms.length === 0 || !app.selectedTaggingGroup.date || (app.selectedTaggingGroup.date &amp;&amp; app.selectedTaggingGroup.date.length &lt;= 0)}
+                          >
+                            {app.cows.map(
+                              (cow, idx) =>
+                                cow.cow_location.farm_id === app.selectedFarm.id &amp;&amp; (
+                                  &lt;option value={cow.id} key={`cowcow_${idx}`}>
+                                    {cow.id} ({cow.name})
+                                  &lt;/option>
+                                ),
+                            )}
+                          &lt;/Form.Control>
+                          &lt;Button
+                            type="submit"
+                            size="sm"
+                            disabled={app.loadingNetwork || app.farms.length === 0 || !app.selectedTaggingGroup.date || (app.selectedTaggingGroup.date &amp;&amp; app.selectedTaggingGroup.date.length &lt;= 0)}
+                          >
+                            {app.loadingNetwork ? (
+                              &lt;Spinner animation="border" variant="light" role="status" size="sm">
+                                &lt;span className="sr-only">Loading...&lt;/span>
+                              &lt;/Spinner>
+                            ) : (
+                              "PIN 추가"
+                            )}
+                          &lt;/Button>
+                        &lt;/Form>
+                      &lt;/td>
+                    &lt;/tr>
+                  &lt;/tfoot>
+                &lt;/Table>
+              &lt;/div>
+            &lt;/Col>
+            &lt;Col md={10} className="pl-0">
+              &lt;div>
+                &lt;Table striped hover size="sm">
+                  &lt;thead>
+                    &lt;tr>
+                      &lt;th>
+                        &lt;ToggleButtonGroup type="radio" name="options" size="sm" defaultValue={1}>
+                          &lt;ToggleButton value={1} disabled>
+                            VERSION
+                          &lt;/ToggleButton>
+                        &lt;/ToggleButtonGroup>
+                      &lt;/th>
+                    &lt;/tr>
+                  &lt;/thead>
+                  &lt;tbody>
+                    {app.taggingVersions.map((taggingVersion, idx) => (
+                      &lt;tr
+                        key={`tagging_version_${idx}`}
+                        className={app.selectedTaggingVersion.id === taggingVersion.id ? "selected" : ""}
+                        onClick={(e) => {
+                          this.handleClickTaggingVersion(taggingVersion);
+                        }}
+                      >
+                        &lt;td>
+                          [v{taggingVersion.id}]&amp;nbsp;
+                          {moment(taggingVersion.created_at).format("YYYY-MM-DD (ddd) HH:mm:ss")}
+                          &lt;small>
+                            &lt;span>&amp;nbsp;({taggingVersion.tagger_email})&lt;/span>
+                          &lt;/small>
+                          &lt;span className="float-right">{taggingVersion.tagging_cnt}&lt;/span>
+                        &lt;/td>
+                      &lt;/tr>
+                    ))}
+                  &lt;/tbody>
+                &lt;/Table>
+              &lt;/div>
+            &lt;/Col>
+          &lt;/Row>
+        &lt;/Modal.Body>
+        &lt;Modal.Footer>
+          &lt;Button variant={buttonColor} disabled={buttonDisabled} size="md" onClick={this.handleClickImport.bind(this)}>
+            {app.loadingNetwork ? (
+              &lt;Spinner animation="border" variant="light" role="status" size="sm">
+                &lt;span className="sr-only">Loading...&lt;/span>
+              &lt;/Spinner>
+            ) : _.isEmpty(app.selectedFarm) ? (
+              "농장을 선택해주세요"
+            ) : _.isEmpty(app.selectedTaggingGroup.cow_id) ? (
+              "날짜와 핀번호를 선택해주세요"
+            ) : _.isEmpty(app.selectedTaggingVersion) ? (
+              "새 태깅 시작하기"
+            ) : (
+              "기존 태깅 불러오기"
+            )}
+          &lt;/Button>
+        &lt;/Modal.Footer>
+      &lt;/Modal>
+    );
+  }
+}
+
+export default connect(
+  (state) => ({
+    app: state.app,
+  }),
+  (dispatch) => ({
+    setAppState: (appObject) => dispatch(setAppState(appObject)),
+    setTaggerDataState: (dataObject) => dispatch(setTaggerDataState(dataObject)),
+  }),
+)(TaggingDatabaseModal);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="BaseLayout.html">BaseLayout</a></li><li><a href="ChannelsList.html">ChannelsList</a></li><li><a href="Login.html">Login</a></li><li><a href="MenuController.html">MenuController</a></li><li><a href="MultiVideoPlayer.html">MultiVideoPlayer</a></li><li><a href="PlaybackRateController.html">PlaybackRateController</a></li><li><a href="ProgressBar.html">ProgressBar</a></li><li><a href="SaveDataController.html">SaveDataController</a></li><li><a href="SeekTimeIntervalController.html">SeekTimeIntervalController</a></li><li><a href="SeekToSpecificTimeModal.html">SeekToSpecificTimeModal</a></li><li><a href="Tagger.html">Tagger</a></li><li><a href="TaggingDatabaseModal.html">TaggingDatabaseModal</a></li></ul><h3>Global</h3><ul><li><a href="global.html#basename">basename</a></li><li><a href="global.html#CHANGE_THEME_TO_DARK">CHANGE_THEME_TO_DARK</a></li><li><a href="global.html#checkValidateTaggingData">checkValidateTaggingData</a></li><li><a href="global.html#convertTaggingClassToEnglish">convertTaggingClassToEnglish</a></li><li><a href="global.html#deleteTagging">deleteTagging</a></li><li><a href="global.html#filterActiveChannels">filterActiveChannels</a></li><li><a href="global.html#formatProgressTime">formatProgressTime</a></li><li><a href="global.html#getInvalidTaggingData">getInvalidTaggingData</a></li><li><a href="global.html#initialStandardTime">initialStandardTime</a></li><li><a href="global.html#initialState">initialState</a></li><li><a href="global.html#isLogged">isLogged</a></li><li><a href="global.html#logEvent">logEvent</a></li><li><a href="global.html#logger">logger</a></li><li><a href="global.html#middlewares">middlewares</a></li><li><a href="global.html#pushTagging">pushTagging</a></li><li><a href="global.html#redoTagging">redoTagging</a></li><li><a href="global.html#resetAppState">resetAppState</a></li><li><a href="global.html#resetAuthState">resetAuthState</a></li><li><a href="global.html#resetTaggerDataState">resetTaggerDataState</a></li><li><a href="global.html#resetVideoState">resetVideoState</a></li><li><a href="global.html#resetViewerDataState">resetViewerDataState</a></li><li><a href="global.html#scrollToTaggingItem">scrollToTaggingItem</a></li><li><a href="global.html#setAppState">setAppState</a></li><li><a href="global.html#setAuthState">setAuthState</a></li><li><a href="global.html#setTaggerDataState">setTaggerDataState</a></li><li><a href="global.html#setVideoCurrentDuration">setVideoCurrentDuration</a></li><li><a href="global.html#setVideoState">setVideoState</a></li><li><a href="global.html#setViewerDataState">setViewerDataState</a></li><li><a href="global.html#showToast">showToast</a></li><li><a href="global.html#sortAsc">sortAsc</a></li><li><a href="global.html#sortDesc">sortDesc</a></li><li><a href="global.html#undoTagging">undoTagging</a></li><li><a href="global.html#updateTaggingState">updateTaggingState</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Apr 20 2022 18:46:05 GMT+0900 (Korean Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

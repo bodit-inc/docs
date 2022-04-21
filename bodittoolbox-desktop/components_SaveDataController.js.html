@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/SaveDataController.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/SaveDataController.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from "react";
+import PropTypes from "prop-types";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { ipcRenderer } from "electron";
+import { taggingColumns, logger } from "../utils/lib";
+import {
+  setTaggerDataState,
+  resetTaggerDataState,
+  setAuthState,
+  resetAuthState,
+  setVideoState,
+  resetVideoState,
+  setAppState,
+  resetAppState,
+  setViewerDataState,
+  resetViewerDataState,
+} from "../redux/actions";
+import packageJson from "../../package.json";
+import _ from "lodash";
+import { SAVE_SAVED_DATA_INTERVAL_MILLIS } from "../utils/appConstants";
+
+/**
+ * 중간저장을 관리하는 컨트롤러 컴포넌트
+ */
+class SaveDataController extends React.PureComponent {
+  constructor(props) {
+    super(props);
+    this.state = {};
+
+    this.saveSavedDataInterval = undefined;
+  }
+
+  componentDidMount() {
+    // 이벤트 리스너 추가
+    ipcRenderer.on("saveSavedDataResult", this.onSaveSavedDataResult);
+    ipcRenderer.on("loadSavedDataResult", this.onLoadSavedDataResult);
+
+    // saveSavedDataIntervalEnabled=true 일 경우에만 자동저장 시작합니다
+    if (this.props.saveSavedDataIntervalEnabled) this.saveSavedDataInterval = setInterval(this.saveSavedData, SAVE_SAVED_DATA_INTERVAL_MILLIS);
+
+    // 저장된 데이터 불러오기
+    ipcRenderer.send("loadSavedData");
+  }
+
+  componentWillUnmount() {
+    // 이벤트 리스너 제거
+    ipcRenderer.removeListener("saveSavedDataResult", this.onSaveSavedDataResult);
+    ipcRenderer.removeListener("loadSavedDataResult", this.onLoadSavedDataResult);
+
+    if (this.props.saveSavedDataIntervalEnabled) clearInterval(this.saveSavedDataInterval);
+  }
+
+  /**
+   * 중간저장이 끝난 후 발동되는 이벤트입니다.
+   * @param {*} event
+   * @param {*} arg
+   */
+  onSaveSavedDataResult = (event, arg) => {
+    logger.info(this.constructor.displayName, "onSaveSavedDataResult");
+
+    this.props.setAppState({
+      lastDraftTime: new Date(),
+    });
+  };
+
+  /**
+   * 파일로 저장된 중간저장 데이터를 불러옵니다.
+   * @param {*} event
+   * @param {*} arg
+   * @param {*} arg.app - 앱 데이터
+   * @param {*} arg.taggerData - 태거 데이터
+   * @param {*} arg.viewerData - 뷰어 데이터
+   * @param {*} arg.video - 동영상 관련 데이터
+   * @param {*} arg.auth - 인증 데이터
+   */
+  onLoadSavedDataResult = async (event, arg) => {
+    logger.info(this.constructor.displayName, "onLoadSavedDataResult");
+
+    const ctx = this;
+    let _app = arg.app;
+    let _video = arg.video;
+    let _auth = arg.auth;
+    let _taggerData = arg.taggerData;
+    let _viewerData = arg.viewerData;
+
+    // SavedData에 version이 없거나 이전버전과 다르면 초기화시킵니다.
+    if (_.isEmpty(_app.version) || _app.version !== packageJson.version) {
+      logger.info(this.constructor.displayName, `prevVersion: ${_app.version}, currentVersion: ${packageJson.version} / reset data`);
+
+      this.props.resetAppState().then(() => {
+        this.props.resetTaggerDataState().then(() => {
+          this.props.resetViewerDataState().then(() => {
+            this.props.resetVideoState().then(() => {
+              this.props.resetAuthState().then(() => {
+                if (typeof ctx.props.onInitialized === "function") ctx.props.onInitialized(event, arg);
+              });
+            });
+          });
+        });
+      });
+    } else {
+      logger.info(this.constructor.displayName, `prevVersion: ${_app.version}, currentVersion: ${packageJson.version} / load data`);
+
+      _app.taggingColumns = taggingColumns;
+      // _app.loadingNetwork = true;
+
+      if (!_.isEmpty(ctx.props.handleChartRangeChanged)) {
+        [0, 1].forEach((item, idx) => {
+          _viewerData.chartOptions[idx].rangeChanged = function (e) {
+            ctx.props.handleChartRangeChanged(e, idx);
+          };
+        });
+      }
+
+      this.props.setAppState(_app).then(() => {
+        this.props.setTaggerDataState(_taggerData).then(() => {
+          this.props.setViewerDataState(_viewerData).then(() => {
+            this.props.setVideoState(_video).then(() => {
+              // 저장된 데이터에 있는 로그인 정보를 redux에 저장
+              this.props.setAuthState(_auth).then(() => {
+                if (typeof ctx.props.onInitialized === "function") ctx.props.onInitialized(event, arg);
+              });
+            });
+          });
+        });
+      });
+    }
+  };
+
+  /**
+   * redux에 저장된 데이터를 파일로 중간저장 합니다.
+   */
+  saveSavedData = () => {
+    try {
+      const _app = _.cloneDeep(this.props.app);
+      const _taggerData = _.cloneDeep(this.props.taggerData);
+      const _video = _.cloneDeep(this.props.video);
+      const _auth = _.cloneDeep(this.props.auth);
+      const _viewerData = _.cloneDeep(this.props.viewerData);
+
+      _app.taggingColumns = [];
+      [0, 1].forEach((item, idx) => {
+        _viewerData.chartOptions[idx].rangeChanged = null;
+      });
+
+      ipcRenderer.send("saveSavedData", {
+        app: _app,
+        taggerData: _taggerData,
+        viewerData: _viewerData,
+        video: _video,
+        auth: _auth,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  render() {
+    return &lt;>&lt;/>;
+  }
+}
+
+SaveDataController.defaultProps = {
+  saveSavedDataIntervalEnabled: true,
+};
+
+SaveDataController.propTypes = {
+  onInitialized: PropTypes.func,
+  handleChartRangeChanged: PropTypes.func,
+  saveSavedDataIntervalEnabled: PropTypes.bool,
+};
+
+export default connect(
+  (state) => ({
+    app: state.app,
+    taggerData: state.taggerData,
+    video: state.video,
+    auth: state.auth,
+    viewerData: state.viewerData,
+  }),
+  (dispatch) => ({
+    setTaggerDataState: (dataObject) => dispatch(setTaggerDataState(dataObject)),
+    resetTaggerDataState: (dataObject) => dispatch(resetTaggerDataState(dataObject)),
+    setAuthState: (dataObject) => dispatch(setAuthState(dataObject)),
+    resetAuthState: (dataObject) => dispatch(resetAuthState(dataObject)),
+    setVideoState: (dataObject) => dispatch(setVideoState(dataObject)),
+    resetVideoState: (dataObject) => dispatch(resetVideoState(dataObject)),
+    setAppState: (dataObject) => dispatch(setAppState(dataObject)),
+    resetAppState: (dataObject) => dispatch(resetAppState(dataObject)),
+    setViewerDataState: (dataObject) => dispatch(setViewerDataState(dataObject)),
+    resetViewerDataState: (dataObject) => dispatch(resetViewerDataState(dataObject)),
+  }),
+)(withRouter(SaveDataController));
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="BaseLayout.html">BaseLayout</a></li><li><a href="ChannelsList.html">ChannelsList</a></li><li><a href="Login.html">Login</a></li><li><a href="MenuController.html">MenuController</a></li><li><a href="MultiVideoPlayer.html">MultiVideoPlayer</a></li><li><a href="PlaybackRateController.html">PlaybackRateController</a></li><li><a href="ProgressBar.html">ProgressBar</a></li><li><a href="SaveDataController.html">SaveDataController</a></li><li><a href="SeekTimeIntervalController.html">SeekTimeIntervalController</a></li><li><a href="SeekToSpecificTimeModal.html">SeekToSpecificTimeModal</a></li><li><a href="Tagger.html">Tagger</a></li><li><a href="TaggingDatabaseModal.html">TaggingDatabaseModal</a></li></ul><h3>Global</h3><ul><li><a href="global.html#basename">basename</a></li><li><a href="global.html#CHANGE_THEME_TO_DARK">CHANGE_THEME_TO_DARK</a></li><li><a href="global.html#checkValidateTaggingData">checkValidateTaggingData</a></li><li><a href="global.html#convertTaggingClassToEnglish">convertTaggingClassToEnglish</a></li><li><a href="global.html#deleteTagging">deleteTagging</a></li><li><a href="global.html#filterActiveChannels">filterActiveChannels</a></li><li><a href="global.html#formatProgressTime">formatProgressTime</a></li><li><a href="global.html#getInvalidTaggingData">getInvalidTaggingData</a></li><li><a href="global.html#initialStandardTime">initialStandardTime</a></li><li><a href="global.html#initialState">initialState</a></li><li><a href="global.html#isLogged">isLogged</a></li><li><a href="global.html#logEvent">logEvent</a></li><li><a href="global.html#logger">logger</a></li><li><a href="global.html#middlewares">middlewares</a></li><li><a href="global.html#pushTagging">pushTagging</a></li><li><a href="global.html#redoTagging">redoTagging</a></li><li><a href="global.html#resetAppState">resetAppState</a></li><li><a href="global.html#resetAuthState">resetAuthState</a></li><li><a href="global.html#resetTaggerDataState">resetTaggerDataState</a></li><li><a href="global.html#resetVideoState">resetVideoState</a></li><li><a href="global.html#resetViewerDataState">resetViewerDataState</a></li><li><a href="global.html#scrollToTaggingItem">scrollToTaggingItem</a></li><li><a href="global.html#setAppState">setAppState</a></li><li><a href="global.html#setAuthState">setAuthState</a></li><li><a href="global.html#setTaggerDataState">setTaggerDataState</a></li><li><a href="global.html#setVideoCurrentDuration">setVideoCurrentDuration</a></li><li><a href="global.html#setVideoState">setVideoState</a></li><li><a href="global.html#setViewerDataState">setViewerDataState</a></li><li><a href="global.html#showToast">showToast</a></li><li><a href="global.html#sortAsc">sortAsc</a></li><li><a href="global.html#sortDesc">sortDesc</a></li><li><a href="global.html#undoTagging">undoTagging</a></li><li><a href="global.html#updateTaggingState">updateTaggingState</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Apr 20 2022 18:46:05 GMT+0900 (Korean Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

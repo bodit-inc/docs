@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/MenuController.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/MenuController.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React from "react";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { ipcRenderer } from "electron";
+import { logger, updateTaggingState, sortAsc, makeId, logEvent, scrollToTaggingItem } from "../utils/lib";
+import {
+  setTaggerDataState,
+  resetTaggerDataState,
+  setAuthState,
+  resetAuthState,
+  setVideoState,
+  resetVideoState,
+  setAppState,
+  resetAppState,
+  setViewerDataState,
+  resetViewerDataState,
+  showToast,
+  undoTagging,
+  redoTagging,
+  pushTagging,
+} from "../redux/actions";
+import moment from "moment";
+import _ from "lodash";
+import axios from "axios";
+import { API_HOST, MAX_ACTIVE_CHANNELS_CNT, PLAYBACK_RATE_PRESET, SEEKTIME_INTERVAL_PRESET } from "../utils/appConstants";
+
+/**
+ * 메뉴를 관리하는 컨트롤러 컴포넌트
+ */
+class MenuController extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+
+    this.saveSavedDataInterval = undefined;
+
+    // if (typeof props.togglePlay === "function") props.togglePlay(this.togglePlay.bind(this));
+  }
+
+  componentDidMount() {
+    // 이벤트 리스너 추가
+    ipcRenderer.on("menu", this.onMenu);
+    ipcRenderer.on("selectDirectoryResult", this.onSelectDirectoryResult);
+    ipcRenderer.on("logoutResult", this.onLogoutResult);
+    ipcRenderer.on("exportCsvResult", this.onExportCsvResult);
+    ipcRenderer.on("loadTaggingDataResult", this.onLoadTaggingDataResult);
+    ipcRenderer.on("exportTaggingDataResult", this.onExportTaggingDataResult);
+    ipcRenderer.on("exportTaggingStatsTotalResult", this.onExportTaggingStatsTotalResult);
+    ipcRenderer.on("exportTaggingStatsEachResult", this.onExportTaggingStatsEachResult);
+    document.addEventListener("keydown", this.onKeyDown.bind(this));
+  }
+
+  componentWillUnmount() {
+    // 이벤트 리스너 제거
+    try {
+      ipcRenderer.removeListener("menu", this.onMenu);
+      ipcRenderer.removeListener("selectDirectoryResult", this.onSelectDirectoryResult);
+      ipcRenderer.removeListener("logoutResult", this.onLogoutResult);
+      ipcRenderer.removeListener("exportCsvResult", this.onExportCsvResult);
+      ipcRenderer.removeListener("loadTaggingDataResult", this.onLoadTaggingDataResult);
+      ipcRenderer.removeListener("exportTaggingDataResult", this.onExportTaggingDataResult);
+      ipcRenderer.removeListener("exportTaggingStatsTotalResult", this.onExportTaggingStatsTotalResult);
+      ipcRenderer.removeListener("exportTaggingStatsEachResult", this.onExportTaggingStatsEachResult);
+      document.removeEventListener("keydown", this.onKeyDown.bind(this));
+    } catch (e) {
+      logger.error(this.constructor.displayName, e);
+    }
+  }
+
+  onKeyDown(e) {
+    const { app } = this.props;
+
+    if (app.loadingNetwork) return;
+
+    if (!e.ctrlKey &amp;&amp; !e.altKey &amp;&amp; !e.shiftKey &amp;&amp; !e.metaKey) {
+      if (!(document.activeElement.tagName === "INPUT" &amp;&amp; (document.activeElement.type === "text" || document.activeElement.type === "number"))) {
+        // 스페이스바 누르면 스크롤 안되게
+        if (e.keyCode === 32) {
+          e.preventDefault();
+          this.togglePlay();
+          return;
+        }
+
+        if (["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(e.code) > -1) {
+          e.preventDefault();
+          switch (e.code) {
+            case "ArrowUp":
+              break;
+            case "ArrowDown":
+              break;
+            case "ArrowLeft":
+              if (this.props.seekToForward) this.props.seekToForward(e);
+              break;
+            case "ArrowRight":
+              if (this.props.seekToBackward) this.props.seekToBackward(e);
+              break;
+            default:
+              break;
+          }
+        }
+      }
+    }
+  }
+
+  onMenu = (e, action, ignoreInput = false) => {
+    if (document.activeElement.tagName === "INPUT" &amp;&amp; document.activeElement.type !== "radio" &amp;&amp; !ignoreInput) return true;
+    if (document.activeElement.tagName !== "BODY") {
+      try {
+        document.activeElement.blur();
+      } catch (e) {
+        logger.error(e);
+      }
+    }
+
+    const { app, taggerData } = this.props;
+    if (app.loadingNetwork) return;
+    let taggingClasses = _.cloneDeep(app.taggingClasses);
+    let item;
+
+    switch (action) {
+      case "login":
+        this.props.history.push("/account/login");
+        break;
+      case "logout":
+        if (window.confirm("로그아웃시 모든 데이터가 초기화됩니다. 그 전에, 태깅 데이터를 내보내시겠습니까?")) {
+          alert("파일 - 태깅 데이터 내보내기를 클릭하여 태깅데이터를 내보낼 수 있습니다.");
+        } else {
+          if (window.confirm("정말 로그아웃 하시겠습니까? 모든 데이터가 초기화 됩니다.")) this.doLogout();
+        }
+        break;
+      case "load_video_directory":
+        ipcRenderer.send("selectDirectory", { label: "video", type: "video" });
+        break;
+      case "load_video_file":
+        ipcRenderer.send("selectFile", { label: "video", type: "video" });
+        break;
+      case "load_videos":
+        ipcRenderer.send("selectFiles", { label: "video", type: "video" });
+        break;
+      case "load_tagging_data_db":
+        this.props.setAppState({ showImportTaggingDataModal: true });
+        break;
+      case "load_tagging_data_file":
+        ipcRenderer.send("loadTaggingData");
+        break;
+      case "load_graph1_data":
+        ipcRenderer.send("selectFile", { label: "graph_data", type: "csv", chartId: 0 });
+        break;
+      case "load_graph2_data":
+        ipcRenderer.send("selectFile", { label: "graph_data", type: "csv", chartId: 1 });
+        break;
+      case "videotoggleplay":
+        this.togglePlay();
+        break;
+      case "window_viewer":
+        this.props.history.push("/viewer");
+        break;
+      case "window_tagger":
+        this.props.history.push("/tagger");
+        break;
+      case "window_predictor":
+        this.props.history.push("/predictor");
+        break;
+      case "reset_video":
+        if (!window.confirm("정말 불러온 동영상을 초기화 하시겠습니까?")) return;
+        this.props.resetAppState().then(() => {
+          this.props.resetVideoState();
+        });
+        break;
+      case "export_tagging_data_db":
+        this.exportTaggingData("db", "utf-8");
+        break;
+      case "export_tagging_data_xlsx":
+        this.exportTaggingData("xlsx", "utf-8");
+        break;
+      case "export_tagging_data_xlsx_without_validation":
+        this.exportTaggingData("xlsx", "utf-8", false);
+        break;
+      case "export_tagging_data_csv_utf8":
+        this.exportTaggingData("csv", "utf-8");
+        break;
+      case "export_tagging_data_csv_euckr":
+        this.exportTaggingData("csv", "euc-kr");
+        break;
+      case "export_tagging_stats_total_xlsx":
+        this.exportTaggingStatsTotal("xlsx", "utf-8");
+        break;
+      case "export_tagging_stats_total_csv_utf8":
+        this.exportTaggingStatsTotal("csv", "utf-8");
+        break;
+      case "export_tagging_stats_total_csv_euckr":
+        this.exportTaggingStatsTotal("csv", "euc-kr");
+        break;
+      case "export_tagging_stats_each_xlsx":
+        this.exportTaggingStatsEach("xlsx", "utf-8");
+        break;
+      case "export_tagging_stats_each_csv_utf8":
+        this.exportTaggingStatsEach("csv", "utf-8");
+        break;
+      case "export_tagging_stats_each_csv_euckr":
+        this.exportTaggingStatsEach("csv", "euc-kr");
+        break;
+      case "reset_tagging_data":
+        if (!window.confirm("정말 태깅데이터를 초기화 하시겠습니까?")) return;
+        let taggingStateData = updateTaggingState([]);
+        this.props.resetTaggerDataState().then(() => {
+          this.props.setTaggerDataState({ taggingStateData: taggingStateData });
+          this.props.setAppState({ showImportTaggingDataModal: true });
+        });
+        if (this.activeElement) this.activeElement.blur();
+        for (const item of taggingClasses) item.start = false;
+        this.props.setAppState({ taggingState: null, taggingClasses });
+        break;
+      case "reset_tagging_button":
+        if (!window.confirm("정말 태깅버튼 상태를 초기화 하시겠습니까?")) return;
+        if (this.activeElement) this.activeElement.blur();
+        for (const item of taggingClasses) item.start = false;
+        this.props.setAppState({ taggingState: null, taggingClasses });
+        break;
+      case "reset_all":
+        if (!window.confirm("정말 모든 데이터를 초기화 하시겠습니까?")) return;
+        this.props.resetAppState().then(() => {
+          this.props.resetVideoState().then(() => {
+            this.props.resetTaggerDataState().then(() => {
+              const _app = _.cloneDeep(this.props.app);
+              const _video = _.cloneDeep(this.props.video);
+              const _taggerData = _.cloneDeep(this.props.taggerData);
+              const _viewerData = _.cloneDeep(this.props.viewerData);
+              _app.taggingColumns = [];
+              ipcRenderer.send("saveSavedData", { app: _app, video: _video, taggerData: _taggerData, viewerData: _viewerData });
+              this.props.setAppState({ showImportTaggingDataModal: true });
+            });
+          });
+        });
+        break;
+      case "tagging_state_1":
+        this.handleChangeTaggingState("앉아있음");
+        break;
+      case "tagging_state_2":
+        this.handleChangeTaggingState("서있음");
+        break;
+      case "tagging_spot_3":
+        this.handleClickTaggingClass({ name: "포유자극", type: "SPOT", start: false });
+        break;
+      case "tagging_class_4":
+        item = app.taggingClasses.find((item) => item.name === "데이터버림");
+        this.handleClickTaggingClass(item);
+        break;
+      case "tagging_class_5":
+        item = app.taggingClasses.find((item) => item.name === "알수없음");
+        this.handleClickTaggingClass(item);
+        break;
+      case "tagging_undo":
+        this.props.undoTagging().then(() => {
+          let lastTagging = taggerData.taggingHistory[taggerData.currentTaggingHistoryIdx];
+
+          if (!_.isEmpty(lastTagging)) {
+            if (taggerData.currentTaggingHistoryIdx >= 0) {
+              let found = app.taggingClasses.find((item) => item.name === lastTagging.item.Class);
+
+              if (lastTagging.item.Action !== "SPOT") {
+                if (lastTagging.action === "PUSH") {
+                  if (lastTagging.item.Action === "START") found.start = false;
+                  else found.start = true;
+                } else if (lastTagging.action === "DELETE") {
+                  if (lastTagging.item.Action === "START") found.start = true;
+                  else found.start = false;
+                }
+              }
+              this.props.setTaggerDataState({ currentTaggingHistoryIdx: taggerData.currentTaggingHistoryIdx - 1 });
+              this.props.setAppState({ taggingClasses: app.taggingClasses });
+            }
+          }
+        });
+        break;
+      case "tagging_redo":
+        this.props.redoTagging().then(() => {
+          let lastTagging = taggerData.taggingHistory[taggerData.currentTaggingHistoryIdx + 1];
+
+          if (!_.isEmpty(lastTagging)) {
+            if (taggerData.currentTaggingHistoryIdx &lt; taggerData.taggingHistory.length) {
+              let found = app.taggingClasses.find((item) => item.name === lastTagging.item.Class);
+
+              if (lastTagging.item.Action !== "SPOT") {
+                if (lastTagging.action === "PUSH") {
+                  if (lastTagging.item.Action === "START") found.start = true;
+                  else found.start = false;
+                } else if (lastTagging.action === "DELETE") {
+                  if (lastTagging.item.Action === "START") found.start = false;
+                  else found.start = true;
+                }
+              }
+              this.props.setTaggerDataState({ currentTaggingHistoryIdx: taggerData.currentTaggingHistoryIdx + 1 });
+              this.props.setAppState({ taggingClasses: app.taggingClasses });
+              // if (lastTagging.item.Action != "SPOT") {
+              //   let found = this.props.app.taggingClasses.find((item) => item.name == lastTagging.item.Class);
+              //   if (lastTagging.item.Action === "START") found.start = true;
+              //   else found.start = false;
+              //   this.props.setAppState({
+              //     taggingClasses: this.props.app.taggingClasses,
+              //   });
+              // }
+              // this.props.setDataState({
+              //   currentTaggingHistoryIdx: this.props.data.currentTaggingHistoryIdx + 1,
+              // });
+            }
+          }
+        });
+        break;
+      case "videofaster":
+        this.changePlaybackRatePreset("up");
+        break;
+      case "videospeedoriginal":
+        this.changePlaybackRatePreset("original");
+        break;
+      case "videoslower":
+        this.changePlaybackRatePreset("down");
+        break;
+      case "videoincreaseseektimeinterval":
+        this.changeSeekTimeIntervalPreset("up");
+        break;
+      case "videodecreaseseektimeinterval":
+        this.changeSeekTimeIntervalPreset("down");
+        break;
+      case "videoseektotime":
+        this.props.setAppState({ showSeekToSpecificTimeModal: true });
+        break;
+      default:
+        break;
+    }
+  };
+
+  isChannelsEmpty = () => {
+    const channels = this.props.app.channels;
+    const channelKeys = Object.keys(channels);
+    const hasFiles = channelKeys.some((channelKey) => {
+      return channels[channelKey].files.length > 0;
+    });
+
+    return !hasFiles;
+  };
+
+  handleClickTaggingClass = async (targetTaggingClass) => {
+    let { video, taggerData } = this.props;
+
+    if (video.isVideoNotSync) {
+      this.props.showToast("영상간 재생시간이 맞지않아 태깅을 제한합니다. 재생시간 동기화를 수행해주세요.");
+      return;
+    }
+
+    try {
+      let message;
+      let taggingData = _.cloneDeep(taggerData.taggingData);
+      let newTaggingDataItem = {
+        id: makeId(12),
+        RecordTime: moment.utc(moment.duration(video.currentDuration * 1000).asMilliseconds()).format("HH:mm:ss.SSS"),
+        Class: targetTaggingClass.name,
+        Action: "SPOT",
+        Note: "",
+      };
+
+      // 오름차순 정렬
+      taggingData = sortAsc(taggingData);
+      // taggingData.sort((a, b) => {
+      //   a = moment.duration(a.RecordTime).asSeconds();
+      //   b = moment.duration(b.RecordTime).asSeconds();
+      //   return a &lt; b ? -1 : a > b ? 1 : 0;
+      // });
+
+      // try {
+      //   if (this.isChannelsEmpty()) message = "동영상 파일을 불러와주세요.";
+      //   if (taggingData.length > 0) {
+      //     if (taggingData[0].Action !== "STATE") {
+      //       message = "최초 태깅에 앉아있음/서있음 STATE가 없습니다. 앉아있음/서있음 STATE를 태깅해주세요.";
+      //     }
+
+      //     const lastElement = taggingData[taggingData.length - 1];
+      //     // let needState = false;
+      //     if (lastElement.Class === "데이터버림" &amp;&amp; lastElement.Action === "STOP") {
+      //       // needState = true;
+      //       message = "데이터 버림 이후 STATE가 필요합니다.";
+      //     }
+      //   } else {
+      //     message = "최초 태깅에 앉아있음/서있음 STATE가 없습니다. 앉아있음/서있음 STATE를 태깅해주세요.";
+      //   }
+      // } catch (e) {
+      //   message = "알 수 없는 오류";
+      // }
+
+      if (message) {
+        this.props.showToast(message);
+        return false;
+      }
+
+      if (targetTaggingClass.type === "SPOT") {
+        newTaggingDataItem.Action = "SPOT";
+      }
+
+      if (targetTaggingClass.type === "START_STOP") {
+        targetTaggingClass.start = !targetTaggingClass.start;
+        const foundIdx = taggingData.findIndex((element) => element.name === targetTaggingClass.name);
+        taggingData[foundIdx] = targetTaggingClass;
+        newTaggingDataItem.Class = targetTaggingClass.name;
+        newTaggingDataItem.Action = targetTaggingClass.start ? "START" : "STOP";
+      }
+
+      logEvent({
+        event_name: "click_tagging_class",
+        tagging_class: newTaggingDataItem.Class,
+        tagging_action: newTaggingDataItem.Action,
+        tagging_record_time: moment.duration(moment(newTaggingDataItem.RecordTime, "HH:mm:ss.SSS") - moment(newTaggingDataItem.RecordTime, "HH:mm:ss.SSS").startOf("day")).asSeconds(),
+      });
+
+      taggingData.push(newTaggingDataItem);
+
+      if (this.props.showLastTaggingText) this.props.showLastTaggingText(newTaggingDataItem);
+      // clearTimeout(this.props.lastTaggingTimeout);
+      // this.setState({
+      //   lastTagging: newTaggingDataItem,
+      // });
+      // this.lastTaggingTimeout = setTimeout(() => {
+      //   this.setState({
+      //     lastTagging: null,
+      //   });
+      // }, 1000);
+
+      // if (["서기동작", "앉기동작"].indexOf(targetTaggingClass.name) !== -1 &amp;&amp; !targetTaggingClass.start) {
+      //   taggingData.push({
+      //     id: makeId(12),
+      //     RecordTime: moment
+      //       .utc(moment.duration((data.currentDuration + 0.001) * 1000).asMilliseconds())
+      //       .format("HH:mm:ss.SSS"),
+      //     Class: targetTaggingClass.name === "서기동작" ? "서있음" : "앉아있음",
+      //     Action: "STATE",
+      //     Note: "",
+      //   });
+
+      //   this.props.setDataState({
+      //     taggingState: targetTaggingClass.name === "서기동작" ? "서있음" : "앉아있음",
+      //   });
+      // }
+
+      if (["데이터버림"].indexOf(targetTaggingClass.name) !== -1 &amp;&amp; !targetTaggingClass.start) {
+        this.props.setTaggerDataState({
+          taggingState: null,
+        });
+      }
+
+      this.props.pushTagging(newTaggingDataItem).then(() => {
+        setTimeout(() => {
+          scrollToTaggingItem(taggingData[taggingData.length - 1]);
+          let taggingStateData = updateTaggingState(taggingData);
+          this.props.setTaggerDataState({
+            taggingStateData: taggingStateData,
+            taggingData: taggingData,
+          });
+        }, 100);
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  handleChangeTaggingState = (nextState) => {
+    try {
+      let { app, taggerData } = this.props;
+      let taggingData = taggerData.taggingData;
+      let message;
+
+      if (this.isChannelsEmpty()) message = "동영상 파일을 불러와주세요.";
+
+      if (message) {
+        this.props.showToast(message);
+        return false;
+      }
+
+      let recordTime;
+      try {
+        if (taggingData[0].Action !== "STATE") {
+          console.log("1");
+          recordTime = moment.utc(moment.duration(0 * 1000).asMilliseconds()).format("HH:mm:ss.SSS");
+        } else {
+          console.log("2");
+          let newTaggingData = _.cloneDeep(taggingData);
+          let foundDiscardTaggingIdx = newTaggingData.reverse().findIndex((item) => {
+            let _recordTime = moment.duration(moment(item.RecordTime, "HH:mm:ss.SSS") - moment(item.RecordTime, "HH:mm:ss.SSS").startOf("day")).asSeconds();
+
+            console.log(`_recordTime`);
+            if (_recordTime &lt;= app.currentDuration) {
+              if (item.Class === "데이터버림" &amp;&amp; item.Action === "STOP") {
+                recordTime = _recordTime;
+                return true;
+              } else {
+                return false;
+              }
+            }
+
+            return false;
+          });
+          if (foundDiscardTaggingIdx !== -1) {
+            if (typeof taggingData[foundDiscardTaggingIdx + 1] !== "undefined" &amp;&amp; taggingData[foundDiscardTaggingIdx + 1].Action === "STATE") {
+              recordTime = moment.utc(moment.duration(app.currentDuration * 1000).asMilliseconds()).format("HH:mm:ss.SSS");
+            } else {
+              console.log("3");
+              recordTime = recordTime + 0.001;
+              recordTime = moment.utc(recordTime * 1000).format("HH:mm:ss.SSS");
+            }
+          } else {
+            console.log("4");
+            recordTime = moment.utc(moment.duration(app.currentDuration * 1000).asMilliseconds()).format("HH:mm:ss.SSS");
+          }
+        }
+      } catch (e) {
+        console.log(e);
+        recordTime = moment.utc(moment.duration(0 * 1000).asMilliseconds()).format("HH:mm:ss.SSS");
+      }
+
+      taggingData.push({
+        id: makeId(12),
+        RecordTime: recordTime,
+        Class: nextState,
+        Action: "STATE",
+        Note: "",
+      });
+
+      this.props
+        .setTaggerDataState({
+          taggingData: taggingData,
+          taggingState: nextState,
+        })
+        .then(() => {
+          this.props.stateToggleButton.forEach((item, idx) => {
+            for (var i = 0; i &lt; item.childNodes.length; i++) {
+              if (item.childNodes[i].tagName !== "INPUT") return;
+              item.childNodes[i].blur();
+            }
+          });
+        });
+
+      logEvent({
+        event_name: "change_tagging_state",
+        tagging_class: nextState,
+        tagging_action: "STATE",
+        tagging_record_time: moment.duration(moment(recordTime, "HH:mm:ss.SSS") - moment(recordTime, "HH:mm:ss.SSS").startOf("day")).asSeconds(),
+      });
+    } catch (e) {
+      if (this.activeElement) this.activeElement.blur();
+      this.props.showToast(e.message);
+    }
+    return false;
+  };
+
+  togglePlay() {
+    if (this.props.togglePlay) this.props.togglePlay();
+  }
+
+  /**
+   * 태깅데이터 내보내기
+   * @param {*} ext
+   * @param {*} charset
+   * @param {*} withValidation
+   * @returns
+   */
+  exportTaggingData = async (ext, charset, withValidation = true) => {
+    let { app, taggerData, auth } = this.props;
+
+    if (withValidation) {
+      if (!this.props.checkTaggingDataIsValid()) return;
+    } else {
+      if (!window.confirm("이 기능은 이슈 확인을 위한 기능입니다.\n일반적인 경우 검증없이 태깅데이터를 내보내지 않는게 좋습니다.\n계속 하시겠습니까?")) return;
+    }
+
+    // 로딩 표시
+    this.props.setAppState({ loadingNetwork: true });
+
+    // 태깅데이터 정렬
+    let taggingData = _.cloneDeep(taggerData.taggingData);
+    taggingData.sort((a, b) => {
+      a = moment.duration(a.RecordTime).asSeconds();
+      b = moment.duration(b.RecordTime).asSeconds();
+      return a &lt; b ? -1 : a > b ? 1 : 0;
+    });
+
+    // 내보내기
+    if (ext === "db") {
+      // db에 내보내기
+      try {
+        let tagging_data = [];
+        for (const item of taggingData) {
+          let new_item = {};
+          new_item.tagging_group_id = app.selectedTaggingGroup.id;
+          new_item.tagging_class = item.Class;
+          new_item.tagging_action = item.Action;
+          new_item.tagging_note = item.Note;
+          new_item.tagging_record_time = moment(item.RecordTime, "HH:mm:ss.SSS").toISOString();
+          tagging_data.push(new_item);
+        }
+
+        this.props.setAppState({ loadingNetwork: true });
+        await axios({
+          method: "post",
+          url: `${API_HOST}/taggings`,
+          data: {
+            tagging_data,
+            tagging_group_id: app.selectedTaggingGroup.id,
+            tagger_email: auth.user.email,
+            date: moment(app.taggingDate).format("YYYY-MM-DD"),
+            cow_id: app.taggingPIN,
+            farm_id: app.selectedFarm.id,
+          },
+          responseType: "json",
+        });
+        this.props.showToast(`${app.selectedFarm.id} / ${app.taggingPIN} / 성공적으로 내보냈습니다.`);
+        this.props.setAppState({ loadingNetwork: false });
+      } catch (e) {
+        this.props.showToast(e.response.data.message);
+        this.props.setAppState({ loadingNetwork: false });
+      }
+    } else {
+      // 파일로 내보내기
+      let options = {
+        fileName: app.taggingPIN.trim() + "_" + moment(app.taggingDate).format("YYYY-MM-DD_HH-mm-ss") + `.${ext}`,
+        charset: charset,
+        ext: ext,
+      };
+
+      ipcRenderer.send("exportTaggingData", { taggingData, options });
+    }
+  };
+
+  /**
+   * 태깅 종합 통계 내보내기
+   * @param {*} ext
+   * @param {*} charset
+   */
+  exportTaggingStatsTotal = (ext, charset) => {
+    let { app, taggerData } = this.props;
+
+    if (!this.props.checkTaggingDataIsValid()) return;
+
+    let taggingData = _.cloneDeep(taggerData.taggingData);
+    taggingData = sortAsc(taggingData);
+
+    let options = {
+      fileName: `${app.taggingPIN.trim()}_${moment(app.taggingDate).format("YYYY-MM-DD_HH-mm-ss")}_stats_total.${ext}`,
+      charset: charset,
+      ext: ext,
+    };
+
+    ipcRenderer.send("exportTaggingStatsTotal", {
+      taggingData,
+      options,
+    });
+  };
+
+  /**
+   * 태깅 개별 통계 내보내기
+   * @param {*} ext
+   * @param {*} charset
+   */
+  exportTaggingStatsEach = (ext, charset) => {
+    let { app, taggerData } = this.props;
+
+    if (!this.props.checkTaggingDataIsValid()) return;
+
+    let taggingData = _.cloneDeep(taggerData.taggingData);
+    let taggingStateData = _.cloneDeep(taggerData.taggingStateData);
+    taggingStateData = taggingStateData.filter((item) => item.Class !== "데이터버림");
+    taggingData = taggingData.concat(taggingStateData);
+    taggingData = sortAsc(taggingData);
+
+    let options = {
+      fileName: `${app.taggingPIN.trim()}_${moment(app.taggingDate).format("YYYY-MM-DD_HH-mm-ss")}_stats_each.${ext}`,
+      charset: charset,
+      ext: ext,
+    };
+
+    ipcRenderer.send("exportTaggingStatsEach", { taggingData, taggingStateData, options });
+  };
+
+  /**
+   * 탐색 간격을 조절합니다.
+   * @param {*} how
+   */
+  changeSeekTimeIntervalPreset = (how) => {
+    let val;
+    const { video } = this.props;
+
+    switch (how) {
+      case "up":
+        val = SEEKTIME_INTERVAL_PRESET.find((item) => item > video.videoSeekTimeIntervalSeconds);
+
+        if (val) this.props.setVideoState({ videoSeekTimeIntervalSeconds: val });
+
+        break;
+      case "down":
+        val = SEEKTIME_INTERVAL_PRESET.reverse().find((item) => item &lt; video.videoSeekTimeIntervalSeconds);
+        SEEKTIME_INTERVAL_PRESET.reverse();
+
+        if (val) this.props.setVideoState({ videoSeekTimeIntervalSeconds: val });
+        break;
+      default:
+        break;
+    }
+  };
+
+  /**
+   * 재생 속도를 조절합니다.
+   * @param {*} how
+   */
+  changePlaybackRatePreset = (how) => {
+    let val;
+    const { video } = this.props;
+
+    if (how === "up") {
+      val = PLAYBACK_RATE_PRESET.find((item) => item > video.videoPlaybackRate);
+    } else if (how === "down") {
+      val = PLAYBACK_RATE_PRESET.reverse().find((item) => item &lt; video.videoPlaybackRate);
+      PLAYBACK_RATE_PRESET.reverse();
+    } else {
+      val = 1;
+    }
+
+    if (val) this.props.setVideoState({ videoPlaybackRate: val });
+  };
+
+  /**
+   * 로그아웃 합니다.
+   */
+  doLogout = () => {
+    this.props.resetAppState().then(() => {
+      this.props.resetVideoState().then(() => {
+        this.props.resetTaggerDataState().then(() => {
+          this.props.resetAuthState().then(() => {
+            const _app = _.cloneDeep(this.props.app);
+            const _taggerData = _.cloneDeep(this.props.taggerData);
+            const _video = _.cloneDeep(this.props.video);
+            const _auth = _.cloneDeep(this.props.auth);
+
+            _app.taggingColumns = [];
+
+            ipcRenderer.send("logout", { app: _app, video: _video, taggerData: _taggerData, auth: _auth });
+          });
+        });
+      });
+    });
+  };
+
+  /**
+   * 태깅데이터 내보내기 결과를 받아옵니다.
+   * @param {*} e
+   * @param {*} arg
+   */
+  onExportTaggingDataResult = (e, arg) => {
+    alert(arg.message);
+    this.props.setAppState({ loadingNetwork: false });
+  };
+
+  /**
+   * 태깅 통계(종합) 내보내기 결과를 받아옵니다.
+   * @param {*} e
+   * @param {*} arg
+   */
+  onExportTaggingStatsTotalResult = (e, arg) => {
+    if (arg.success === false) this.props.checkTaggingDataIsValid();
+    alert(arg.message);
+  };
+
+  /**
+   * 태깅 통계(개별) 내보내기 결과를 받아옵니다.
+   * @param {*} e
+   * @param {*} arg
+   */
+  onExportTaggingStatsEachResult = (e, arg) => {
+    if (arg.success === false) this.props.checkTaggingDataIsValid();
+    alert(arg.message);
+  };
+
+  /**
+   * csv로 내보내기 결과를 받아옵니다.
+   * @param {*} event
+   * @param {*} arg
+   */
+  onExportCsvResult = (event, arg) => {
+    this.props.showToast(arg.message);
+  };
+
+  /**
+   * 태깅데이터 불러오기 결과를 받아옵니다.
+   * @param {*} e
+   * @param {*} arg
+   */
+  onLoadTaggingDataResult = (e, arg) => {
+    let { app } = this.props;
+    let jsonData = arg.data;
+    let taggingData = [];
+    let channels = _.cloneDeep(app.channels);
+    let PIN = arg.PIN.toString();
+
+    Object.keys(channels).map((channelKey, channelIdx) => {
+      channels[channelKey].date = moment(arg.date, "YYYY-MM-DD_HH:mm:ss").toDate();
+      return null;
+    });
+
+    jsonData.forEach((row, idx) => {
+      if (idx === 0 &amp;&amp; row.Class === "영상") return;
+      if (idx === jsonData.length - 1 &amp;&amp; row.Class === "영상") return;
+      row.id = idx;
+      if (typeof row.Note == "undefined") row.Note = "";
+      taggingData.push(row);
+    });
+
+    let taggingStateData = updateTaggingState(taggingData);
+
+    this.props.setTaggerDataState({ taggingData, taggingStateData, taggingHistory: [], currentTaggingHistoryIdx: 0 });
+    this.props.setAppState({ channels, taggingPIN: PIN, taggingDate: moment(arg.date, "YYYY-MM-DD_HH:mm:ss").toDate(), selectedFarm: arg.selectedFarm });
+  };
+
+  /**
+   * 파일 선택할떄 결과를 받아옵니다.
+   * @param {*} e
+   * @param {*} arg
+   * @returns
+   */
+  onSelectFileResult = (e, arg) => {
+    const { viewerData } = this.props;
+
+    switch (arg.label) {
+      case "video":
+        let oldPaths = _.cloneDeep(viewerData.videoFile.paths);
+        let newPaths = arg.data;
+        let result = oldPaths.concat(newPaths);
+
+        if (result.length > MAX_ACTIVE_CHANNELS_CNT) {
+          alert(`최대 동영상(${MAX_ACTIVE_CHANNELS_CNT}개)에 도달하였습니다.`);
+          return;
+        }
+
+        this.props.setViewerDataState({ videoFile: { paths: result, info: arg.fileStat } }).then(() => this.updateVideoMetadata());
+        break;
+      default:
+        break;
+    }
+  };
+
+  /**
+   * 동영상 불러오기(폴더) 결과를 받아옵니다.
+   * @param {*} e
+   * @param {*} arg
+   * @returns
+   */
+  onSelectDirectoryResult = (e, arg) => {
+    if (!arg.success) {
+      alert(arg.message);
+      return;
+    }
+
+    this.props.setAppState({
+      taggingDate: arg.date,
+      channels: arg.channels,
+      selectedVideoFilesDirectoryPath: arg.selectedVideoFilesDirectoryPath,
+      selectedFarm: arg.selectedFarm,
+    });
+  };
+
+  /**
+   * 로그아웃 결과를 받아옵니다.
+   * @param {*} e
+   * @param {*} arg
+   */
+  onLogoutResult = (e, arg) => {
+    if (!arg.success) alert(arg.message);
+
+    this.props.history.push("/account/login");
+  };
+
+  render() {
+    return &lt;>&lt;/>;
+  }
+}
+
+MenuController.defaultProps = {
+  saveSavedDataIntervalEnabled: true,
+};
+
+MenuController.propTypes = {
+  togglePlay: PropTypes.func,
+  onInitialized: PropTypes.func,
+  seekToForward: PropTypes.func,
+  seekToBackward: PropTypes.func,
+  handleChartRangeChanged: PropTypes.func,
+  checkTaggingDataIsValid: PropTypes.func,
+  saveSavedDataIntervalEnabled: PropTypes.bool,
+};
+
+export default connect(
+  (state) => ({
+    app: state.app,
+    taggerData: state.taggerData,
+    video: state.video,
+    auth: state.auth,
+    viewerData: state.viewerData,
+  }),
+  (dispatch) => ({
+    showToast: (message, duration) => dispatch(showToast(message, duration)),
+    setTaggerDataState: (dataObject) => dispatch(setTaggerDataState(dataObject)),
+    resetTaggerDataState: (dataObject) => dispatch(resetTaggerDataState(dataObject)),
+    setAuthState: (dataObject) => dispatch(setAuthState(dataObject)),
+    resetAuthState: (dataObject) => dispatch(resetAuthState(dataObject)),
+    setVideoState: (dataObject) => dispatch(setVideoState(dataObject)),
+    resetVideoState: (dataObject) => dispatch(resetVideoState(dataObject)),
+    setAppState: (dataObject) => dispatch(setAppState(dataObject)),
+    resetAppState: (dataObject) => dispatch(resetAppState(dataObject)),
+    setViewerDataState: (dataObject) => dispatch(setViewerDataState(dataObject)),
+    resetViewerDataState: (dataObject) => dispatch(resetViewerDataState(dataObject)),
+    undoTagging: () => dispatch(undoTagging()),
+    redoTagging: () => dispatch(redoTagging()),
+    pushTagging: (newTaggingDataItem) => dispatch(pushTagging(newTaggingDataItem)),
+  }),
+  null,
+  { forwardRef: true },
+)(MenuController);
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="App.html">App</a></li><li><a href="BaseLayout.html">BaseLayout</a></li><li><a href="ChannelsList.html">ChannelsList</a></li><li><a href="Login.html">Login</a></li><li><a href="MenuController.html">MenuController</a></li><li><a href="MultiVideoPlayer.html">MultiVideoPlayer</a></li><li><a href="PlaybackRateController.html">PlaybackRateController</a></li><li><a href="ProgressBar.html">ProgressBar</a></li><li><a href="SaveDataController.html">SaveDataController</a></li><li><a href="SeekTimeIntervalController.html">SeekTimeIntervalController</a></li><li><a href="SeekToSpecificTimeModal.html">SeekToSpecificTimeModal</a></li><li><a href="Tagger.html">Tagger</a></li><li><a href="TaggingDatabaseModal.html">TaggingDatabaseModal</a></li></ul><h3>Global</h3><ul><li><a href="global.html#basename">basename</a></li><li><a href="global.html#CHANGE_THEME_TO_DARK">CHANGE_THEME_TO_DARK</a></li><li><a href="global.html#checkValidateTaggingData">checkValidateTaggingData</a></li><li><a href="global.html#convertTaggingClassToEnglish">convertTaggingClassToEnglish</a></li><li><a href="global.html#deleteTagging">deleteTagging</a></li><li><a href="global.html#filterActiveChannels">filterActiveChannels</a></li><li><a href="global.html#formatProgressTime">formatProgressTime</a></li><li><a href="global.html#getInvalidTaggingData">getInvalidTaggingData</a></li><li><a href="global.html#initialStandardTime">initialStandardTime</a></li><li><a href="global.html#initialState">initialState</a></li><li><a href="global.html#isLogged">isLogged</a></li><li><a href="global.html#logEvent">logEvent</a></li><li><a href="global.html#logger">logger</a></li><li><a href="global.html#middlewares">middlewares</a></li><li><a href="global.html#pushTagging">pushTagging</a></li><li><a href="global.html#redoTagging">redoTagging</a></li><li><a href="global.html#resetAppState">resetAppState</a></li><li><a href="global.html#resetAuthState">resetAuthState</a></li><li><a href="global.html#resetTaggerDataState">resetTaggerDataState</a></li><li><a href="global.html#resetVideoState">resetVideoState</a></li><li><a href="global.html#resetViewerDataState">resetViewerDataState</a></li><li><a href="global.html#scrollToTaggingItem">scrollToTaggingItem</a></li><li><a href="global.html#setAppState">setAppState</a></li><li><a href="global.html#setAuthState">setAuthState</a></li><li><a href="global.html#setTaggerDataState">setTaggerDataState</a></li><li><a href="global.html#setVideoCurrentDuration">setVideoCurrentDuration</a></li><li><a href="global.html#setVideoState">setVideoState</a></li><li><a href="global.html#setViewerDataState">setViewerDataState</a></li><li><a href="global.html#showToast">showToast</a></li><li><a href="global.html#sortAsc">sortAsc</a></li><li><a href="global.html#sortDesc">sortDesc</a></li><li><a href="global.html#undoTagging">undoTagging</a></li><li><a href="global.html#updateTaggingState">updateTaggingState</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Apr 20 2022 18:46:05 GMT+0900 (Korean Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
