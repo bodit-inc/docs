@@ -1,6 +1,6 @@
 # 소개
 
-프로젝트별 개발 레퍼런스 문서들입니다.
+프로젝트별 레퍼런스 문서들입니다.
 
 
 ---
@@ -29,13 +29,20 @@
 [Reference Documentation](https://bodit-inc.github.io/docs/bodittoolbox-desktop)
 
 
-## 바딧툴박스 API 서버 [🔗](https://bodit-inc.github.io/docs/bodittoolbox-api)
+## 바딧툴박스 API 서버 [🔗](https://github.com/bodit-inc/bodittoolbox-api)
 
 [Reference Documentation](https://bodit-inc.github.io/docs/bodittoolbox-api)
 
 
-## 바딧툴박스 대시보드 웹 [🔗](https://bodit-inc.github.io/docs/bodittoolbox-dashboard)
+## 바딧툴박스 대시보드 웹 [🔗](https://github.com/bodit-inc/bodittoolbox-dashboard)
 
 [Reference Documentation](https://bodit-inc.github.io/docs/bodittoolbox-dashboard)
 
 
+---
+
+# 바디스태모
+
+### 바디스태모 보행검사 설문조사 웹 [🔗](https://github.com/bodit-inc/bodystamo-survey-web)
+
+[Reference Documentation](https://bodit-inc.github.io/docs/bodystamo-survey-web)
