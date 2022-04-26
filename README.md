@@ -18,10 +18,6 @@
 
 [Reference Documentation](https://bodit-inc.github.io/docs/fh-insert-json-to-database)
 
-## 파머스핸즈 데이터베이스 스키마 [🔗](https://github.com/bodit-inc/fh-database-schema)
-
-[Reference Documentation](https://bodit-inc.github.io/docs/fh-database-schema)
-
 ---
 
 
